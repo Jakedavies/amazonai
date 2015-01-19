@@ -13,35 +13,52 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
     GameClient gameClient = null;
     ArrayList<GameRoom> roomlist;
+
     public GamePlayer(String name, String passwd){
+
         gameClient = new GameClient(name,passwd,this);
         roomlist = gameClient.getRoomLists();
+
+
+        //Print out the room list to user
         for(GameRoom gr : roomlist){
             System.out.println(gr.toString());
             System.out.println("With: " + gr.userCount + " users");
         }
 
+
+        //Scan room number and connect to room.
         Scanner sc = new Scanner(System.in);
         System.out.println("Which game room would you like to join?");
-
         Integer chosenRoom = sc.nextInt();
         System.out.println(chosenRoom);
         gameClient.joinGameRoom(chosenRoom.toString());
 
 
-
-
-
-        System.out.println("You are connected to room:  " + roomlist.get(chosenRoom-2).roomName );
-        System.out.println("There are: " + roomlist.get(chosenRoom-2).userCount + "users in the room currently.");
+        /*
+        Most of this is useless and just for testing...
+         */
 
         boolean escape = false;
         while(!escape){
-            System.out.println("Would send a message or type 'n' to quit...");
-            String message = sc.nextLine();
 
-            if("n".equalsIgnoreCase(message)){
-                gameClient.sendToServer(message);
+            //debug
+            System.out.println("You are connected to room:  " + gameClient.getRoomLists().get(chosenRoom-2).roomName );
+            System.out.println("There are: " + gameClient.getRoomLists().get(chosenRoom-2).userCount + " users in the room currently.");
+
+            System.out.println("Send a message or type 'n' to quit...");
+
+            String message = sc.next();
+
+
+            if(!"n".equalsIgnoreCase(message)){
+
+                /*
+                Looks like we need to compile the message (see yong's code snippet below this...)
+                Broken at the moment.
+                 */
+                String messageToSend = ServerMessage.compileGameMessage("MSG_CHAT", chosenRoom, message);
+                gameClient.sendToServer(messageToSend);
             }
             else{
                 escape = true;
@@ -55,6 +72,7 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
         System.out.println(msg);
         return true;
     }
+
     public boolean handleMessage(GameMessage msg){
         IXMLElement xml = ServerMessage.parseMessage(msg.msg);
         String type = xml.getAttribute("type", "WRONG!");
