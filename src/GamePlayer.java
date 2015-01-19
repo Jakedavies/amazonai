@@ -18,6 +18,7 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
         roomlist = gameClient.getRoomLists();
         for(GameRoom gr : roomlist){
             System.out.println(gr.toString());
+            System.out.println("With: " + gr.userCount + " users");
         }
 
         Scanner sc = new Scanner(System.in);
@@ -27,7 +28,26 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
         System.out.println(chosenRoom);
         gameClient.joinGameRoom(chosenRoom.toString());
 
-        System.out.println("There are: " + roomlist.get(chosenRoom).userCount);
+
+
+
+
+        System.out.println("You are connected to room:  " + roomlist.get(chosenRoom-2).roomName );
+        System.out.println("There are: " + roomlist.get(chosenRoom-2).userCount + "users in the room currently.");
+
+        boolean escape = false;
+        while(!escape){
+            System.out.println("Would send a message or type 'n' to quit...");
+            String message = sc.nextLine();
+
+            if("n".equalsIgnoreCase(message)){
+                gameClient.sendToServer(message);
+            }
+            else{
+                escape = true;
+            }
+
+        }
 
 
     }
