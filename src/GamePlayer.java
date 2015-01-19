@@ -1,16 +1,35 @@
 
+import ubco.ai.GameRoom;
 import ubco.ai.games.GameClient;
 import ubco.ai.games.GameMessage;
 import ubco.ai.connection.ServerMessage;
 import net.n3.nanoxml.*;
 
+import java.util.ArrayList;
+import java.util.*;
+
 
 public class GamePlayer implements ubco.ai.games.GamePlayer{
 
     GameClient gameClient = null;
-
+    ArrayList<GameRoom> roomlist;
     public GamePlayer(String name, String passwd){
         gameClient = new GameClient(name,passwd,this);
+        roomlist = gameClient.getRoomLists();
+        for(GameRoom gr : roomlist){
+            System.out.println(gr.toString());
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Which game room would you like to join?");
+
+        Integer chosenRoom = sc.nextInt();
+        System.out.println(chosenRoom);
+        gameClient.joinGameRoom(chosenRoom.toString());
+
+        System.out.println("There are: " + roomlist.get(chosenRoom).userCount);
+
+
     }
     public boolean handleMessage(String msg){
         System.out.println(msg);
