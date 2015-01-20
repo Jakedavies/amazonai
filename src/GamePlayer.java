@@ -5,11 +5,13 @@ import ubco.ai.games.GameMessage;
 import ubco.ai.connection.ServerMessage;
 import net.n3.nanoxml.*;
 
+
 import java.util.ArrayList;
 import java.util.*;
 
 
 public class GamePlayer implements ubco.ai.games.GamePlayer{
+
 
     GameClient gameClient = null;
     ArrayList<GameRoom> roomlist;
