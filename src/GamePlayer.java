@@ -1,14 +1,11 @@
-
+import net.n3.nanoxml.IXMLElement;
 import ubco.ai.GameRoom;
+import ubco.ai.connection.ServerMessage;
 import ubco.ai.games.GameClient;
 import ubco.ai.games.GameMessage;
-import ubco.ai.connection.ServerMessage;
-import net.n3.nanoxml.*;
 
-
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.*;
+import java.util.Scanner;
 
 
 
