@@ -6,8 +6,10 @@ import ubco.ai.connection.ServerMessage;
 import net.n3.nanoxml.*;
 
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.*;
+
 
 
 public class GamePlayer implements ubco.ai.games.GamePlayer{
@@ -15,11 +17,20 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
     GameClient gameClient = null;
     ArrayList<GameRoom> roomlist;
+    GameBoard frame = null;
 
     public GamePlayer(String name, String passwd){
 
+
+       frame = new GameBoard();
+        frame.pack();
+        frame.setResizable(true);
+        frame.setLocationRelativeTo( null );
+        frame.setVisible(true);
+
         gameClient = new GameClient(name,passwd,this);
         roomlist = gameClient.getRoomLists();
+
 
 
         //Print out the room list to user
@@ -47,6 +58,8 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
             //debug
             System.out.println("You are connected to room:  " + gameClient.getRoomLists().get(chosenRoom-2).roomName );
             System.out.println("There are: " + gameClient.getRoomLists().get(chosenRoom-2).userCount + " users in the room currently.");
+
+
 
             System.out.println("Send a message or type 'n' to quit...");
 

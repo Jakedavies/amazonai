@@ -4,18 +4,33 @@
  *
  */
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.*;
+
 public class GameBoard extends JFrame {
 
     JSplitPane Pane;
     JPanel Board;
-    JLabel Piece;
+
+    JTextArea console = new JTextArea();
     private int xShift;
     private int yShift;
-    Dimension paneSize = new Dimension(800, 800);
-    Dimension boardSize = new Dimension(600,600);
-    Dimension textAreaSize = new Dimension(200,200);
+    final Dimension paneSize = new Dimension(800, 800);
+    final Dimension boardSize = new Dimension(600,600);
+    final Dimension textAreaSize = new Dimension(200,200);
+
+
+    public void write(String message){
+        console.append(message);
+    }
+
+    public String read(){
+        return console.getText();
+    }
 
 
 
@@ -45,13 +60,32 @@ public class GameBoard extends JFrame {
         }
 
         // Add Text Area
-        JTextArea console = new JTextArea();
         console.setBounds(0,0, textAreaSize.width, textAreaSize.height);
 
 
         //Create split pane
         Pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, Board, console);
         Pane.setPreferredSize(paneSize);
+
+
+        //Pieces
+
+        JLabel Piece_WHITE = new JLabel(new ImageIcon("./images/chessQueenW2.png"));
+        JLabel Piece_BLACK = new JLabel(new ImageIcon("./images/chessQueenB.png"));
+
+
+
+        /*
+        Test Display Pieces
+         */
+
+        JPanel panel2 = (JPanel)Board.getComponent(0);
+        panel2.add(Piece_WHITE);
+
+
+        JPanel panel = (JPanel)Board.getComponent(3);
+        panel.add(Piece_BLACK);
+
 
         //add to display
         getContentPane().add(Pane);
