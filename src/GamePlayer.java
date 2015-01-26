@@ -1,4 +1,5 @@
 import net.n3.nanoxml.IXMLElement;
+import net.n3.nanoxml.XMLWriter;
 import ubco.ai.GameRoom;
 import ubco.ai.connection.ServerMessage;
 import ubco.ai.games.GameClient;
@@ -18,98 +19,93 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
     public GamePlayer(String name, String passwd){
 
+    	frame = new GameBoard();
+    	frame.pack();
+    	frame.setResizable(true);
+    	frame.setLocationRelativeTo( null );
+    	frame.setVisible(true);
 
-       frame = new GameBoard();
-        frame.pack();
-        frame.setResizable(true);
-        frame.setLocationRelativeTo( null );
-        frame.setVisible(true);
+    	gameClient = new GameClient(name,passwd,this);
+    	roomlist = gameClient.getRoomLists();
 
-        gameClient = new GameClient(name,passwd,this);
-        roomlist = gameClient.getRoomLists();
-
-
-
-        //Print out the room list to user
-        for(GameRoom gr : roomlist){
-            System.out.println(gr.toString());
-            System.out.println("With: " + gr.userCount + " users");
-        }
+    	//Print out the room list to user
+    	for(GameRoom gr : roomlist){
+    		System.out.println(gr.toString());
+    		System.out.println("With: " + gr.userCount + " users");
+    	}
 
 
-        //Scan room number and connect to room.
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Which game room would you like to join?");
-        Integer chosenRoom = sc.nextInt();
-        System.out.println(chosenRoom);
-        gameClient.joinGameRoom(chosenRoom.toString());
+    	//Scan room number and connect to room.
+    	Scanner sc = new Scanner(System.in);
+    	System.out.println("Which game room would you like to join?");
+    	Integer chosenRoom = sc.nextInt();
+    	System.out.println(chosenRoom);
+    	gameClient.joinGameRoom(chosenRoom.toString());
 
 
-        /*
+    	/*
         Most of this is useless and just for testing...
-         */
+    	 */
 
-        boolean escape = false;
-        while(!escape){
+    	boolean escape = false;
+    	while(!escape){
 
-            //debug
-            System.out.println("You are connected to room:  " + gameClient.getRoomLists().get(chosenRoom-2).roomName );
-            System.out.println("There are: " + gameClient.getRoomLists().get(chosenRoom-2).userCount + " users in the room currently.");
-
-
-
-            System.out.println("Send a message or type 'n' to quit...");
-
-            String message = sc.next();
+    		//debug
+    		System.out.println("You are connected to room:  " + gameClient.getRoomLists().get(chosenRoom-2).roomName );
+    		System.out.println("There are: " + gameClient.getRoomLists().get(chosenRoom-2).userCount + " users in the room currently.");
 
 
-            if(!"n".equalsIgnoreCase(message)){
 
-                /*
+    		System.out.println("Send a message or type 'n' to quit...");
+
+    		String message = sc.next();
+
+
+    		if(!"n".equalsIgnoreCase(message)){
+
+    			/*
                 Looks like we need to compile the message (see yong's code snippet below this...)
                 Broken at the moment.
-                 */
-                String messageToSend = ServerMessage.compileGameMessage("MSG_CHAT", chosenRoom, message);
-                gameClient.sendToServer(messageToSend);
-            }
-            else{
-                escape = true;
-            }
+    			 */
+    			message = "<action type='"+GameMessage.MSG_CHAT+"'>" + message+"</action>";
+    			String messageToSend = ServerMessage.compileGameMessage(GameMessage.MSG_CHAT, chosenRoom, message);
+    			gameClient.sendToServer(messageToSend);
+    		}
+    		else{
+    			escape = true;
+    		}
 
-        }
+    	}
 
 
     }
     public boolean handleMessage(String msg){
-        System.out.println(msg);
-        return true;
+    	System.out.println(msg);
+    	return true;
     }
 
     public boolean handleMessage(GameMessage msg){
-        IXMLElement xml = ServerMessage.parseMessage(msg.msg);
-        String type = xml.getAttribute("type", "WRONG!");
-        System.out.println(msg);
+    	IXMLElement xml = ServerMessage.parseMessage(msg.msg);
+    	String type = xml.getAttribute("type", null);
+    	System.out.println(msg.toString());
 
-        if(GameMessage.ACTION_ROOM_JOINED.equals(msg)){
-
-        }
-        else if(msg.equals(GameMessage.ACTION_GAME_START)){
-
-        }
-        else if(msg.equals(GameMessage.ACTION_MOVE))
-        {
-
-        }
-        return true;
+    	switch(type){
+    		case GameMessage.MSG_CHAT:
+    			break;
+    		case GameMessage.MSG_JOIN_ROOM:
+    			break;
+    	}
+    	
+    	return true;
     }
     public void sendToServer(String msgType, int roomID)
     {
-        // before sending the message to the server, you need to (1) build the text of the message
-        // as a string,  (2) compile the message by calling
-        // the static method ServerMessage.compileGameMessage(msgType, roomID, actionMsg),
-        // and (3) call the method gameClient.sendToServer() to send the compiled message.
+    	// before sending the message to the server, you need to (1) build the text of the message
+    	// as a string,  (2) compile the message by calling
+    	// the static method ServerMessage.compileGameMessage(msgType, roomID, actionMsg),
+    	// and (3) call the method gameClient.sendToServer() to send the compiled message.
 
-        // For message types and message format, see the GameMessage API and the project notes
+    	// For message types and message format, see the GameMessage API and the project notes
     }
 
 }
