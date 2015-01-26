@@ -32,14 +32,14 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
         //Print out the room list to user
         for(GameRoom gr : roomlist){
-            System.out.println(gr.toString());
-            System.out.println("With: " + gr.userCount + " users");
+            frame.write(gr.toString());
+            frame.write(" With: " + gr.userCount + " users" + "\n");
         }
 
 
         //Scan room number and connect to room.
         Scanner sc = new Scanner(System.in);
-        System.out.println("Which game room would you like to join?");
+        frame.write("Which game room would you like to join?");
         Integer chosenRoom = sc.nextInt();
         System.out.println(chosenRoom);
         gameClient.joinGameRoom(chosenRoom.toString());
