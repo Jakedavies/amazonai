@@ -67,19 +67,25 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
                 Looks like we need to compile the message (see yong's code snippet below this...)
                 Broken at the moment.
     			 */
-    			message = "<action type='"+GameMessage.MSG_CHAT+"'>"+message+"</action>";
-    			String messageToSend = ServerMessage.compileGameMessage(GameMessage.MSG_CHAT, gameClient.getRoomLists().get(chosenRoom-2).roomID, message);
-    			gameClient.sendToServer(messageToSend);
+                String messageToSend = ServerMessage.compileGameMessage(GameMessage.MSG_CHAT, gameClient.getRoomLists().get(chosenRoom-2).roomID, wrapChatMessage(message));
+                gameClient.sendToServer(messageToSend);
     		}
     		else{
     			escape = true;
     		}
-
     	}
-
-
     }
-    
+
+
+    /*
+        Wraps chat message in xml
+
+     */
+    public String wrapChatMessage(String msg){
+        msg = "<action type='"+GameMessage.MSG_CHAT+"'>"+msg+"</action>";
+        return msg;
+    }
+
    
     
     public boolean handleMessage(String msg){
