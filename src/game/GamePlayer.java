@@ -1,5 +1,6 @@
+package game;
+
 import net.n3.nanoxml.IXMLElement;
-import net.n3.nanoxml.XMLWriter;
 import ubco.ai.GameRoom;
 import ubco.ai.connection.ServerMessage;
 import ubco.ai.games.GameClient;

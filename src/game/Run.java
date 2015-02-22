@@ -1,3 +1,4 @@
+package game;
 
 public class Run {
     private static final int DISPOSE_ON_CLOSE = 1;

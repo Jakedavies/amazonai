@@ -1,4 +1,4 @@
-/**
+package game; /**
  * Created by nolan on 20/01/15.
  * GUI for project.
  *
