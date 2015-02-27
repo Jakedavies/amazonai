@@ -26,6 +26,8 @@ public class Queen  extends  Position{
 
     }
 
+
+
     public JLabel getIcon(){
         return icon;
     }

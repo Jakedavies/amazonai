@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="amazonai">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/nanoxml-2.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/cosc322-2015.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

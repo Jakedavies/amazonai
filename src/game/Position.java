@@ -10,5 +10,11 @@ public class Position {
     public Position(int pos) {
         this.position = pos;
     }
+
+    public void move(int pos, BoardState b){
+        this.position = pos;
+    }
+
+
 }
 

@@ -12,7 +12,6 @@ public class Stone extends Position {
 
 
     public Stone(int pos){
-
         super(pos);
     }
 
