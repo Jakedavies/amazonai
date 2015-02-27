@@ -7,6 +7,7 @@ package game; /**
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class GameBoard extends JFrame {
@@ -25,8 +26,10 @@ public class GameBoard extends JFrame {
         console.append(message);
     }
 
-    public String read(){
-        return console.getText();
+    public Scanner getScanner(){
+        String s = console.getText();
+        Scanner scan = new Scanner(s);
+        return  scan;
     }
 
 
@@ -69,6 +72,15 @@ public class GameBoard extends JFrame {
         reDraw();
         state.moveQueen(96,98);
         reDraw();
+        state.throwStone(12);
+        reDraw();
+        state.throwStone(25);
+        reDraw();
+        state.throwStone(9);
+        reDraw();
+        state.throwStone(32);
+        reDraw();
+
 
 
     }

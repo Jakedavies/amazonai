@@ -7,7 +7,7 @@ public class Run {
 
 
 
-        GamePlayer gamePlayer = new GamePlayer("nullspoisshhsnssters8s","password");
+        GamePlayer gamePlayer = new GamePlayer("nullspoissshhsnssters8sd","password");
 
 
 

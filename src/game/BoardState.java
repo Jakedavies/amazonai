@@ -17,11 +17,11 @@ public class BoardState {
 
         this.addQueen(false, black, 3);
         this.addQueen(false, black, 6);
-        this.addQueen(false, black, 30);
-        this.addQueen(false, black, 39);
+        this.addQueen(false, black, 40);
+        this.addQueen(false, black, 49);
 
-        this.addQueen(true, white, 40);
-        this.addQueen(true, white, 49);
+        this.addQueen(true, white, 50);
+        this.addQueen(true, white, 59);
         this.addQueen(true, white, 93);
         this.addQueen(true, white, 96);
 

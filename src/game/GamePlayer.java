@@ -37,9 +37,9 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
 
     	//Scan room number and connect to room.
-    	Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
     	System.out.println("Which game room would you like to join?");
-    	int chosenRoom = sc.nextInt();
+    	int chosenRoom = Integer.parseInt(sc.next());
     	System.out.println(chosenRoom);
     	gameClient.joinGameRoom(gameClient.getRoomLists().get(chosenRoom-2).roomName);
 
