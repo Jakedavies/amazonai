@@ -26,161 +26,187 @@ public class AmazonSuccessorFunction {
     public ConcurrentLinkedQueue<Vector> getSuccessors(){
         //TODO: iterate through possible successor states and add them to the successors list
 
+        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
         for(Queen queen : currentState.getQueens())
         {
-            successors.addAll(getAllPositions(queen));
-
+               moves.addAll(getAllPositions(queen.position));
         }
-        return successors;
+        return moves;
     }
-    private ConcurrentLinkedQueue<Vector> getLeftMoves(Position position)
-    {
+    private ConcurrentLinkedQueue<Vector> getLeftMoves(Vector position) {
         ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
-        for(int i= position.position.getXPos(); i>=0;i--)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,-1*(i),0);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
+
+        int i = 1;
+           boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, -i, 0);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
             }
-            else{
-                break;
-            }
-        }
+
+
+
+
         return  moves;
 
     }
-    private ConcurrentLinkedQueue<Vector> getAllPositions (Position position)
+    private ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)
     {
         ConcurrentLinkedQueue<Vector> possiblePositions = new ConcurrentLinkedQueue<Vector>();
-        possiblePositions.addAll(getDownMoves(position));
-        possiblePositions.addAll(getLeftMoves(position));
-        possiblePositions.addAll(getRightMoves(position));
-        possiblePositions.addAll(getUpMoves(position));
-        possiblePositions.addAll(getUpLeftMoves(position));
-        possiblePositions.addAll(getUpRightMoves(position));
-        possiblePositions.addAll(getDownLeftMoves(position));
-        possiblePositions.addAll(getDownRightMoves(position));
+        possiblePositions.addAll(this.getLeftMoves(position));
+        possiblePositions.addAll(this.getRightMoves(position));
+        possiblePositions.addAll(this.getUpMoves(position));
+        possiblePositions.addAll(this.getDownMoves(position));
+        possiblePositions.addAll(this.getUpRightMoves(position));
+        possiblePositions.addAll(this.getUpLeftMoves(position));
+        possiblePositions.addAll(this.getDownLeftMoves(position));
+        possiblePositions.addAll(this.getDownRightMoves(position));
+
+
         return possiblePositions;
+
     }
-    private ConcurrentLinkedQueue<Vector> getRightMoves(Position position)
+    private ConcurrentLinkedQueue<Vector> getRightMoves(Vector position)
     {
-        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
-        for(int i= position.position.getXPos(); i<10;i++)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,i,0);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
-            }
-            else{
-                break;
-            }
-        }
-        return  moves;
-    }
-    private ConcurrentLinkedQueue<Vector> getUpMoves(Position position)
-    {
-        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
-        for(int i= position.position.getYPos(); i>=0;i--)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,0,-1*(i));
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
-            }
-            else{
-                break;
-            }
-        }
-        return  moves;
-    }
-    private ConcurrentLinkedQueue<Vector> getDownMoves(Position position)
-    {
-        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
-        for(int i= position.position.getYPos(); i<10;i++)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,0,i);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
-            }
-            else{
-                break;
-            }
-        }
-        return  moves;
-    }
-    private ConcurrentLinkedQueue<Vector> getUpRightMoves(Position position)
-    {
-        int startingIterator = Math.min(9-position.position.getXPos(),position.position.getYPos()) == position.position.getYPos() ? position.position.getYPos() : position.position.getXPos();
+
         ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
 
-        for(int i= startingIterator; i<10;i++)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,i,-1*i);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, i, 0);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
             }
-            else{
-                break;
-            }
-        }
+
+
+
         return  moves;
     }
-    private ConcurrentLinkedQueue<Vector> getUpLeftMoves(Position position)
+    private ConcurrentLinkedQueue<Vector> getUpMoves(Vector position)
     {
-        int startingIterator = Math.min(position.position.getXPos(),position.position.getYPos());
+
         ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
 
-        for(int i= startingIterator; i<10;i++)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,-1*i,-1*i);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, 0, -i);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
             }
-            else{
-                break;
-            }
-        }
+
+
+
         return  moves;
     }
-    private ConcurrentLinkedQueue<Vector> getDownRightMoves(Position position)
+    private ConcurrentLinkedQueue<Vector> getDownMoves(Vector position)
     {
-        int startingIterator = Math.max(position.position.getXPos(),position.position.getYPos());
+
         ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
 
-        for(int i= startingIterator; i<10;i++)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,i,i);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, 0, i);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
             }
-            else{
-                break;
-            }
-        }
+
+
+
         return  moves;
     }
-    private ConcurrentLinkedQueue<Vector> getDownLeftMoves(Position position)
+    private ConcurrentLinkedQueue<Vector> getUpRightMoves(Vector position)
     {
-        int startingIterator = Math.min(position.position.getXPos(),9-position.position.getYPos()) == position.position.getXPos() ? position.position.getXPos() : position.position.getYPos();
+
         ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
 
-        for(int i= startingIterator; i<10;i++)
-        {
-            Vector possiblePosition = getNewPositionVector(position.position,-1*i,i);
-            if(currentState.isPositionEmpty(possiblePosition))
-            {
-                moves.add(possiblePosition);
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, i, -i);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
             }
-            else{
-                break;
+
+
+
+        return  moves;
+    }
+    private ConcurrentLinkedQueue<Vector> getUpLeftMoves(Vector position)
+    {
+
+        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
+
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, -i, -i);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
             }
+
+
+
+        return  moves;
+    }
+    private ConcurrentLinkedQueue<Vector> getDownRightMoves(Vector position)
+    {
+
+        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
+
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, i, i);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
+
+
         }
+
+        return  moves;
+    }
+    private ConcurrentLinkedQueue<Vector> getDownLeftMoves(Vector position)
+    {
+
+        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
+
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, -i, i);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
+            }
+
+
+
         return  moves;
     }
     private Vector getNewPositionVector(Vector currentPosition,int xMove,int yMove)

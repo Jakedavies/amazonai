@@ -22,4 +22,11 @@ public class Vector {
     public int getOneDimensional(){
         return (yPos*10+xPos);
     }
+
+    public String toString(){
+        String s = "X:" + this.getXPos() + ", Y:" + this.getYPos();
+        return s;
+    }
+
 }
+

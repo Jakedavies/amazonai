@@ -36,6 +36,21 @@ public class BoardState {
         return board[checkPos.getXPos()][checkPos.getYPos()] == null;
     }
 
+
+    public boolean isValidPosition(Vector checkPos){
+
+        if(checkPos.getXPos() < 10 && checkPos.getXPos() >= 0){
+            if(checkPos.getYPos() < 10 && checkPos.getYPos() >= 0){
+                return isPositionEmpty(checkPos);
+            }
+            else{return false;}
+        }
+        else{return false;}
+
+    }
+
+
+
     public void moveQueen(Vector queenCurr, Vector queenFinal){
             board[queenCurr.getXPos()][queenCurr.getYPos()].move(queenFinal, this);
     }
@@ -51,7 +66,9 @@ public class BoardState {
     public void addQueen(boolean friendly, boolean white, Vector pos){
         Queen queen = new Queen(friendly, white, pos);
         queens.add(queen);
-        board[pos.getYPos()][pos.getYPos()] = queen;
+        board[pos.getXPos()][pos.getYPos()] = queen;
+
+
     }
 
     public ArrayList<Queen> getQueens(){ return this.queens;}
