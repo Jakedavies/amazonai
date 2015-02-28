@@ -1,9 +1,6 @@
 package ai;
 
-import game.BoardState;
-import game.Queen;
-import game.Vector;
-import game.Position;
+import game.*;
 import javafx.geometry.Pos;
 import ubco.ai.games.Amazon;
 
@@ -23,21 +20,18 @@ public class AmazonSuccessorFunction {
         this.currentState = curState;
     }
 
-    public ConcurrentLinkedQueue<Vector> getSuccessors(){
+    public SuccessorState[] getSuccessors(){
         //TODO: iterate through possible successor states and add them to the successors list
 
-        ConcurrentLinkedQueue<Vector> moves1 = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<Vector> moves2 = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<Vector> moves3 = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<Vector> moves4 = new ConcurrentLinkedQueue<>();
+        SuccessorState[] successorStates = new  SuccessorState[4];
 
+        int i = 0;
+        for(Queen q : currentState.getFriendlyQueens()){
 
-               moves1.addAll(getAllPositions(currentState.getFriendlyQueens().get(0).position));
-               moves2.addAll(getAllPositions(currentState.getFriendlyQueens().get(1).position));
-               moves3.addAll(getAllPositions(currentState.getFriendlyQueens().get(2).position));
-               moves4.addAll(getAllPositions(currentState.getFriendlyQueens().get(3).position));
+            successorStates[i++] = new SuccessorState(q , this.getAllPositions(q.position));
+        }
 
-        return moves1;
+        return successorStates;
     }
 
     private ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)

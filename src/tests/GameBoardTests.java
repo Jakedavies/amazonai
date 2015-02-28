@@ -18,7 +18,7 @@ public class GameBoardTests {
 
         AmazonSuccessorFunction succer = new AmazonSuccessorFunction(board.state);
         long startTime = System.nanoTime();
-        succer.getSuccessors();
+        System.out.println(Arrays.toString(succer.getSuccessors()));
         long estm = System.nanoTime();
         System.out.println(TimeUnit.NANOSECONDS.toMillis(estm-startTime));
 
