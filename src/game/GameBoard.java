@@ -68,17 +68,6 @@ public class GameBoard extends JFrame {
         //Create split pane
         Pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, Board, console);
         Pane.setPreferredSize(paneSize);
-
-        reDraw();
-        state.moveQueen(96,98);
-        reDraw();
-        state.throwStone(12);
-        reDraw();
-        state.throwStone(25);
-        reDraw();
-        state.throwStone(9);
-        reDraw();
-        state.throwStone(32);
         reDraw();
 
 
@@ -92,12 +81,12 @@ public class GameBoard extends JFrame {
 
 
         for(Queen s : state.getQueens()){
-            JPanel panel = (JPanel) Board.getComponent(s.position);
+            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
         }
 
         for(Stone s: state.getStones()){
-            JPanel panel = (JPanel) Board.getComponent(s.position);
+            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
         }
 

@@ -5,13 +5,13 @@ package game;
  */
 public class Position {
 
-    public int position;
+    public Vector position;
 
-    public Position(int pos) {
+    public Position(Vector pos) {
         this.position = pos;
     }
 
-    public void move(int pos, BoardState b){
+    public void move(Vector pos, BoardState b){
         this.position = pos;
     }
 

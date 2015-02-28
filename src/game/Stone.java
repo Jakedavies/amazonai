@@ -17,15 +17,16 @@ public class Stone extends Position {
     private JLabel icon = new JLabel(new ImageIcon(ic));
 
 
-    public Stone(int pos){
+    public Stone(Vector pos){
         super(pos);
-        if(pos%6 ==0 ){
+
+        if(pos.getOneDimensional()%6 ==0 ){
             icon = new JLabel(new ImageIcon(icWB));
         }
-        else if(pos%5 ==0){
+        else if(pos.getOneDimensional()%5 ==0){
             icon = new JLabel(new ImageIcon(icWR));
         }
-        else if(pos%4 ==0){
+        else if(pos.getOneDimensional()%4 ==0){
             icon = new JLabel(new ImageIcon(icO));
         }
         else {

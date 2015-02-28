@@ -15,7 +15,7 @@ public class Queen  extends  Position{
     private String iconBlackPAC = "./images/wakaQueenB.png";
 
 
-    public Queen(boolean friendly, boolean white, int pos){
+    public Queen(boolean friendly, boolean white, Vector pos){
         super(pos);
         this.friendly = friendly;
 

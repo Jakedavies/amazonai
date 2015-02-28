@@ -1,5 +1,7 @@
 package game;
 
+import ai.AmazonSuccessorFunction;
+
 import java.util.ArrayList;
 
 /**
@@ -9,41 +11,47 @@ public class BoardState {
 
     private ArrayList<Queen> queens = new ArrayList<>();
     private ArrayList<Stone> stones = new ArrayList<>();
-    private Position[] board = new Position[100];
+    private Position[][] board = new Position[10][10];
 
     public BoardState(){
        boolean black = false;
         boolean white = true;
 
-        this.addQueen(false, black, 3);
-        this.addQueen(false, black, 6);
-        this.addQueen(false, black, 40);
-        this.addQueen(false, black, 49);
+        this.addQueen(true,white, new Vector(3,7));
 
-        this.addQueen(true, white, 50);
-        this.addQueen(true, white, 59);
-        this.addQueen(true, white, 93);
-        this.addQueen(true, white, 96);
 
+//        this.addQueen(false, black, new Vector(3,0));
+//        this.addQueen(false, black, new Vector(6,0));
+//        this.addQueen(false, black, new Vector(0,4));
+//        this.addQueen(false, black, new Vector(9,4));
+//
+//        this.addQueen(true, white, new Vector(0,5));
+//        this.addQueen(true, white, new Vector(9,5));
+//        this.addQueen(true, white, new Vector(3,9));
+//        this.addQueen(true, white, new Vector(6,9));
+
+    }
+    public boolean isPositionEmpty(Vector checkPos)
+    {
+        return board[checkPos.getXPos()][checkPos.getYPos()] == null;
+    }
+
+    public void moveQueen(Vector queenCurr, Vector queenFinal){
+            board[queenCurr.getXPos()][queenCurr.getYPos()].move(queenFinal, this);
     }
 
 
+    public void throwStone(Vector pos){
 
-    public void moveQueen(int queenCurr, int queenFinal){
-            board[queenCurr].move(queenFinal, this);
-    }
-
-
-    public void throwStone(int pos){
         Stone stone = new Stone(pos);
         stones.add(stone);
-        board[pos] = stone;
+        board[pos.getXPos()][pos.getYPos()] = stone;
     }
 
-    public void addQueen(boolean friendly, boolean white, int pos){
+    public void addQueen(boolean friendly, boolean white, Vector pos){
         Queen queen = new Queen(friendly, white, pos);
         queens.add(queen);
-        board[pos] = queen;
+        board[pos.getYPos()][pos.getYPos()] = queen;
     }
 
     public ArrayList<Queen> getQueens(){ return this.queens;}
