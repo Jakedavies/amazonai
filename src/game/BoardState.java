@@ -2,6 +2,7 @@ package game;
 
 import ai.AmazonSuccessorFunction;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 public class BoardState {
 
     private ArrayList<Queen> queens = new ArrayList<>();
+    private ArrayList<Queen> friendlyQueens = new ArrayList<>();
+    private ArrayList<Queen> enemyQueens = new ArrayList<>();
     private ArrayList<Stone> stones = new ArrayList<>();
     private Position[][] board = new Position[10][10];
 
@@ -17,18 +20,16 @@ public class BoardState {
        boolean black = false;
         boolean white = true;
 
-        this.addQueen(true,white, new Vector(3,7));
 
+        this.addQueen(false, black, new Vector(3,0));
+        this.addQueen(false, black, new Vector(6,0));
+        this.addQueen(false, black, new Vector(0,4));
+        this.addQueen(false, black, new Vector(9,4));
 
-//        this.addQueen(false, black, new Vector(3,0));
-//        this.addQueen(false, black, new Vector(6,0));
-//        this.addQueen(false, black, new Vector(0,4));
-//        this.addQueen(false, black, new Vector(9,4));
-//
-//        this.addQueen(true, white, new Vector(0,5));
-//        this.addQueen(true, white, new Vector(9,5));
-//        this.addQueen(true, white, new Vector(3,9));
-//        this.addQueen(true, white, new Vector(6,9));
+        this.addQueen(true, white, new Vector(0,5));
+        this.addQueen(true, white, new Vector(9,5));
+        this.addQueen(true, white, new Vector(3,9));
+        this.addQueen(true, white, new Vector(6,9));
 
     }
     public boolean isPositionEmpty(Vector checkPos)
@@ -65,13 +66,29 @@ public class BoardState {
 
     public void addQueen(boolean friendly, boolean white, Vector pos){
         Queen queen = new Queen(friendly, white, pos);
+        if(friendly){
+            friendlyQueens.add(queen);
+        }
+        else{
+            enemyQueens.add(queen);
+        }
         queens.add(queen);
         board[pos.getXPos()][pos.getYPos()] = queen;
 
 
     }
 
-    public ArrayList<Queen> getQueens(){ return this.queens;}
+    public ArrayList<Queen> getEnemyQueens(){
+        return this.enemyQueens;
+    }
+    public ArrayList<Queen> getFriendlyQueens(){
+        return this.friendlyQueens;
+    }
+    public ArrayList<Queen> getQueens(){
+        return this.queens;
+    }
+
+
     public ArrayList<Stone> getStones(){return this.stones;}
 
 

@@ -24,7 +24,7 @@ public class Vector {
     }
 
     public String toString(){
-        String s = "X:" + this.getXPos() + ", Y:" + this.getYPos();
+        String s = "X:" + this.getXPos() + ", Y:" + this.getYPos() + "\n";
         return s;
     }
 

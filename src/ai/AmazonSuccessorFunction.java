@@ -26,33 +26,20 @@ public class AmazonSuccessorFunction {
     public ConcurrentLinkedQueue<Vector> getSuccessors(){
         //TODO: iterate through possible successor states and add them to the successors list
 
-        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
-        for(Queen queen : currentState.getQueens())
-        {
-               moves.addAll(getAllPositions(queen.position));
-        }
-        return moves;
+        ConcurrentLinkedQueue<Vector> moves1 = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Vector> moves2 = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Vector> moves3 = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<Vector> moves4 = new ConcurrentLinkedQueue<>();
+
+
+               moves1.addAll(getAllPositions(currentState.getFriendlyQueens().get(0).position));
+               moves2.addAll(getAllPositions(currentState.getFriendlyQueens().get(1).position));
+               moves3.addAll(getAllPositions(currentState.getFriendlyQueens().get(2).position));
+               moves4.addAll(getAllPositions(currentState.getFriendlyQueens().get(3).position));
+
+        return moves1;
     }
-    private ConcurrentLinkedQueue<Vector> getLeftMoves(Vector position) {
-        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
 
-        int i = 1;
-           boolean run = true;
-            while(run) {
-                Vector move = getNewPositionVector(position, -i, 0);
-                run = currentState.isValidPosition(move);
-                if(run) {
-                    moves.add(move);
-                    i++;
-                }
-            }
-
-
-
-
-        return  moves;
-
-    }
     private ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)
     {
         ConcurrentLinkedQueue<Vector> possiblePositions = new ConcurrentLinkedQueue<Vector>();
@@ -69,6 +56,32 @@ public class AmazonSuccessorFunction {
         return possiblePositions;
 
     }
+
+
+
+
+
+    private ConcurrentLinkedQueue<Vector> getLeftMoves(Vector position) {
+        ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
+
+        int i = 1;
+            boolean run = true;
+            while(run) {
+                Vector move = getNewPositionVector(position, -i, 0);
+                run = currentState.isValidPosition(move);
+                if(run) {
+                    moves.add(move);
+                    i++;
+                }
+            }
+
+
+
+
+        return  moves;
+
+    }
+
     private ConcurrentLinkedQueue<Vector> getRightMoves(Vector position)
     {
 
