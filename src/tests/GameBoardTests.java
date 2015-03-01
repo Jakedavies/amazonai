@@ -16,6 +16,8 @@ public class GameBoardTests {
     {
         GameBoard board = new GameBoard();
 
+
+
         AmazonSuccessorFunction succer = new AmazonSuccessorFunction(board.state);
         board.state.throwStone(new Vector(7,7));
         board.state.throwStone(new Vector(5,5));
@@ -28,13 +30,24 @@ public class GameBoardTests {
 
 
 
+
+
+
         SuccessorState[] suc = succer.getSuccessors();
 
+
+        long startTime = System.nanoTime();
+
         for(SuccessorState s : suc){
-            System.out.println(s.getBestMoveValue());
+            System.out.println("Queen's Best Move: \n Value: " + s.getBestMoveValue() + " Coordinates:" + s.getBestMove().toString());
             s.worstMove();
-            System.out.println(s.getWorstMoveValue());
+            System.out.println("Queen's Worst Move: \n Value: " + s.getWorstMoveValue() + " Coordinates:" + s.getWorstMove().toString());
+
         }
+        long EndtTime = System.nanoTime();
+
+
+        System.out.println(EndtTime - startTime);
 
 
 

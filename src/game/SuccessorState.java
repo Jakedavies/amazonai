@@ -61,6 +61,11 @@ public class SuccessorState {
 
     }
 
+    public Vector getBestMove(){
+        return this.bestMove;
+    }
+
+
 
     public Vector getWorstMove(){
         return  this.worstMove;
