@@ -15,10 +15,36 @@ public class MoveHandler {
 	*/
 	public static String move(int roomID, Vector startPos, Vector endPos, Vector arrow){
 		String actionMsg = "<action type='" + GameMessage.ACTION_MOVE + "'><queen move='" 
-				+ startPos.y + startPos.x + "-" + endPos.y + endPos.x + "'></queen><arrow move='"
-				+ arrow.y + arrow.x + "'></arrow></action>";
+				+ getLetter(startPos.y) + startPos.x + "-" + getLetter(endPos.y) + endPos.x + 
+				"'></queen><arrow move='"+ getLetter(arrow.y) + arrow.x + "'></arrow></action>";
 		String msg = ServerMessage.compileGameMessage(GameMessage.MSG_GAME, roomID, actionMsg);
 		System.out.println(msg);
 		return msg;
+	}
+	
+	private static char getLetter(int c){
+		switch(c){
+		case(0):
+			return 'a';
+		case(1):
+			return 'b';
+		case(2):
+			return 'c';
+		case(3):
+			return 'd';
+		case(4):
+			return 'e';
+		case(5):
+			return 'f';
+		case(6):
+			return 'g';
+		case(7):
+			return 'h';
+		case(8):
+			return 'i';
+		case(9):
+			return 'j';
+		}
+		return ' ';
 	}
 }
