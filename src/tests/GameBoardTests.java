@@ -21,8 +21,9 @@ public class GameBoardTests {
 
 
         SuccessorState[] suc = succer.getSuccessors();
+
         for(SuccessorState s : suc){
-            System.out.println(s.bestMove());
+            System.out.println(s.getBestMoveValue());
         }
 
 
