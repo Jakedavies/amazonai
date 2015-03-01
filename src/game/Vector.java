@@ -4,29 +4,21 @@ package game;
  * Created by jakedavies on 15-02-28.
  */
 public class Vector {
-    private int xPos;
-    private int yPos;
+    public int x;
+    public int y;
 
     public Vector(int x,int y){
-        this.xPos = x;
-        this.yPos = y;
-    }
-    public int getXPos()
-    {
-        return xPos;
-    }
-    public int getYPos()
-    {
-        return yPos;
+        this.x = x;
+        this.y = y;
     }
     public int getOneDimensional(){
-        return (yPos*10+xPos);
+        return (y*10+x);
     }
 
-    public String toString(){
-        String s = "X:" + this.getXPos() + ", Y:" + this.getYPos() + "\n";
-        return s;
-    }
+    @Override
+	public String toString() {
+		return "Vector [x=" + x + ", y=" + y + "]";
+	}
 
 }
 
