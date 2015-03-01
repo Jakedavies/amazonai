@@ -1,7 +1,6 @@
 package ai;
 
 import game.*;
-import javafx.geometry.Pos;
 import ubco.ai.games.Amazon;
 
 import java.util.ArrayList;

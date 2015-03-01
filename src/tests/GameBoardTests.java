@@ -32,6 +32,7 @@ public class GameBoardTests {
 
         for(SuccessorState s : suc){
             System.out.println(s.getBestMoveValue());
+            s.worstMove();
             System.out.println(s.getWorstMoveValue());
         }
 
