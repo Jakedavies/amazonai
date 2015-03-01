@@ -17,10 +17,14 @@ public class GameBoardTests {
         GameBoard board = new GameBoard();
 
         AmazonSuccessorFunction succer = new AmazonSuccessorFunction(board.state);
-        long startTime = System.nanoTime();
-        System.out.println(Arrays.toString(succer.getSuccessors()));
-        long estm = System.nanoTime();
-        System.out.println(TimeUnit.NANOSECONDS.toMillis(estm-startTime));
+
+
+
+        SuccessorState[] suc = succer.getSuccessors();
+        for(SuccessorState s : suc){
+            System.out.println(s.bestMove());
+        }
+
 
 
     }

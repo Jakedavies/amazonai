@@ -1,5 +1,7 @@
 package game;
 
+import ai.AmazonSuccessorFunction;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -7,16 +9,19 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class SuccessorState {
 
-    private Queen queen;
+    private Position position;
     private ConcurrentLinkedQueue<Vector> moves;
+    private Vector bestMove;
+    private BoardState state;
 
-    public SuccessorState(Queen queen, ConcurrentLinkedQueue<Vector> moves){
+    public SuccessorState(Position position, ConcurrentLinkedQueue<Vector> moves, BoardState state){
         this.moves = moves;
-        this.queen = queen;
+        this.position = position;
+        this.state = state;
     }
 
-    public Queen getQueen(){
-        return this.queen;
+    public Position getPositionObject(){
+        return this.position;
     }
     public ConcurrentLinkedQueue<Vector> getMoves(){
         return this.moves;
@@ -25,6 +30,26 @@ public class SuccessorState {
     public String toString(){
         return moves.toString();
     }
+
+    public Vector bestMove(){
+        int maxScore =0;
+        Vector bMove = null;
+
+        for(Vector v: moves){
+
+            AmazonSuccessorFunction sf = new AmazonSuccessorFunction(state);
+            int score1 = sf.getAllPositions(v).size();
+            if(score1 > maxScore){
+                maxScore = score1;
+                bMove = v;
+            }
+
+        }
+        System.out.println(maxScore);
+        return bMove;
+
+    }
+
 
 
 

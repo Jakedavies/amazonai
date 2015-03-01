@@ -28,13 +28,13 @@ public class AmazonSuccessorFunction {
         int i = 0;
         for(Queen q : currentState.getFriendlyQueens()){
 
-            successorStates[i++] = new SuccessorState(q , this.getAllPositions(q.position));
+            successorStates[i++] = new SuccessorState(q , this.getAllPositions(q.position), this.currentState);
         }
 
         return successorStates;
     }
 
-    private ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)
+    public ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)
     {
         ConcurrentLinkedQueue<Vector> possiblePositions = new ConcurrentLinkedQueue<Vector>();
         possiblePositions.addAll(this.getLeftMoves(position));
