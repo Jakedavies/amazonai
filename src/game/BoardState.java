@@ -34,14 +34,14 @@ public class BoardState {
     }
     public boolean isPositionEmpty(Vector checkPos)
     {
-        return board[checkPos.getXPos()][checkPos.getYPos()] == null;
+        return board[checkPos.x][checkPos.y] == null;
     }
 
 
     public boolean isValidPosition(Vector checkPos){
 
-        if(checkPos.getXPos() < 10 && checkPos.getXPos() >= 0){
-            if(checkPos.getYPos() < 10 && checkPos.getYPos() >= 0){
+        if(checkPos.x < 10 && checkPos.x >= 0){
+            if(checkPos.y < 10 && checkPos.y >= 0){
                 return isPositionEmpty(checkPos);
             }
             else{return false;}
@@ -53,7 +53,7 @@ public class BoardState {
 
 
     public void moveQueen(Vector queenCurr, Vector queenFinal){
-            board[queenCurr.getXPos()][queenCurr.getYPos()].move(queenFinal, this);
+            board[queenCurr.x][queenCurr.y].move(queenFinal, this);
     }
 
 
@@ -61,7 +61,7 @@ public class BoardState {
 
         Stone stone = new Stone(pos);
         stones.add(stone);
-        board[pos.getXPos()][pos.getYPos()] = stone;
+        board[pos.x][pos.y] = stone;
     }
 
     public void addQueen(boolean friendly, boolean white, Vector pos){
@@ -73,7 +73,7 @@ public class BoardState {
             enemyQueens.add(queen);
         }
         queens.add(queen);
-        board[pos.getXPos()][pos.getYPos()] = queen;
+        board[pos.x][pos.y] = queen;
 
 
     }

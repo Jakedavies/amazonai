@@ -85,6 +85,6 @@ public class AmazonSuccessorFunction {
     }
 
     private Vector getNewPositionVector(Vector currentPosition,int xMove,int yMove) {
-        return new Vector(currentPosition.getXPos()+xMove,currentPosition.getYPos()+yMove);
+        return new Vector(currentPosition.x+xMove,currentPosition.y+yMove);
     }
 }
