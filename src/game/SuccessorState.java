@@ -75,7 +75,6 @@ public class SuccessorState {
     }
 
 
-
     public Vector worstMove() {
         int minScore = Integer.MAX_VALUE;
         Vector wMove = null;

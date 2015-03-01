@@ -25,29 +25,10 @@ public class GameBoardTests {
 
 
 
-
-
-
-
-
-
-
-
         SuccessorState[] suc = succer.getSuccessors();
 
 
-        long startTime = System.nanoTime();
 
-        for(SuccessorState s : suc){
-            System.out.println("Queen's Best Move: \n Value: " + s.getBestMoveValue() + " Coordinates:" + s.getBestMove().toString());
-            s.worstMove();
-            System.out.println("Queen's Worst Move: \n Value: " + s.getWorstMoveValue() + " Coordinates:" + s.getWorstMove().toString());
-
-        }
-        long EndtTime = System.nanoTime();
-
-
-        System.out.println(EndtTime - startTime);
 
 
 
