@@ -8,6 +8,7 @@ import javax.swing.*;
 public class Queen  extends  Position{
 
     private boolean friendly;
+    private boolean white;
     private JLabel icon;
     private final String iconWhite = "./images/chessQueenW2.png";
     private String iconBlack = "./images/chessQueenB.png";
@@ -18,6 +19,7 @@ public class Queen  extends  Position{
     public Queen(boolean friendly, boolean white, Vector pos){
         super(pos);
         this.friendly = friendly;
+        this.white = white;
 
         if(white){
             icon = new JLabel(new ImageIcon(iconWhitePAC));
@@ -27,6 +29,17 @@ public class Queen  extends  Position{
         }
 
     }
+    public boolean isWhite(){
+        return white;
+    }
+
+
+    public Queen clone(){
+        Vector poss = position.clone();
+        Queen q = new Queen(friendly, white,poss);
+        return q;
+    }
+
 
 
 

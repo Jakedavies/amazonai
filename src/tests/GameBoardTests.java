@@ -19,9 +19,7 @@ public class GameBoardTests {
 
 
         AmazonSuccessorFunction succer = new AmazonSuccessorFunction(board.state);
-        board.state.throwStone(new Vector(7,7));
-        board.state.throwStone(new Vector(5,5));
-        board.state.throwStone(new Vector(2,1));
+
 
 
 

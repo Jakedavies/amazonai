@@ -21,6 +21,9 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     public GameBoard getGameBoard(){ return this.frame;}
 
 
+
+
+
     public GamePlayer(String name, String passwd){
 
     	frame = new GameBoard();

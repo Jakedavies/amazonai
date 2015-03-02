@@ -11,6 +11,12 @@ public class Vector {
         this.x = x;
         this.y = y;
     }
+
+    public Vector clone(){
+        Vector v = new Vector(x,y);
+        return v;
+    }
+
     public int getOneDimensional(){
         return (y*10+x);
     }

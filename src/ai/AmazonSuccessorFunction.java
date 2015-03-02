@@ -18,6 +18,7 @@ public class AmazonSuccessorFunction {
     public AmazonSuccessorFunction(BoardState curState){
         this.currentState = curState;
     }
+    int amount = 0;
 
     public SuccessorState[] getSuccessors(){
         //TODO: iterate through possible successor states and add them to the successors list
@@ -26,9 +27,9 @@ public class AmazonSuccessorFunction {
 
         int i = 0;
         for(Queen q : currentState.getFriendlyQueens()){
-
-            successorStates[i++] = new SuccessorState(q , this.getAllPositions(q.position), this.currentState);
+            successorStates[i++] = new SuccessorState(q.clone(), this.getAllPositions(q.position.clone()), new BoardState(this.currentState));
         }
+        System.out.println(amount);
 
         return successorStates;
     }
@@ -48,6 +49,7 @@ public class AmazonSuccessorFunction {
          1, 1 = RIGHT BOTTOM DIAGONAL
          0, 1 = DOWN
          -1, 1 = LEFT BOTTOM DIAGONAL
+         Down, Down-Forward, Forward + Punch
          */
         possiblePositions.addAll(this.getDirectionMoves(position, -1,0));
         possiblePositions.addAll(this.getDirectionMoves(position, -1,-1));
@@ -57,6 +59,8 @@ public class AmazonSuccessorFunction {
         possiblePositions.addAll(this.getDirectionMoves(position, 1,1));
         possiblePositions.addAll(this.getDirectionMoves(position, 0,1));
         possiblePositions.addAll(this.getDirectionMoves(position, -1,1));
+
+        amount += possiblePositions.size();
 
 
         return possiblePositions;

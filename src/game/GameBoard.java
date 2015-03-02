@@ -83,16 +83,25 @@ public class GameBoard extends JFrame {
         for(Queen s : state.getQueens()){
             JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
+            System.out.println(s.position.toString());
+            panel.revalidate();
+
         }
 
         for(Stone s: state.getStones()){
             JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
+            System.out.println("STONE: " + s.position.toString());
+            panel.revalidate();
         }
 
         //add to display
         getContentPane().add(Pane);
-        repaint();
+
+        Board.repaint();
+
+
+
     }
 
 

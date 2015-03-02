@@ -1,9 +1,10 @@
 package tests;
 
 import ai.AmazonSuccessorFunction;
-import game.GamePlayer;
-import game.Position;
-import game.SuccessorState;
+import game.*;
+import game.Vector;
+
+import java.util.*;
 
 import static java.lang.System.gc;
 
@@ -13,17 +14,16 @@ import static java.lang.System.gc;
 public class testOneMove {
 
 public static void main(String[] args) {
-    GamePlayer gamePlayer = new GamePlayer("nsulldsshsnsssterss8sd", "password");
+    GamePlayer gamePlayer = new GamePlayer("nsulldsshsnssssssstesrwss8ssd", "password");
 
     AmazonSuccessorFunction succer = new AmazonSuccessorFunction(gamePlayer.getGameBoard().state);
 
     SuccessorState[] suc = succer.getSuccessors();
 
-
         game.Vector bestMove = null;
         Position oldQueen = null;
         int bestMoveValue = 0;
-        gamePlayer.getGameBoard().state.throwStone(new game.Vector(4,5));
+    gamePlayer.getGameBoard().reDraw();
 
 
         for (SuccessorState s : suc) {
@@ -36,7 +36,7 @@ public static void main(String[] args) {
 
 
         gamePlayer.getGameBoard().state.moveQueen(oldQueen.position, bestMove);
-        gamePlayer.getGameBoard().reDraw();
+
 
 
         gc();
@@ -55,8 +55,11 @@ public static void main(String[] args) {
 
         }
 
-        gamePlayer.getGameBoard().state.throwStone(bestMove);
-        gamePlayer.getGameBoard().reDraw();
+
+        Scanner sc = new Scanner(System.in);
+        gamePlayer.getGameBoard().state.throwStone(new Vector(5,5));
+         gamePlayer.getGameBoard().reDraw();
+    gamePlayer.getGameBoard().reDraw();
 
 
 }

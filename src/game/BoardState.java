@@ -17,21 +17,47 @@ public class BoardState {
     private Position[][] board = new Position[10][10];
 
     public BoardState(){
-       boolean black = false;
+        boolean black = false;
         boolean white = true;
 
 
         this.addQueen(false, black, new Vector(3,0));
         this.addQueen(false, black, new Vector(6,0));
-        this.addQueen(false, black, new Vector(0,4));
-        this.addQueen(false, black, new Vector(9,4));
+        this.addQueen(false, black, new Vector(0,3));
+        this.addQueen(false, black, new Vector(9,3));
 
-        this.addQueen(true, white, new Vector(0,5));
-        this.addQueen(true, white, new Vector(9,5));
+        this.addQueen(true, white, new Vector(0,6));
+        this.addQueen(true, white, new Vector(9,6));
         this.addQueen(true, white, new Vector(3,9));
         this.addQueen(true, white, new Vector(6,9));
 
     }
+
+
+    public BoardState(BoardState board){
+        for(Queen q: queens){
+            Queen add = q.clone();
+            if(q.isWhite()){
+                queens.add(add);
+                friendlyQueens.add(add);
+            }
+            else{
+                queens.add(add);
+                enemyQueens.add(add);
+            }
+        }
+        for(Queen q : queens){
+            this.board[q.position.x][q.position.y] = q;
+        }
+        for(Stone s: board.getStones()) {
+            this.stones.add(new Stone(s.position.clone()));
+        }
+    }
+
+
+
+
+
     public boolean isPositionEmpty(Vector checkPos)
     {
         return board[checkPos.x][checkPos.y] == null;
