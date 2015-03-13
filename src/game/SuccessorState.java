@@ -12,7 +12,7 @@ public class SuccessorState {
     private Position position;
     private ConcurrentLinkedQueue<Vector> moves;
     private Vector bestMove;
-    private int bestMoveValue;
+    private int bestMoveValue = 0;
     private BoardState state;
 
     public SuccessorState(Position position, ConcurrentLinkedQueue<Vector> moves, BoardState state){
@@ -23,23 +23,25 @@ public class SuccessorState {
     }
 
     public Position getPositionObject(){
+
         return this.position;
     }
     public ConcurrentLinkedQueue<Vector> getMoves(){
+
         return this.moves;
     }
 
     public String toString(){
+
         return moves.toString();
     }
 
     public int getBestMoveValue(){
-        return bestMoveValue;
+        return this.bestMoveValue;
     }
 
-
     public Vector bestMove(){
-        int maxScore =0;
+        int maxScore = -Integer.MAX_VALUE;
         Vector bMove = null;
 
         for(Vector v: moves){
@@ -47,10 +49,16 @@ public class SuccessorState {
             AmazonSuccessorFunction sf = new AmazonSuccessorFunction(state);
             int score1 = sf.getAllPositions(v).size();
 
-            if(score1 > maxScore){
+            if(score1 >= maxScore){
                 maxScore = score1;
                 bMove = v;
             }
+
+            if(bestMove == null){
+                bestMove = v;
+                maxScore = score1;
+            }
+
 
         }
         this.bestMoveValue = maxScore;
@@ -58,6 +66,7 @@ public class SuccessorState {
         return bMove;
 
     }
+
 
     public Vector getBestMove(){
         return this.bestMove;

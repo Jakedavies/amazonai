@@ -74,17 +74,24 @@ public class GameBoard extends JFrame {
 
     }
 
+    ArrayList<JPanel> removal = new ArrayList<>();
+
+
     public void reDraw(){
              /*
         Test Display Pieces
          */
 
+        for(int i = 0; i < removal.size(); i ++){
+            remove(removal.remove(i));
+        }
 
         for(Queen s : state.getQueens()){
             JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
             System.out.println(s.position.toString());
             panel.revalidate();
+            removal.add(panel);
 
         }
 
@@ -93,6 +100,7 @@ public class GameBoard extends JFrame {
             panel.add(s.getIcon());
             System.out.println("STONE: " + s.position.toString());
             panel.revalidate();
+
         }
 
         //add to display

@@ -20,8 +20,22 @@ public class Stone extends Position {
     public Stone(Vector pos){
         super(pos);
 
+        if(pos.getOneDimensional()%6 ==0 ){
+            icon = new JLabel(new ImageIcon(icWB));
+        }
+        else if(pos.getOneDimensional()%5 ==0){
+            icon = new JLabel(new ImageIcon(icWR));
+        }
+        else if(pos.getOneDimensional()%4 ==0){
+            icon = new JLabel(new ImageIcon(icO));
+        }
+        else {
+            icon = new JLabel(new ImageIcon(icWP));
+        }
+
 
     }
+
 
     public JLabel getIcon(){
         return icon;

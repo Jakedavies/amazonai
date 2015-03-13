@@ -27,9 +27,10 @@ public class AmazonSuccessorFunction {
 
         int i = 0;
         for(Queen q : currentState.getFriendlyQueens()){
-            successorStates[i++] = new SuccessorState(q.clone(), this.getAllPositions(q.position.clone()), new BoardState(this.currentState));
+            successorStates[i++] = new SuccessorState(q, this.getAllPositions(q.position), currentState);
         }
-        System.out.println(amount);
+
+        System.out.println("NUMBER OF STATES: " + amount);
 
         return successorStates;
     }
@@ -78,6 +79,7 @@ public class AmazonSuccessorFunction {
             Vector move = getNewPositionVector(position, i*x, i*y);
             run = currentState.isValidPosition(move);
             if(run) {
+                System.out.println("ADDED " + move.toString());
                 moves.add(move);
                 i++;
             }

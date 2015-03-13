@@ -4,6 +4,7 @@ import ai.AmazonSuccessorFunction;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by nolan on 27/02/15.
@@ -14,7 +15,7 @@ public class BoardState {
     private ArrayList<Queen> friendlyQueens = new ArrayList<>();
     private ArrayList<Queen> enemyQueens = new ArrayList<>();
     private ArrayList<Stone> stones = new ArrayList<>();
-    private Position[][] board = new Position[10][10];
+    public Position[][] board = new Position[10][10];
 
     public BoardState(){
         boolean black = false;
@@ -23,41 +24,15 @@ public class BoardState {
 
         this.addQueen(false, black, new Vector(3,0));
         this.addQueen(false, black, new Vector(6,0));
-        this.addQueen(false, black, new Vector(0,3));
-        this.addQueen(false, black, new Vector(9,3));
+        this.addQueen(false, black, new Vector(0,4));
+        this.addQueen(false, black, new Vector(9,4));
 
-        this.addQueen(true, white, new Vector(0,6));
-        this.addQueen(true, white, new Vector(9,6));
+        this.addQueen(true, white, new Vector(0,5));
+        this.addQueen(true, white, new Vector(9,5));
         this.addQueen(true, white, new Vector(3,9));
         this.addQueen(true, white, new Vector(6,9));
 
     }
-
-
-    public BoardState(BoardState board){
-        for(Queen q: queens){
-            Queen add = q.clone();
-            if(q.isWhite()){
-                queens.add(add);
-                friendlyQueens.add(add);
-            }
-            else{
-                queens.add(add);
-                enemyQueens.add(add);
-            }
-        }
-        for(Queen q : queens){
-            this.board[q.position.x][q.position.y] = q;
-        }
-        for(Stone s: board.getStones()) {
-            this.stones.add(new Stone(s.position.clone()));
-        }
-    }
-
-
-
-
-
     public boolean isPositionEmpty(Vector checkPos)
     {
         return board[checkPos.x][checkPos.y] == null;
@@ -65,6 +40,8 @@ public class BoardState {
 
 
     public boolean isValidPosition(Vector checkPos){
+
+        System.out.println(checkPos.toString());
 
         if(checkPos.x < 10 && checkPos.x >= 0){
             if(checkPos.y < 10 && checkPos.y >= 0){
@@ -79,7 +56,24 @@ public class BoardState {
 
 
     public void moveQueen(Vector queenCurr, Vector queenFinal){
-            board[queenCurr.x][queenCurr.y].move(queenFinal, this);
+
+        for(int i = 0; i < this.board.length; i ++){
+            System.out.print(this.board[i].toString());
+        }
+
+
+        System.out.println(Arrays.toString(this.board));
+        System.out.println(this.friendlyQueens);
+        System.out.println(this.enemyQueens);
+        System.out.println("QUEEN CURR: " + queenCurr);
+        System.out.println("QUEEN CFIN: " + queenFinal);
+
+        System.out.println("------------------------------");
+
+        System.out.println(board[queenCurr.x][queenCurr.y]);
+        System.out.println(board[queenFinal.x][queenFinal.y]);
+
+        board[queenCurr.x][queenCurr.y].move(queenFinal, this, (Queen) board[queenCurr.x][queenCurr.y]);
     }
 
 

@@ -7,61 +7,33 @@ import game.Vector;
 import java.util.*;
 
 import static java.lang.System.gc;
+import static java.lang.Thread.sleep;
 
 /**
  * Created by nolan on 28/02/15.
  */
 public class testOneMove {
 
-public static void main(String[] args) {
-    GamePlayer gamePlayer = new GamePlayer("nsulldsshsnssssssstesrwss8ssd", "password");
+    public static void main(String[] args) throws InterruptedException {
 
-    AmazonSuccessorFunction succer = new AmazonSuccessorFunction(gamePlayer.getGameBoard().state);
+        GamePlayer gamePlayer = new GamePlayer("nullspoissshhsnssters8sd","password");
 
-    SuccessorState[] suc = succer.getSuccessors();
+        GameBoard board = gamePlayer.getGameBoard();
+        BoardState bs = board.state;
+        ArrayList<Queen> fq = bs.getFriendlyQueens();
 
-        game.Vector bestMove = null;
-        Position oldQueen = null;
-        int bestMoveValue = 0;
-    gamePlayer.getGameBoard().reDraw();
-
-
-        for (SuccessorState s : suc) {
-            if (s.getBestMoveValue() > bestMoveValue) {
-                bestMove = s.getBestMove();
-                oldQueen = s.getPositionObject();
-            }
-
+        Position last = null;
+        for(Queen q: fq){
+            Position npos = new Position(q.getX(), q.getY()-1);
+            last = npos;
+            //q.move(npos.position, bs);
+            bs.throwStone(new Vector(npos.getX(), npos.getY()+1));
+            board.reDraw();
+            sleep(5000);
         }
+        sleep(5000);
 
 
-        gamePlayer.getGameBoard().state.moveQueen(oldQueen.position, bestMove);
-
-
-
-        gc();
-        succer = new AmazonSuccessorFunction(gamePlayer.getGameBoard().state);
-
-        suc = succer.getSuccessors();
-
-
-        bestMove = null;
-        bestMoveValue = 0;
-
-        for (SuccessorState s : suc) {
-            if (s.getBestMoveValue() > bestMoveValue) {
-                bestMove = s.getBestMove();
-            }
-
-        }
-
-
-        Scanner sc = new Scanner(System.in);
-        gamePlayer.getGameBoard().state.throwStone(new Vector(5,5));
-         gamePlayer.getGameBoard().reDraw();
-    gamePlayer.getGameBoard().reDraw();
-
-
-}
+    }
 
 }
