@@ -21,39 +21,49 @@ public class SuccessorStateTest {
 
 
     public static void main(String[] args) throws InterruptedException {
-        GamePlayer gamePlayer = new GamePlayer("nullstesrs3ss8sd", "password");
+        GamePlayer gamePlayer = new GamePlayer("nul66lstessrrss3ss8sd", "password");
 
         GameBoard board = gamePlayer.getGameBoard();
         BoardState bs = board.state;
 
-
-
-        for(int i = 0; i < 99 ; i ++){
+boolean escape = false;
+    while(!escape) {
+        for (int i = 0; i < 90; i++) {
             BoardState newstate = gamePlayer.getGameBoard().state;
             AmazonSuccessorFunction sf = new AmazonSuccessorFunction(newstate);
+
             SuccessorState[] st = sf.getSuccessors();
-            Vector bestMove = null;
+            SuccessorState first = st[0];
+            System.out.println("----------------------- \n" + first.toString());
+            Vector bestMove = first.getBestMove();
             int maxScore = 0;
-            Queen toMove = null;
-            for(SuccessorState s: st){
-                System.out.println(s + "" + st);
-                if(s.getBestMoveValue() > maxScore) {
+            Queen toMove = (Queen) first.getPositionObject();
+            for (SuccessorState s : st) {
+
+                if (s.getBestMoveValue() >= maxScore) {
                     bestMove = s.getBestMove();
                     maxScore = s.getBestMoveValue();
                     toMove = (Queen) s.getPositionObject();
                 }
             }
-            System.out.println("BEST MOVE: " + bestMove);
+
+                if(bestMove != null) {
+                    newstate.moveQueen(toMove.position, bestMove);
+                }
 
 
 
-            newstate.moveQueen(toMove.position, bestMove);
-             boolean thrower = false;
+
+
+            boolean thrower = false;
             while (!thrower) {
                 int x = randomWithRange(0, 10);
                 int y = randomWithRange(0, 10);
                 thrower = newstate.isValidPosition(new Vector(x, y));
-                if(thrower){
+                if(x == 5 && y == 5) {
+                    continue;
+                }
+                if (thrower) {
                     newstate.throwStone(new Vector(x, y));
                 }
 
@@ -63,9 +73,10 @@ public class SuccessorStateTest {
             gamePlayer.getGameBoard().state = null;
             gamePlayer.getGameBoard().state = newstate;
             gamePlayer.getGameBoard().reDraw();
-            sleep(1000);
+//            sleep(1000);
 
         }
+    }
         System.out.println("DONEE!!");
 
 

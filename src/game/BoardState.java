@@ -17,6 +17,7 @@ public class BoardState {
     private ArrayList<Stone> stones = new ArrayList<>();
     public Position[][] board = new Position[10][10];
 
+
     public BoardState(){
         boolean black = false;
         boolean white = true;
@@ -41,15 +42,16 @@ public class BoardState {
 
     public boolean isValidPosition(Vector checkPos){
 
-        System.out.println(checkPos.toString());
 
         if(checkPos.x < 10 && checkPos.x >= 0){
             if(checkPos.y < 10 && checkPos.y >= 0){
                 return isPositionEmpty(checkPos);
             }
-            else{return false;}
+            else{
+                return false;}
         }
-        else{return false;}
+        else{
+            return false;}
 
     }
 
@@ -61,17 +63,6 @@ public class BoardState {
             System.out.print(this.board[i].toString());
         }
 
-
-        System.out.println(Arrays.toString(this.board));
-        System.out.println(this.friendlyQueens);
-        System.out.println(this.enemyQueens);
-        System.out.println("QUEEN CURR: " + queenCurr);
-        System.out.println("QUEEN CFIN: " + queenFinal);
-
-        System.out.println("------------------------------");
-
-        System.out.println(board[queenCurr.x][queenCurr.y]);
-        System.out.println(board[queenFinal.x][queenFinal.y]);
 
         board[queenCurr.x][queenCurr.y].move(queenFinal, this, (Queen) board[queenCurr.x][queenCurr.y]);
     }

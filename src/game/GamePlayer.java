@@ -27,8 +27,8 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     public GamePlayer(String name, String passwd){
 
     	frame = new GameBoard();
-    	frame.pack();
-    	frame.setResizable(true);
+		frame.pack();
+		frame.setResizable(true);
     	frame.setLocationRelativeTo( null );
     	frame.setVisible(true);
 

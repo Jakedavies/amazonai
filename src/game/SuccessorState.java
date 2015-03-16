@@ -42,20 +42,21 @@ public class SuccessorState {
 
     public Vector bestMove(){
         int maxScore = -Integer.MAX_VALUE;
-        Vector bMove = null;
+        Vector bMove = moves.poll();
 
-        for(Vector v: moves){
+        while(!moves.isEmpty()){
 
             AmazonSuccessorFunction sf = new AmazonSuccessorFunction(state);
-            int score1 = sf.getAllPositions(v).size();
+            Vector move = moves.poll();
+            int score1 = sf.getAllPositions(move).size();
 
             if(score1 >= maxScore){
                 maxScore = score1;
-                bMove = v;
+                bMove = move;
             }
 
             if(bestMove == null){
-                bestMove = v;
+                bestMove = move;
                 maxScore = score1;
             }
 

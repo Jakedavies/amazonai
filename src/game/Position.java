@@ -18,6 +18,11 @@ public class Position {
     }
 
     public void move(Vector pos, BoardState b, Queen q){
+        System.out.println("Board" + b);
+        System.out.println("Move-To" + pos.toString());
+        System.out.println("Queen" + q.position.toString());
+
+
         if(b.isValidPosition(pos)) {
             this.position = pos;
             b.board[this.getX()][this.getY()] = q;
@@ -26,8 +31,6 @@ public class Position {
             throw new NullPointerException();
         }
     }
-
-
 
     /*
     Wrapper function that exist to simplify accessing vector.

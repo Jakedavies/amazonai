@@ -86,8 +86,13 @@ public class GameBoard extends JFrame {
             remove(removal.remove(i));
         }
 
+
         for(Queen s : state.getQueens()){
-            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
+            int x = s.position.getOneDimensional();
+            if(x == 99){
+                x = 98;
+            }
+            JPanel panel = (JPanel) Board.getComponent(x);
             panel.add(s.getIcon());
             System.out.println(s.position.toString());
             panel.revalidate();
@@ -96,9 +101,13 @@ public class GameBoard extends JFrame {
         }
 
         for(Stone s: state.getStones()){
-            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
+
+            int x = s.position.getOneDimensional();
+            if(x == 99){
+                x = 98;
+            }
+            JPanel panel = (JPanel) Board.getComponent(x);
             panel.add(s.getIcon());
-            System.out.println("STONE: " + s.position.toString());
             panel.revalidate();
 
         }

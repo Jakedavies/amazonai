@@ -52,14 +52,38 @@ public class AmazonSuccessorFunction {
          -1, 1 = LEFT BOTTOM DIAGONAL
          Down, Down-Forward, Forward + Punch
          */
-        possiblePositions.addAll(this.getDirectionMoves(position, -1,0));
-        possiblePositions.addAll(this.getDirectionMoves(position, -1,-1));
-        possiblePositions.addAll(this.getDirectionMoves(position, 0,-1));
-        possiblePositions.addAll(this.getDirectionMoves(position, 1,-1));
-        possiblePositions.addAll(this.getDirectionMoves(position, 1,0));
-        possiblePositions.addAll(this.getDirectionMoves(position, 1,1));
-        possiblePositions.addAll(this.getDirectionMoves(position, 0,1));
-        possiblePositions.addAll(this.getDirectionMoves(position, -1,1));
+        ConcurrentLinkedQueue<Vector> s = this.getDirectionMoves(position, -1, 0);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+         s = this.getDirectionMoves(position, -1,-1);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+        s = this.getDirectionMoves(position, 0,-1);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+        s = this.getDirectionMoves(position, 1,-1);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+        s = this.getDirectionMoves(position, 1,0);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+        s = this.getDirectionMoves(position, 1,1);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+        s = this.getDirectionMoves(position, 0,1);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
+        s = this.getDirectionMoves(position, -1,1);
+        if(s != null) {
+            possiblePositions.addAll(s);
+        }
 
         amount += possiblePositions.size();
 
