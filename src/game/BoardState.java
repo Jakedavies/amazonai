@@ -24,11 +24,11 @@ public class BoardState {
 
         this.addQueen(false, black, new Vector(3,0));
         this.addQueen(false, black, new Vector(6,0));
-        this.addQueen(false, black, new Vector(0,4));
-        this.addQueen(false, black, new Vector(9,4));
+        this.addQueen(false, black, new Vector(0,3));
+        this.addQueen(false, black, new Vector(9,3));
 
-        this.addQueen(true, white, new Vector(0,5));
-        this.addQueen(true, white, new Vector(9,5));
+        this.addQueen(true, white, new Vector(0,6));
+        this.addQueen(true, white, new Vector(9,6));
         this.addQueen(true, white, new Vector(3,9));
         this.addQueen(true, white, new Vector(6,9));
 
@@ -41,7 +41,6 @@ public class BoardState {
 
     public boolean isValidPosition(Vector checkPos){
 
-        System.out.println(checkPos.toString());
 
         if(checkPos.x < 10 && checkPos.x >= 0){
             if(checkPos.y < 10 && checkPos.y >= 0){
@@ -56,24 +55,29 @@ public class BoardState {
 
 
     public void moveQueen(Vector queenCurr, Vector queenFinal){
-
-        for(int i = 0; i < this.board.length; i ++){
-            System.out.print(this.board[i].toString());
-        }
-
-
-        System.out.println(Arrays.toString(this.board));
-        System.out.println(this.friendlyQueens);
-        System.out.println(this.enemyQueens);
-        System.out.println("QUEEN CURR: " + queenCurr);
-        System.out.println("QUEEN CFIN: " + queenFinal);
-
-        System.out.println("------------------------------");
-
-        System.out.println(board[queenCurr.x][queenCurr.y]);
-        System.out.println(board[queenFinal.x][queenFinal.y]);
-
         board[queenCurr.x][queenCurr.y].move(queenFinal, this, (Queen) board[queenCurr.x][queenCurr.y]);
+    }
+
+    private BoardState(boolean b){
+
+    }
+
+
+    public BoardState clone(){
+        BoardState b = new BoardState(false);
+        boolean black = false;
+        boolean white = true;
+
+        for(Queen q: this.getFriendlyQueens()){
+            b.addQueen(true, white, new Vector(q.getX(), q.getY()));
+        }
+        for(Queen q: this.getEnemyQueens()){
+            b.addQueen(false, black,new Vector(q.getX(), q.getY()));
+        }
+        for(Stone s: this.getStones()){
+            b.throwStone(s.position);
+        }
+        return b;
     }
 
 

@@ -23,7 +23,6 @@ public class GameBoardTests {
 
 
 
-        SuccessorState[] suc = succer.getSuccessors();
 
 
 

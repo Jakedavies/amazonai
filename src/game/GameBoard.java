@@ -83,22 +83,27 @@ public class GameBoard extends JFrame {
          */
 
         for(int i = 0; i < removal.size(); i ++){
-            remove(removal.remove(i));
+            JComponent j = removal.remove(i);
+            remove(j);
+            Board.updateUI();
+            Board.revalidate();
+            Board.repaint();
+
         }
 
         for(Queen s : state.getQueens()){
             JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
-            System.out.println(s.position.toString());
             panel.revalidate();
             removal.add(panel);
+
+
 
         }
 
         for(Stone s: state.getStones()){
             JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
             panel.add(s.getIcon());
-            System.out.println("STONE: " + s.position.toString());
             panel.revalidate();
 
         }

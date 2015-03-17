@@ -21,52 +21,41 @@ public class SuccessorStateTest {
 
 
     public static void main(String[] args) throws InterruptedException {
-        GamePlayer gamePlayer = new GamePlayer("nullstesrs3ss8sd", "password");
+
+        String randomJoin = "" + randomWithRange(2,90);
+        GamePlayer gamePlayer = new GamePlayer("nsusssSd" + randomJoin, "password");
 
         GameBoard board = gamePlayer.getGameBoard();
-        BoardState bs = board.state;
 
+            BoardState newstate = board.state.clone();
 
-
-        for(int i = 0; i < 99 ; i ++){
-            BoardState newstate = gamePlayer.getGameBoard().state;
             AmazonSuccessorFunction sf = new AmazonSuccessorFunction(newstate);
-            SuccessorState[] st = sf.getSuccessors();
-            Vector bestMove = null;
-            int maxScore = 0;
-            Queen toMove = null;
-            for(SuccessorState s: st){
-                System.out.println(s + "" + st);
-                if(s.getBestMoveValue() > maxScore) {
-                    bestMove = s.getBestMove();
-                    maxScore = s.getBestMoveValue();
-                    toMove = (Queen) s.getPositionObject();
-                }
-            }
-            System.out.println("BEST MOVE: " + bestMove);
 
 
+        long timeold = System.currentTimeMillis();
 
-            newstate.moveQueen(toMove.position, bestMove);
-             boolean thrower = false;
-            while (!thrower) {
-                int x = randomWithRange(0, 10);
-                int y = randomWithRange(0, 10);
-                thrower = newstate.isValidPosition(new Vector(x, y));
-                if(thrower){
-                    newstate.throwStone(new Vector(x, y));
+
+                ArrayList<ArrayList<BoardState>> moves = sf.generateTreeLevel();
+                for (ArrayList<BoardState> a : moves) {
+                    for(BoardState b : a){
+                        AmazonSuccessorFunction sf2 = new AmazonSuccessorFunction(b);
+                        sf2.generateTreeLevel();
+                    }
                 }
 
-            }
+        long timenew= System.currentTimeMillis();
+
+        System.out.println("IN " + (timenew - timeold));
 
 
-            gamePlayer.getGameBoard().state = null;
-            gamePlayer.getGameBoard().state = newstate;
-            gamePlayer.getGameBoard().reDraw();
+
+
+
+
             sleep(1000);
 
-        }
-        System.out.println("DONEE!!");
+
+    }
 
 
 
@@ -74,4 +63,4 @@ public class SuccessorStateTest {
 
 //        }
     }
-}
+

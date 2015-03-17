@@ -20,20 +20,7 @@ public class AmazonSuccessorFunction {
     }
     int amount = 0;
 
-    public SuccessorState[] getSuccessors(){
-        //TODO: iterate through possible successor states and add them to the successors list
 
-        SuccessorState[] successorStates = new  SuccessorState[4];
-
-        int i = 0;
-        for(Queen q : currentState.getFriendlyQueens()){
-            successorStates[i++] = new SuccessorState(q, this.getAllPositions(q.position), currentState);
-        }
-
-        System.out.println("NUMBER OF STATES: " + amount);
-
-        return successorStates;
-    }
 
     public ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)
     {
@@ -79,7 +66,6 @@ public class AmazonSuccessorFunction {
             Vector move = getNewPositionVector(position, i*x, i*y);
             run = currentState.isValidPosition(move);
             if(run) {
-                System.out.println("ADDED " + move.toString());
                 moves.add(move);
                 i++;
             }
@@ -93,4 +79,27 @@ public class AmazonSuccessorFunction {
     private Vector getNewPositionVector(Vector currentPosition,int xMove,int yMove) {
         return new Vector(currentPosition.x+xMove,currentPosition.y+yMove);
     }
+
+
+    public ArrayList<ArrayList<BoardState>> generateTreeLevel(){
+        ArrayList<ArrayList<BoardState>> states = new ArrayList<>();
+
+        for(Queen q: currentState.getFriendlyQueens()){
+
+            for(Vector q2 : this.getAllPositions(q.position)){
+                BoardState newState = currentState.clone();
+                newState.moveQueen(q.position, q2);
+                ArrayList<BoardState> moveSet = new ArrayList<>();
+
+                for(Vector ti : new AmazonSuccessorFunction(newState).getAllPositions(q2)){
+                    newState.throwStone(ti);
+                    moveSet.add(newState);
+                }
+                states.add(moveSet);
+            }
+        }
+        return states;
+    }
+
+
 }
