@@ -9,7 +9,9 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by jakedavies on 15-02-22.
+ * Last Modified:
+ * Nolan Koriath
+ * March. 17th / 2015
  */
 public class AmazonSuccessorFunction {
     private BoardState currentState;
@@ -21,12 +23,14 @@ public class AmazonSuccessorFunction {
     int amount = 0;
 
 
-
+    /**
+     * Generates all positions given a vectors position.
+     * @param position Position to generate list of positions for.
+     * @return ConcurrentLinkedQue of vector positions that are available.
+     */
     public ConcurrentLinkedQueue<Vector> getAllPositions (Vector position)
     {
         ConcurrentLinkedQueue<Vector> possiblePositions = new ConcurrentLinkedQueue<Vector>();
-
-
         /*
          X,Y Modifiers:
          -1, 0 = LEFT
@@ -49,15 +53,18 @@ public class AmazonSuccessorFunction {
         possiblePositions.addAll(this.getDirectionMoves(position, -1,1));
 
         amount += possiblePositions.size();
-
-
         return possiblePositions;
-
     }
 
 
+    /**
+     *
+     * @param position The position of the queen that you would like to generate moves for.
+     * @param x integer x modifier.
+     * @param y integer y modifier.
+     * @return
+     */
     private ConcurrentLinkedQueue<Vector> getDirectionMoves(Vector position, int x, int y) {
-
         ConcurrentLinkedQueue<Vector> moves = new ConcurrentLinkedQueue<>();
 
         int i = 1;
@@ -70,17 +77,25 @@ public class AmazonSuccessorFunction {
                 i++;
             }
         }
-
-
-
         return  moves;
     }
 
+    /*
+        The generates a new position vector given position and modifiers.
+        Up is - down is +, left - right +.
+     */
     private Vector getNewPositionVector(Vector currentPosition,int xMove,int yMove) {
         return new Vector(currentPosition.x+xMove,currentPosition.y+yMove);
     }
 
 
+    /**
+     *
+     * Returns an arraylist of arraylists of board states.
+     * This is to be used to expand a nodes childrens.
+     *
+     * @return Returns an arraylist of arraylists of board states.
+     */
     public ArrayList<ArrayList<BoardState>> generateTreeLevel(){
         ArrayList<ArrayList<BoardState>> states = new ArrayList<>();
 
