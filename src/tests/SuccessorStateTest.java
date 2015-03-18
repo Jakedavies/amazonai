@@ -5,6 +5,7 @@ import ai.AmazonSuccessorFunction;
 import game.*;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static java.lang.Thread.sleep;
 
@@ -22,6 +23,7 @@ public class SuccessorStateTest {
 
     public static void main(String[] args) throws InterruptedException {
 
+
         String randomJoin = "" + randomWithRange(2,90);
         GamePlayer gamePlayer = new GamePlayer("nsusssSd" + randomJoin, "password");
 
@@ -32,27 +34,80 @@ public class SuccessorStateTest {
             AmazonSuccessorFunction sf = new AmazonSuccessorFunction(newstate);
 
 
-        long timeold = System.currentTimeMillis();
+        for(int j = 0; j < 10; j ++) {
 
 
-                ArrayList<ArrayList<BoardState>> moves = sf.generateTreeLevel();
-                for (ArrayList<BoardState> a : moves) {
-                    for(BoardState b : a){
-                        AmazonSuccessorFunction sf2 = new AmazonSuccessorFunction(b);
-                        sf2.generateTreeLevel();
-                    }
-                }
-
-        long timenew= System.currentTimeMillis();
-
-        System.out.println("IN " + (timenew - timeold));
+            int count = 0;
+            long timeold = System.currentTimeMillis();
+            ArrayList<BoardState> states = sf.generateTreeLevel();
 
 
+            ArrayList<BoardState> states2 = new ArrayList<>();
+
+
+            for (BoardState a : states) {
+                count++;
+                AmazonSuccessorFunction sf2 = new AmazonSuccessorFunction(a);
+                ArrayList<BoardState> bs = sf2.generateTreeLevel();
+
+            }
+
+            long timenew = System.currentTimeMillis();
+
+
+            System.out.println(count);
+
+            String noThread = ("IN " + (timenew - timeold));
+
+
+            count = 0;
+            timeold = System.currentTimeMillis();
+            states = sf.generateTreeLevel();
+
+
+            states2 = new ArrayList<>();
+
+
+            for (BoardState a : states) {
+                AmazonSuccessorFunction sf2 = new AmazonSuccessorFunction(a);
+                ArrayList<BoardState> bs = sf2.generateTreeLevelThreaded();
+                count++;
+
+            }
+
+            timenew = System.currentTimeMillis();
+
+
+            System.out.println(count);
+
+            String Thread = ("IN " + (timenew - timeold));
+
+            System.out.println(Thread);
+            System.out.println(noThread);
+        }
+
+//        long old = System.nanoTime();
+//        for(Queen q: newstate.getFriendlyQueens()){
+//            sf.getAllPositions(q.position);
+//        }
+//        long newT = System.nanoTime();
+//        System.out.println("IN " + (newT - old));
+//
+//         old = System.nanoTime();
+//        for(Queen q: newstate.getFriendlyQueens()){
+//            sf.getAllPositionsThreaded(q.position);
+//        }
+//         newT = System.nanoTime();
+//        System.out.println("IN " + (newT - old));
 
 
 
 
-            sleep(1000);
+
+
+
+
+        sleep(1000);
 
 
     }

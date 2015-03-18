@@ -7,9 +7,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by nolan on 27/02/15.
+ * Last Updated: Nolan Koriath
+ * March 17th 2015
+ *
+ * Board state class, contains all of the information on a state of the board.
+ * This includes all positions of queens, and all positions of stones.
  */
 public class BoardState {
+    private Vector stoneToThrow;
+    private Vector QueenToMovePositionInitial;
+    private Vector QueenToMovePositionFinal;
+
+
 
     private ArrayList<Queen> queens = new ArrayList<>();
     private ArrayList<Queen> friendlyQueens = new ArrayList<>();
@@ -22,6 +31,9 @@ public class BoardState {
         boolean white = true;
 
 
+        /*
+            Add all new queens to the board.
+         */
         this.addQueen(false, black, new Vector(3,0));
         this.addQueen(false, black, new Vector(6,0));
         this.addQueen(false, black, new Vector(0,3));
@@ -33,15 +45,24 @@ public class BoardState {
         this.addQueen(true, white, new Vector(6,9));
 
     }
-    public boolean isPositionEmpty(Vector checkPos)
+
+    /*
+        Checks if the board has anything at that position.
+     */
+    private boolean isPositionEmpty(Vector checkPos)
     {
         return board[checkPos.x][checkPos.y] == null;
     }
 
 
+    /**
+     * Method that returns if a position is valid or not.
+     * Criteria for valid is on the board,
+     * As well as empty
+     * @param checkPos Position to check
+     * @return boolean true if valid.
+     */
     public boolean isValidPosition(Vector checkPos){
-
-
         if(checkPos.x < 10 && checkPos.x >= 0){
             if(checkPos.y < 10 && checkPos.y >= 0){
                 return isPositionEmpty(checkPos);
@@ -53,16 +74,32 @@ public class BoardState {
     }
 
 
-
+    /**
+     * Moves a queen from one position another.
+     * @param queenCurr Position of the queen to move.
+     * @param queenFinal Position the queen should be moved to .
+     */
     public void moveQueen(Vector queenCurr, Vector queenFinal){
         board[queenCurr.x][queenCurr.y].move(queenFinal, this, (Queen) board[queenCurr.x][queenCurr.y]);
+        // Sets original queen position to null;
+        board[queenCurr.x][queenCurr.y] = null;
     }
 
+    /*
+        Empty constructor used in clone method.
+     */
     private BoardState(boolean b){
 
     }
 
 
+
+
+
+    /**
+     * Clone method, will return an exact
+     * @return
+     */
     public BoardState clone(){
         BoardState b = new BoardState(false);
         boolean black = false;

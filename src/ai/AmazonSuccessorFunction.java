@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Last Modified:
  * Nolan Koriath
  * March. 17th / 2015
+ *
+ *
  */
 public class AmazonSuccessorFunction {
     private BoardState currentState;
@@ -51,6 +53,24 @@ public class AmazonSuccessorFunction {
         possiblePositions.addAll(this.getDirectionMoves(position, 1,1));
         possiblePositions.addAll(this.getDirectionMoves(position, 0,1));
         possiblePositions.addAll(this.getDirectionMoves(position, -1,1));
+//
+//        DirectionMovesDirection t1 = new DirectionMovesDirection(this.currentState, position,-1,0);
+//        DirectionMovesDirection t2 = new DirectionMovesDirection(this.currentState, position,-1,-1);
+//        DirectionMovesDirection t3 = new DirectionMovesDirection(this.currentState, position,0,-1);
+//        DirectionMovesDirection t4 = new DirectionMovesDirection(this.currentState, position,1,-1);
+//        DirectionMovesDirection t5 = new DirectionMovesDirection(this.currentState, position,1,0);
+//        DirectionMovesDirection t6 = new DirectionMovesDirection(this.currentState, position,1,1);
+//        DirectionMovesDirection t7 = new DirectionMovesDirection(this.currentState, position,0,1);
+//        DirectionMovesDirection t8 = new DirectionMovesDirection(this.currentState, position,-1,1);
+//
+//        possiblePositions.addAll(t1.start());
+//        possiblePositions.addAll(t2.start());
+//        possiblePositions.addAll(t3.start());
+//        possiblePositions.addAll(t4.start());
+//        possiblePositions.addAll(t5.start());
+//        possiblePositions.addAll(t6.start());
+//        possiblePositions.addAll(t7.start());
+//        possiblePositions.addAll(t8.start());
 
         amount += possiblePositions.size();
         return possiblePositions;
@@ -93,28 +113,57 @@ public class AmazonSuccessorFunction {
      *
      * Returns an arraylist of arraylists of board states.
      * This is to be used to expand a nodes childrens.
-     *
      * @return Returns an arraylist of arraylists of board states.
      */
-    public ArrayList<ArrayList<BoardState>> generateTreeLevel(){
-        ArrayList<ArrayList<BoardState>> states = new ArrayList<>();
+    public ArrayList<BoardState>  generateTreeLevel(){
+        ArrayList<BoardState> state = new ArrayList<>();
 
+        // Outer loop through each queen
         for(Queen q: currentState.getFriendlyQueens()){
 
+            //loop for each move that the queen can make
             for(Vector q2 : this.getAllPositions(q.position)){
                 BoardState newState = currentState.clone();
                 newState.moveQueen(q.position, q2);
-                ArrayList<BoardState> moveSet = new ArrayList<>();
+
+                //Loop for every possible throw for each move.
 
                 for(Vector ti : new AmazonSuccessorFunction(newState).getAllPositions(q2)){
+
+                    //Throw the stone
                     newState.throwStone(ti);
-                    moveSet.add(newState);
+
+                    //Add the new move with stones throw to the set
+                    state.add(newState);
                 }
-                states.add(moveSet);
             }
         }
-        return states;
+        return state;
     }
+
+    public ArrayList<BoardState> generateTreeLevelThreaded(){
+        ArrayList<BoardState> moves = new ArrayList<>();
+
+        QueenMoveExpander t1 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
+        QueenMoveExpander t2 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
+        QueenMoveExpander t3 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
+        QueenMoveExpander t4 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
+
+        moves.addAll(t1.start());
+        moves.addAll(t2.start());
+        moves.addAll(t3.start());
+        moves.addAll(t4.start());
+
+        return  moves;
+
+
+
+
+    }
+
+
+
+
 
 
 }
