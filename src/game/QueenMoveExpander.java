@@ -24,6 +24,8 @@ public class QueenMoveExpander {
         for(Vector q2 : sf.getAllPositions(queen.position)){
             BoardState newState = board.clone();
             newState.moveQueen(queen.position, q2);
+            newState.QueenToMovePositionInitial = queen.position;
+            newState.QueenToMovePositionFinal = q2;
 
             //Loop for every possible throw for each move.
 
@@ -31,6 +33,7 @@ public class QueenMoveExpander {
 
                 //Throw the stone
                 newState.throwStone(ti);
+                newState.stoneToThrow = ti;
 
                 //Add the new move with stones throw to the set
                 states.add(newState);

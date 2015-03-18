@@ -53,24 +53,7 @@ public class AmazonSuccessorFunction {
         possiblePositions.addAll(this.getDirectionMoves(position, 1,1));
         possiblePositions.addAll(this.getDirectionMoves(position, 0,1));
         possiblePositions.addAll(this.getDirectionMoves(position, -1,1));
-//
-//        DirectionMovesDirection t1 = new DirectionMovesDirection(this.currentState, position,-1,0);
-//        DirectionMovesDirection t2 = new DirectionMovesDirection(this.currentState, position,-1,-1);
-//        DirectionMovesDirection t3 = new DirectionMovesDirection(this.currentState, position,0,-1);
-//        DirectionMovesDirection t4 = new DirectionMovesDirection(this.currentState, position,1,-1);
-//        DirectionMovesDirection t5 = new DirectionMovesDirection(this.currentState, position,1,0);
-//        DirectionMovesDirection t6 = new DirectionMovesDirection(this.currentState, position,1,1);
-//        DirectionMovesDirection t7 = new DirectionMovesDirection(this.currentState, position,0,1);
-//        DirectionMovesDirection t8 = new DirectionMovesDirection(this.currentState, position,-1,1);
-//
-//        possiblePositions.addAll(t1.start());
-//        possiblePositions.addAll(t2.start());
-//        possiblePositions.addAll(t3.start());
-//        possiblePositions.addAll(t4.start());
-//        possiblePositions.addAll(t5.start());
-//        possiblePositions.addAll(t6.start());
-//        possiblePositions.addAll(t7.start());
-//        possiblePositions.addAll(t8.start());
+
 
         amount += possiblePositions.size();
         return possiblePositions;
@@ -125,6 +108,8 @@ public class AmazonSuccessorFunction {
             for(Vector q2 : this.getAllPositions(q.position)){
                 BoardState newState = currentState.clone();
                 newState.moveQueen(q.position, q2);
+                newState.QueenToMovePositionInitial = q.position;
+                newState.QueenToMovePositionFinal = q2;
 
                 //Loop for every possible throw for each move.
 
@@ -132,6 +117,8 @@ public class AmazonSuccessorFunction {
 
                     //Throw the stone
                     newState.throwStone(ti);
+                    newState.stoneToThrow = ti;
+
 
                     //Add the new move with stones throw to the set
                     state.add(newState);
@@ -141,6 +128,11 @@ public class AmazonSuccessorFunction {
         return state;
     }
 
+    /**
+     * Multithreaded expand, should never be used for first node as non-threaded is faster.
+     *
+     * @return ArrayList of board states for possible moves.
+     */
     public ArrayList<BoardState> generateTreeLevelThreaded(){
         ArrayList<BoardState> moves = new ArrayList<>();
 
@@ -155,9 +147,6 @@ public class AmazonSuccessorFunction {
         moves.addAll(t4.start());
 
         return  moves;
-
-
-
 
     }
 

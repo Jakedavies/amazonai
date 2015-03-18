@@ -14,9 +14,9 @@ import java.util.Arrays;
  * This includes all positions of queens, and all positions of stones.
  */
 public class BoardState {
-    private Vector stoneToThrow;
-    private Vector QueenToMovePositionInitial;
-    private Vector QueenToMovePositionFinal;
+    public Vector stoneToThrow;
+    public Vector QueenToMovePositionInitial;
+    public Vector QueenToMovePositionFinal;
 
 
 
@@ -52,6 +52,27 @@ public class BoardState {
     private boolean isPositionEmpty(Vector checkPos)
     {
         return board[checkPos.x][checkPos.y] == null;
+    }
+
+    public Vector getStoneToThrow(){
+        return this.stoneToThrow;
+    }
+    public void setStoneToThrow(Vector thrower){
+        this.stoneToThrow = thrower;
+    }
+
+    public Vector getQueenToMovePositionInitial(){
+        return  this.QueenToMovePositionInitial;
+    }
+    public void setQueenToMovePositionInitial(Vector v){
+        this.QueenToMovePositionInitial = v;
+    }
+
+    public Vector getQueenToMovePositionFinal(){
+        return  this.QueenToMovePositionFinal;
+    }
+    public void setQueenToMovePositionFinal(Vector v){
+        this.QueenToMovePositionFinal = v;
     }
 
 
