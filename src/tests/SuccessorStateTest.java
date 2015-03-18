@@ -47,8 +47,10 @@ public class SuccessorStateTest {
 
             for (BoardState a : states) {
                 count++;
+
                 AmazonSuccessorFunction sf2 = new AmazonSuccessorFunction(a);
                 ArrayList<BoardState> bs = sf2.generateTreeLevel();
+                count += bs.size();
 
             }
 
@@ -62,7 +64,7 @@ public class SuccessorStateTest {
 
             count = 0;
             timeold = System.currentTimeMillis();
-            states = sf.generateTreeLevel();
+            states = sf.generateTreeLevelThreaded();
 
 
             states2 = new ArrayList<>();
@@ -70,8 +72,10 @@ public class SuccessorStateTest {
 
             for (BoardState a : states) {
                 AmazonSuccessorFunction sf2 = new AmazonSuccessorFunction(a);
-                ArrayList<BoardState> bs = sf2.generateTreeLevelThreaded();
                 count++;
+
+                ArrayList<BoardState> bs = sf2.generateTreeLevelThreaded();
+                count += bs.size();
 
             }
 

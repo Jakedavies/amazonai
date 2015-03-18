@@ -137,9 +137,9 @@ public class AmazonSuccessorFunction {
         ArrayList<BoardState> moves = new ArrayList<>();
 
         QueenMoveExpander t1 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
-        QueenMoveExpander t2 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
-        QueenMoveExpander t3 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
-        QueenMoveExpander t4 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(0));
+        QueenMoveExpander t2 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(1));
+        QueenMoveExpander t3 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(2));
+        QueenMoveExpander t4 = new QueenMoveExpander(this.currentState, this.currentState.getFriendlyQueens().get(3));
 
         moves.addAll(t1.start());
         moves.addAll(t2.start());
