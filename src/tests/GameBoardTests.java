@@ -18,7 +18,7 @@ public class GameBoardTests {
 
 
 
-        AmazonSuccessorFunction succer = new AmazonSuccessorFunction(board.state);
+//        AmazonSuccessorFunction succer = new AmazonSuccessorFunction(board.state);
 
 
 

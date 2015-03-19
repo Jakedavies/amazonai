@@ -113,15 +113,16 @@ public class AmazonSuccessorFunction {
 
                 //Loop for every possible throw for each move.
 
-                for(Vector ti : new AmazonSuccessorFunction(newState).getAllPositions(q2)){
+                for(Vector ti : new AmazonSuccessorFunction(newState.clone()).getAllPositions(q2)){
 
-                    //Throw the stone
-                    newState.throwStone(ti);
-                    newState.stoneToThrow = ti;
-
-
-                    //Add the new move with stones throw to the set
-                    state.add(newState);
+//                    BoardState thrownState = newState.clone();
+//                    //Throw the stone
+//                    thrownState.throwStone(ti);
+//                    thrownState.stoneToThrow = ti;
+//
+//
+//                    //Add the new move with stones throw to the set
+                    state.add(new BoardState());
                 }
             }
         }

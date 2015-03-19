@@ -4,6 +4,8 @@ package game; /**
  *
  */
 
+import recycleBin.BoardState2;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class GameBoard extends JFrame {
     final Dimension paneSize = new Dimension(800, 800);
     final Dimension boardSize = new Dimension(600,600);
     final Dimension textAreaSize = new Dimension(200,200);
-    public BoardState state;
+    public BoardState2 state;
 
 
     public void write(String message){
@@ -38,7 +40,7 @@ public class GameBoard extends JFrame {
     // Set up board
     public GameBoard(){
 
-        state = new BoardState();
+        state = new BoardState2();
 
         //Set up board
         Board = new JPanel();
@@ -78,40 +80,40 @@ public class GameBoard extends JFrame {
 
 
     public void reDraw(){
-             /*
-        Test Display Pieces
-         */
-
-        for(int i = 0; i < removal.size(); i ++){
-            JComponent j = removal.remove(i);
-            remove(j);
-            Board.updateUI();
-            Board.revalidate();
-            Board.repaint();
-
-        }
-
-        for(Queen s : state.getQueens()){
-            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
-            panel.add(s.getIcon());
-            panel.revalidate();
-            removal.add(panel);
-
-
-
-        }
-
-        for(Stone s: state.getStones()){
-            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
-            panel.add(s.getIcon());
-            panel.revalidate();
-
-        }
-
-        //add to display
-        getContentPane().add(Pane);
-
-        Board.repaint();
+//             /*
+//        Test Display Pieces
+//         */
+//
+//        for(int i = 0; i < removal.size(); i ++){
+//            JComponent j = removal.remove(i);
+//            remove(j);
+//            Board.updateUI();
+//            Board.revalidate();
+//            Board.repaint();
+//
+//        }
+//
+//        for(Queen s : state.){
+//            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
+//            panel.add(s.getIcon());
+//            panel.revalidate();
+//            removal.add(panel);
+//
+//
+//
+//        }
+//
+//        for(Stone s: state.getStones()){
+//            JPanel panel = (JPanel) Board.getComponent(s.position.getOneDimensional());
+//            panel.add(s.getIcon());
+//            panel.revalidate();
+//
+//        }
+//
+//        //add to display
+//        getContentPane().add(Pane);
+//
+//        Board.repaint();
 
 
 
