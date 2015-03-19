@@ -2,6 +2,7 @@ package ai;
 
 import game.BoardState;
 import game.Queen;
+import recycleBin.AmazonSuccessorFunction;
 
 /**
  * Created by jakedavies on 15-02-22.

@@ -1,8 +1,5 @@
 package tests;
 
-import ai.AmazonSuccessorFunction;
-import game.BoardState;
-import game.GameBoard;
 //import game.GamePlayer;
 //import game.Queen;
 //

@@ -1,9 +1,8 @@
 package game;
 
-import ai.AmazonSuccessorFunction;
+import recycleBin.AmazonSuccessorFunction;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by nolan on 17/03/15.

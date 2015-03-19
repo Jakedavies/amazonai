@@ -8,11 +8,21 @@ import java.util.ArrayList;
 
 /**
  * Created by nolan on 18/03/15.
+ * Successor function for amazonai.
  */
 public class AmazonSuccessorByte {
 
+
+    /**
+     * Method which, given a position and boardstate will return every position reachable from it.
+     *
+     * @param v byte[] position to be evaluated.
+     * @param b boardstate that the position to be evaluated exists in.
+     * @return ArrayList<byte[]> all available moves.
+     */
     public ArrayList<byte[]> getAllDirections(byte[] v, BoardStateByte b )  {
         ArrayList<byte[]> possiblePositions = new ArrayList<>();
+
       /*
          X,Y Modifiers:
          -1, 0 = LEFT
@@ -68,12 +78,14 @@ public class AmazonSuccessorByte {
         while(run) {
             byte xMod = 0;
             byte yMod = 0;
+
+            //Manually do the multiplication. For the X and Y shift.
             for(int j = 0; j < i; j ++){
                 xMod += x;
                 yMod += y;
             }
 
-
+            //Apply the X and Y shift.
             byte xVal = 0;
             xVal += position[0];
             xVal += xMod;
@@ -82,12 +94,13 @@ public class AmazonSuccessorByte {
             yVal += yMod;
 
 
+            //Check if the new position is actually valid.
             run = b.isValidPosition(xVal, yVal);
             if(run) {
                 byte[] move = new byte[2];
                 move[0] = xVal;
                 move[1] = yVal;
-                moves.add(move);
+                moves.add(move); // if valid add it to the collection.
                 i++;
             }
         }
@@ -95,21 +108,39 @@ public class AmazonSuccessorByte {
 
     }
 
+
+    /**
+     * Method that generates a full expansion of a state.
+     * For every queen returns every possible board state.
+     * @param board
+     * @return
+     */
     public ArrayList<BoardStateByte> generateTreeLevel(BoardStateByte board) {
         ArrayList<BoardStateByte> level = new ArrayList<>();
 
+        //get the boards Friendly Queens
         byte[][] queens = board.getWhiteQueens();
+
+        //For each friendly queen.
         for (int i = 0; i < 4; i++) {
             byte[] queen = queens[i];
+
+            //For the queen being evaluated; for each position available to it.
             ArrayList<byte[]> moves = this.getAllDirections(queen, board);
             for(byte[] moveForQueen: moves){
+
+                //Clone the board
                 BoardStateByte movedQueen = new BoardStateByte(board);
-                movedQueen.moveQueen(queen[0], queen[1], moveForQueen[0], moveForQueen[1]);
+                movedQueen.moveQueen(queen[0], queen[1], moveForQueen[0], moveForQueen[1]); //make the move
+
+                //For every possible stone throw from that position.
                 ArrayList<byte[]> possibleStoneThrows = this.getAllDirections(moveForQueen, movedQueen);
                     for(byte[] throwPos: possibleStoneThrows) {
+
+                        //clone the board.
                         BoardStateByte thrownStone = new BoardStateByte(movedQueen);
-                        thrownStone.throwStone(throwPos[0], throwPos[1]);
-                        level.add(thrownStone);
+                        thrownStone.throwStone(throwPos[0], throwPos[1]); //make the throw.
+                        level.add(thrownStone); //add the permutation.
                     }
 
                 }
@@ -117,16 +148,29 @@ public class AmazonSuccessorByte {
         return level;
 
         }
+
+    /**
+     * Multithreaded node expansion.
+     * @param board state that is to be expanded.
+     * @return arraylist of every possible state reachable from that state.
+     */
     public ArrayList<BoardStateByte> generateTreeLevelThreaded(BoardStateByte board) {
         ArrayList<BoardStateByte> level = new ArrayList<>();
 
         byte[][] queens = board.getWhiteQueens();
 
+            /*
+                For every queen that is in the state, create a new thread.
+             */
             ByteArrayQueenExpander t1 = new ByteArrayQueenExpander(board, queens[0]);
             ByteArrayQueenExpander t2 = new ByteArrayQueenExpander(board, queens[1]);
             ByteArrayQueenExpander t3 = new ByteArrayQueenExpander(board, queens[2]);
             ByteArrayQueenExpander t4 = new ByteArrayQueenExpander(board, queens[3]);
 
+
+        /*
+            Start all of the threads.
+         */
         level.addAll(t1.start());
         level.addAll(t2.start());
         level.addAll(t3.start());
@@ -138,13 +182,7 @@ public class AmazonSuccessorByte {
 
     }
 
-
-
-
-
-
-
-
+ //end of class
 }
 
 

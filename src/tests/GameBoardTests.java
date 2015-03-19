@@ -1,12 +1,6 @@
 package tests;
 
-import ai.AmazonSuccessorFunction;
 import game.*;
-import game.Vector;
-
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by jakedavies on 15-02-28.

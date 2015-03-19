@@ -1,11 +1,8 @@
-package ai;
+package recycleBin;
 
 import game.*;
-import ubco.ai.games.Amazon;
 
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**

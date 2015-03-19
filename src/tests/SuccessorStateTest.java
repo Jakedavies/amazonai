@@ -1,15 +1,11 @@
 package tests;
 
-import ai.AmazonHeuristic;
 import ai.AmazonSuccessorByte;
-import ai.AmazonSuccessorFunction;
 //import ai.AmazonSuccessorFunctionVector2;
 import game.*;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static java.lang.System.gc;
 import static java.lang.Thread.sleep;
 
 /**
@@ -45,15 +41,21 @@ for(int i = 0; i < 999; i ++) {
             moves2.addAll(sf.generateTreeLevelThreaded(b2));
             System.out.println(moves2.size());
             count ++;
+            if(moves2.size() == 10000000){
+                System.out.println("-------------------");
+
+                long fin = System.currentTimeMillis();
+                System.out.println(fin - old);
+                System.out.println("-------------------");
+
+            }
 
         }
 
 
-    long fin = System.currentTimeMillis();
 
 
     System.out.println(moves.size());
-    System.out.println(fin - old);
 }
 
 
