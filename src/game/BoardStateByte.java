@@ -80,11 +80,13 @@ public class BoardStateByte {
         stones[lastStone][1] = y;
         lastStone++;
     }
-
-
     public void undoThrowStone(byte x, byte y){
         this.board[x][y] = FREE_SPACE;
         lastStone--;
+    }
+
+    public int getLastStone(){
+        return this.lastStone;
     }
 
 
@@ -217,12 +219,11 @@ public class BoardStateByte {
     /*
         BELOW:
             Translational Methods for GUI
-
             TODO: Create translational methods for GUI
             Re-Add Queen and Vector objects for drawing.
-
-
-
      */
+
+
+
 
 }

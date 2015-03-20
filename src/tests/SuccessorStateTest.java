@@ -3,7 +3,6 @@ package tests;
 import ai.AmazonSuccessorByte;
 //import ai.AmazonSuccessorFunctionVector2;
 import game.*;
-import game.BoardState;
 
 import java.util.ArrayList;
 
@@ -22,6 +21,12 @@ public class SuccessorStateTest {
 
 
     public static void main(String[] args) throws InterruptedException {
+
+
+        GameBoard gb = new GameBoard();
+        gb.pack();
+        gb.setResizable(true);
+        gb.setVisible(true);
 
 
     long old = System.currentTimeMillis();
@@ -43,7 +48,37 @@ public class SuccessorStateTest {
             BoardStateByte v = b2.makeThisMove();
             moves2.addAll(sf.generateTreeLevel(v));
 
+
+
+
         }
+        for(Action b3 : moves2){
+            BoardStateByte v2 = b3.makeThisMove();
+            moves3.addAll(sf.generateTreeLevel(v2));
+            System.out.println(moves3.size());
+            long fin = System.currentTimeMillis();
+            System.out.printf("-----------------------------");
+            System.out.println("TOTAL TIME: " + (fin - old)/1000 + "s");
+        }
+
+
+//        BoardStateByte bnew = moves2.get(1001).makeThisMove();
+//        System.out.println(bnew.getLastStone());
+//        System.out.println("-------------------");
+//
+//        for(int i = 0; i < bnew.getLastStone(); i ++){
+//            System.out.println(bnew.getStones()[i][0]);
+//            System.out.println(bnew.getStones()[i][1]);
+//            System.out.println("-------------------");
+//
+//        }
+//
+//
+//        gb.setNewBoard(bnew);
+
+
+
+
 
         long fin = System.currentTimeMillis();
         System.out.println("TOTAL TIME: " + (fin - old) + "ms");

@@ -1,9 +1,7 @@
 package ai;
 
 import game.Action;
-import game.BoardState;
-import game.BoardStateByte;
-import game.Queen;
+
 
 import java.util.ArrayList;
 
