@@ -76,6 +76,13 @@ public class BoardStateByte {
     }
 
 
+    public void undoThrowStone(byte x, byte y){
+        this.board[x][y] = FREE_SPACE;
+        lastStone--;
+    }
+
+
+
     /**
      * Constructor for the initial board.
      */

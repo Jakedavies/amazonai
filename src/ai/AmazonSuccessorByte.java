@@ -1,5 +1,6 @@
 package ai;
 
+import game.Action;
 import game.BoardState;
 import game.BoardStateByte;
 import game.ByteArrayQueenExpander;
@@ -115,8 +116,8 @@ public class AmazonSuccessorByte {
      * @param board
      * @return
      */
-    public ArrayList<BoardStateByte> generateTreeLevel(BoardStateByte board) {
-        ArrayList<BoardStateByte> level = new ArrayList<>();
+    public ArrayList<Action> generateTreeLevel(BoardStateByte board) {
+        ArrayList<Action> level = new ArrayList<>();
 
         //get the boards Friendly Queens
         byte[][] queens = board.getWhiteQueens();
@@ -124,24 +125,24 @@ public class AmazonSuccessorByte {
         //For each friendly queen.
         for (int i = 0; i < 4; i++) {
             byte[] queen = queens[i];
-
-            //For the queen being evaluated; for each position available to it.
+           //For the queen being evaluated; for each position available to it.
             ArrayList<byte[]> moves = this.getAllDirections(queen, board);
             for(byte[] moveForQueen: moves){
 
                 //Clone the board
-                BoardStateByte movedQueen = new BoardStateByte(board);
-                movedQueen.moveQueen(queen[0], queen[1], moveForQueen[0], moveForQueen[1]); //make the move
+                Action movedQueen = new Action(queen, moveForQueen, board);
+                movedQueen.setUpForThrowEvaluation();
 
                 //For every possible stone throw from that position.
-                ArrayList<byte[]> possibleStoneThrows = this.getAllDirections(moveForQueen, movedQueen);
+                ArrayList<byte[]> possibleStoneThrows = this.getAllDirections(moveForQueen, board);
                     for(byte[] throwPos: possibleStoneThrows) {
 
                         //clone the board.
-                        BoardStateByte thrownStone = new BoardStateByte(movedQueen);
-                        thrownStone.throwStone(throwPos[0], throwPos[1]); //make the throw.
+                        Action thrownStone = new Action(movedQueen);
+                        thrownStone.addThrow(throwPos);
                         level.add(thrownStone); //add the permutation.
                     }
+                movedQueen.tearDownFromThrowEvaluation();
 
                 }
             }
@@ -175,7 +176,6 @@ public class AmazonSuccessorByte {
         level.addAll(t2.start());
         level.addAll(t3.start());
         level.addAll(t4.start());
-
 
 
         return level;

@@ -23,39 +23,32 @@ public class SuccessorStateTest {
     public static void main(String[] args) throws InterruptedException {
 
 
-for(int i = 0; i < 999; i ++) {
     long old = System.currentTimeMillis();
 
     BoardStateByte b = new BoardStateByte();
     AmazonSuccessorByte sf = new AmazonSuccessorByte();
     int count = 0;
 
-    ArrayList<BoardStateByte> moves = new ArrayList<>();
-    ArrayList<BoardStateByte> moves2 = new ArrayList<>();
+    ArrayList<Action> moves = new ArrayList<>();
+    ArrayList<Action> moves2 = new ArrayList<>();
 
 
-    moves.addAll(sf.generateTreeLevelThreaded(b));
+    moves.addAll(sf.generateTreeLevel(b));
 
         count = 1;
-        for(BoardStateByte b2 : moves){
-            moves2.addAll(sf.generateTreeLevelThreaded(b2));
-            System.out.println(moves2.size());
+        for(Action b2 : moves){
+            BoardStateByte v = b2.makeThisMove();
+            moves2.addAll(sf.generateTreeLevel(v));
             count ++;
-            if(moves2.size() == 10000000){
-                System.out.println("-------------------");
-
-                long fin = System.currentTimeMillis();
-                System.out.println(fin - old);
-                System.out.println("-------------------");
-
-            }
-
         }
 
 
 
-
-    System.out.println(moves.size());
+        long fin = System.currentTimeMillis();
+        System.out.println(fin - old);
+        System.out.println("-------------------");
+    System.out.println(moves2.size());
+        System.out.println(moves.size()*moves.size());
 }
 
 
@@ -86,5 +79,5 @@ for(int i = 0; i < 999; i ++) {
 
 
 //        }
-    }
+
 
