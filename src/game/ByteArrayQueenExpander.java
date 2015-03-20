@@ -12,11 +12,11 @@ import java.util.ArrayList;
 public class ByteArrayQueenExpander {
     private byte[] queen;
     private BoardStateByte board;
-    private ArrayList<BoardStateByte> level = new ArrayList<>();
+    private ArrayList<Action> level = new ArrayList<>();
 
     public ByteArrayQueenExpander(BoardStateByte b, byte[] queen) {
         this.queen = queen;
-        this.board = b;
+        this.board = new BoardStateByte(b);
     }
 
 
@@ -32,20 +32,21 @@ public class ByteArrayQueenExpander {
             for(byte[] moveForQueen: moves){
 
                 //Create a clone of the board.
-                BoardStateByte movedQueen = new BoardStateByte(board);
-                movedQueen.moveQueen(queen[0], queen[1], moveForQueen[0], moveForQueen[1]); //make the move.
+                Action movedQueen = new Action(queen,moveForQueen,board);
+                movedQueen.setUpForThrowEvaluation();
 
                 //For every stone that can be thrown from that move.
-                ArrayList<byte[]> possibleStoneThrows = sf.getAllDirections(moveForQueen, movedQueen);
+                ArrayList<byte[]> possibleStoneThrows = sf.getAllDirections(moveForQueen, board);
                 for(byte[] throwPos: possibleStoneThrows) {
 
                     //Make a clone of the board
-                    BoardStateByte thrownStone = new BoardStateByte(movedQueen);
-                    thrownStone.throwStone(throwPos[0], throwPos[1]); //Throw the stone.
+                    Action thrownStone = new Action(movedQueen);
+                    thrownStone.addThrow(throwPos); //Throw the stone.
 
                     //Add to the results set.
                     level.add(thrownStone);
                 }
+                movedQueen.tearDownFromThrowEvaluation();
 
             }
         }
@@ -55,7 +56,7 @@ public class ByteArrayQueenExpander {
      * Start method for queen.
      * @return returns the results of the node expansion.
      */
-    public ArrayList<BoardStateByte> start(){
+    public ArrayList<Action> start(){
         this.run();
         return this.level;
     }

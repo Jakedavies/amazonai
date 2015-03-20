@@ -155,8 +155,8 @@ public class AmazonSuccessorByte {
      * @param board state that is to be expanded.
      * @return arraylist of every possible state reachable from that state.
      */
-    public ArrayList<BoardStateByte> generateTreeLevelThreaded(BoardStateByte board) {
-        ArrayList<BoardStateByte> level = new ArrayList<>();
+    public ArrayList<Action> generateTreeLevelThreaded(BoardStateByte board) {
+        ArrayList<Action> level = new ArrayList<>();
 
         byte[][] queens = board.getWhiteQueens();
 

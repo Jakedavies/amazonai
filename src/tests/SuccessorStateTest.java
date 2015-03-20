@@ -29,8 +29,9 @@ public class SuccessorStateTest {
     AmazonSuccessorByte sf = new AmazonSuccessorByte();
     int count = 0;
 
-    ArrayList<Action> moves = new ArrayList<>();
-    ArrayList<Action> moves2 = new ArrayList<>();
+        ArrayList<Action> moves = new ArrayList<>();
+        ArrayList<Action> moves2 = new ArrayList<>();
+        ArrayList<Action> moves3 = new ArrayList<>();
 
 
     moves.addAll(sf.generateTreeLevel(b));
@@ -38,17 +39,22 @@ public class SuccessorStateTest {
         count = 1;
         for(Action b2 : moves){
             BoardStateByte v = b2.makeThisMove();
-            moves2.addAll(sf.generateTreeLevel(v));
-            count ++;
+            moves2.addAll(sf.generateTreeLevelThreaded(v));
+
+//            for(Action b3: moves2){
+//                BoardStateByte v2 = b3.makeThisMove();
+//                moves3.addAll(sf.generateTreeLevelThreaded(v));
+//                System.out.println(moves3.size());
+//
+//            }
+
         }
-
-
 
         long fin = System.currentTimeMillis();
         System.out.println(fin - old);
         System.out.println("-------------------");
     System.out.println(moves2.size());
-        System.out.println(moves.size()*moves.size());
+        System.out.println(moves.size() * moves.size());
 }
 
 
