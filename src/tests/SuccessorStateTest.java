@@ -3,6 +3,7 @@ package tests;
 import ai.AmazonSuccessorByte;
 //import ai.AmazonSuccessorFunctionVector2;
 import game.*;
+import game.BoardState;
 
 import java.util.ArrayList;
 
@@ -38,13 +39,17 @@ public class SuccessorStateTest {
 
         count = 1;
         for(Action b2 : moves){
+
+//            for(byte[] bt : b2.getParent().getStones()){
+//                System.out.println(bt[0] + "," + bt[1]);
+//
+//            }
+
             BoardStateByte v = b2.makeThisMove();
-            moves2.addAll(sf.generateTreeLevelThreaded(v));
+            moves2.addAll(sf.generateTreeLevel(v));
 
 //            for(Action b3: moves2){
-//                BoardStateByte v2 = b3.makeThisMove();
-//                moves3.addAll(sf.generateTreeLevelThreaded(v));
-//                System.out.println(moves3.size());
+//                System.out.println(b3.getValue());
 //
 //            }
 

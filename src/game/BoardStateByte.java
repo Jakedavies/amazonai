@@ -20,6 +20,12 @@ public class BoardStateByte {
     private byte[][] stones = new byte[92][2];
     private int lastStone = 0;
 
+    public byte[][] getStones(){
+        return this.stones;
+    }
+
+
+
     /**
      * Overloaded constructor to be used to generate a new state.
      * Takes a parent board state and creates an identicle  clone of that board.

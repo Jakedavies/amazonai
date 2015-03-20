@@ -1,5 +1,6 @@
 package game;
 
+
 import ai.AmazonHeuristic;
 
 /**
@@ -24,6 +25,22 @@ public class Action {
         this.parent = parent;
 
     }
+
+
+    public int getValue(){
+        AmazonHeuristic amazonHeuristic= new AmazonHeuristic();
+        return amazonHeuristic.getValue(this);
+    }
+
+
+    public byte getXFinal(){
+        return this.xFinal;
+    }
+    public byte getyFinal(){
+        return this.yFinal;
+    }
+
+
     public Action(Action parent){
         this.parent = parent.parent;
         this.xOriginal = parent.xOriginal;
@@ -32,6 +49,13 @@ public class Action {
         this.yFinal = parent.yFinal;
     }
 
+    public BoardStateByte getParent(){
+        return this.parent;
+    }
+
+    public byte[] getStoneThrow(){
+        return this.stoneThrow;
+    }
 
 
     public BoardStateByte makeThisMove(){
