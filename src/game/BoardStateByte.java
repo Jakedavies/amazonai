@@ -214,7 +214,15 @@ public class BoardStateByte {
     }
 
 
+    /*
+        BELOW:
+            Translational Methods for GUI
+
+            TODO: Create translational methods for GUI
+            Re-Add Queen and Vector objects for drawing.
 
 
+
+     */
 
 }

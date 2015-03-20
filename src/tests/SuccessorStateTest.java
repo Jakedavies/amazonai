@@ -40,26 +40,16 @@ public class SuccessorStateTest {
         count = 1;
         for(Action b2 : moves){
 
-//            for(byte[] bt : b2.getParent().getStones()){
-//                System.out.println(bt[0] + "," + bt[1]);
-//
-//            }
-
             BoardStateByte v = b2.makeThisMove();
             moves2.addAll(sf.generateTreeLevel(v));
-
-//            for(Action b3: moves2){
-//                System.out.println(b3.getValue());
-//
-//            }
 
         }
 
         long fin = System.currentTimeMillis();
-        System.out.println(fin - old);
+        System.out.println("TOTAL TIME: " + (fin - old) + "ms");
         System.out.println("-------------------");
-    System.out.println(moves2.size());
-        System.out.println(moves.size() * moves.size());
+        System.out.println("ACTUAL VALUE CALCULATED: " + moves2.size());
+        System.out.println("APPROXIMATED VALUE OF L1 SQUARED:  " +  (moves.size() * moves.size()));
 }
 
 
