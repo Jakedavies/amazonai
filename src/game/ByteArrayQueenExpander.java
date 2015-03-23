@@ -50,8 +50,6 @@ public class ByteArrayQueenExpander {
 
             }
         }
-
-
     /**
      * Start method for queen.
      * @return returns the results of the node expansion.
