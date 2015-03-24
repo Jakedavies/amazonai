@@ -35,8 +35,9 @@ public class AmazonHeuristic {
         pos[0] = state.getXFinal();
         pos[1] = state.getyFinal();
 
+
         //Use the successor function to show the number of moves that are available to the queen.
-        ArrayList<Action> list = sf.generateTreeLevel(state.getParent());
+        ArrayList<Action> list = sf.generateTreeLevel(state.getParent(), true);
 
         //Undo the stones throw
         state.getParent().undoThrowStone(stoneX,stoneY);

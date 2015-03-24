@@ -9,11 +9,11 @@ public class BoardStateByte {
 
 
 
-    private  byte[][] board = new byte[10][10];
-    private  byte FREE_SPACE = 0;
-    private byte WHITE_QUEEN = 1;
-    private byte BLACK_QUEEN = 2;
-    private byte STONE = 3;
+    private final byte[][] board = new byte[10][10];
+    private final byte FREE_SPACE = 0;
+    private final byte WHITE_QUEEN = 1;
+    private final byte BLACK_QUEEN = 2;
+    private final byte STONE = 3;
 
     private byte[][] whiteQueens = new byte[4][2];
     private byte[][] blackQueens = new byte[4][2];
@@ -206,11 +206,8 @@ public class BoardStateByte {
      * @return boolean true if it is a valid move.
      */
     public boolean isValidPosition(byte x, byte y){
-        if(x >= 0 && x < 10){
-            if(y >= 0 && y < 10){
-                return board[x][y] == FREE_SPACE;
-            }
-            else return false;
+        if(x >= 0 && x < 10) {
+            return y >= 0 && y < 10 && board[x][y] == FREE_SPACE;
         }
         else return false;
     }

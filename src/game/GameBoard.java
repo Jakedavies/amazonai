@@ -24,7 +24,6 @@ public class GameBoard extends JFrame {
 
     public void setNewBoard(BoardStateByte state){
         this.state = state;
-        this.reDraw();
     }
 
 
@@ -42,9 +41,11 @@ public class GameBoard extends JFrame {
 
 
     // Set up board
-    public GameBoard(){
+    public GameBoard(boolean isnew){
 
-        state = new BoardStateByte();
+        if(isnew) {
+            state = new BoardStateByte();
+        }
 
         //Set up board
         Board = new JPanel();
@@ -56,7 +57,7 @@ public class GameBoard extends JFrame {
         /*
             Draw the squares for the chess board.
          */
-        for (int i = 0; i < 99; i++) {
+        for (int i = 0; i < 100; i++) {
             JPanel square = new JPanel(new BorderLayout());
             Board.add(square);
 
@@ -74,7 +75,6 @@ public class GameBoard extends JFrame {
         //Create split pane
         Pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, Board, console);
         Pane.setPreferredSize(paneSize);
-        reDraw();
 
 
 
@@ -135,7 +135,6 @@ public class GameBoard extends JFrame {
 
             JPanel panel = (JPanel) Board.getComponent(sx+sy*10);
             panel.add(new JLabel(new ImageIcon(icWB)));
-
         }
 
 

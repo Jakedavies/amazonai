@@ -115,11 +115,17 @@ public class AmazonSuccessorByte {
      * @param board
      * @return
      */
-    public ArrayList<Action> generateTreeLevel(BoardStateByte board) {
+    public ArrayList<Action> generateTreeLevel(BoardStateByte board, boolean friendly) {
         ArrayList<Action> level = new ArrayList<>();
 
-        //get the boards Friendly Queens
-        byte[][] queens = board.getWhiteQueens();
+        byte[][] queens;
+
+        if(friendly) {
+            queens = board.getWhiteQueens();
+        }
+        else{
+            queens = board.getBlackQueens();
+        }
 
         //For each friendly queen.
         for (int i = 0; i < 4; i++) {
@@ -135,7 +141,6 @@ public class AmazonSuccessorByte {
                 //For every possible stone throw from that position.
                 ArrayList<byte[]> possibleStoneThrows = this.getAllDirections(moveForQueen, board);
                     for(byte[] throwPos: possibleStoneThrows) {
-
                         //clone the board.
                         Action thrownStone = new Action(movedQueen);
                         thrownStone.addThrow(throwPos);
@@ -153,10 +158,17 @@ public class AmazonSuccessorByte {
      * @param board state that is to be expanded.
      * @return arraylist of every possible state reachable from that state.
      */
-    public ArrayList<Action> generateTreeLevelThreaded(BoardStateByte board) {
-        ArrayList<Action> level = new ArrayList<>();
+    public ArrayList<Action> generateTreeLevelThreaded(BoardStateByte board, boolean friendly) {
 
-        byte[][] queens = board.getWhiteQueens();
+        ArrayList<Action> level = new ArrayList<>();
+        byte[][] queens;
+
+        if(friendly) {
+           queens = board.getWhiteQueens();
+        }
+        else{
+            queens = board.getBlackQueens();
+        }
 
             /*
                 For every queen that is in the state, create a new thread.

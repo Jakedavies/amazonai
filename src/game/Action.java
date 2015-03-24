@@ -5,6 +5,7 @@ import ai.AmazonHeuristic;
 import ai.AmazonSuccessorByte;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by nolan on 19/03/15.
@@ -12,14 +13,15 @@ import java.util.ArrayList;
  */
 public class Action {
 
-
-    private BoardStateByte parent;
-    private byte xOriginal;
-    private byte yOriginal;
-    private byte xFinal;
-    private byte yFinal;
+    private final BoardStateByte parent;
+    private final byte xOriginal;
+    private final byte yOriginal;
+    private final byte xFinal;
+    private final byte yFinal;
     private ArrayList<Action> children;
     private byte[] stoneThrow;
+    private int value = -Integer.MAX_VALUE;
+
 
 
     /**
@@ -42,10 +44,13 @@ public class Action {
         //Set the parent state.
         this.parent = parent;
     }
-    public void generateChildren()
+
+    public void generateChildren(boolean friendly)
     {
         AmazonSuccessorByte success = new AmazonSuccessorByte();
-        children = success.generateTreeLevel(this.makeThisMove());
+        if(children == null) {
+            children = success.generateTreeLevel(this.makeThisMove(), friendly);
+        }
     }
     public ArrayList<Action> getChildActions()
     {
@@ -57,9 +62,15 @@ public class Action {
      * @return: Returns the value of the potential state.
      */
     public int getValue(){
-        AmazonHeuristic amazonHeuristic= new AmazonHeuristic();
-        return amazonHeuristic.getValue(this);
+        if(value == -Integer.MAX_VALUE) {
+            AmazonHeuristic amazonHeuristic = new AmazonHeuristic();
+            this.value = amazonHeuristic.getValue(this);
+        }
+            return this.value;
     }
+
+
+
 
 
     /**
@@ -139,6 +150,20 @@ public class Action {
         this.stoneThrow = throwPosition;
     }
 
+
+    public static final Comparator<Action> ID_ASC = new Comparator<Action>() {
+        public int compare(Action a1, Action a2) {
+
+            if(a1.getValue()>a2.getValue()){
+                return -1;
+            }
+            if(a1.getValue() == a2.getValue()){
+                return 0;
+            }
+            else return 1;
+            // I use explicit -1 to be clear that the order is reversed
+        }
+    };
 
 //End of class
 }
