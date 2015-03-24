@@ -8,18 +8,48 @@ import java.util.ArrayList;
 * Created by nolan on 3/24/2015.
 */
 public class IDFSThreaded implements Runnable{
-    ArrayList<Action> generated = new ArrayList<>();
     final long startTime = System.currentTimeMillis();
     int global_count = 0;
     MinMaxTree tree;
     ArrayList<Action> childActions;
     Action bestMove;
-    boolean Forwards = false;
-
-    public IDFSThreaded(MinMaxTree m, boolean Forwards){
+    int quartile;
+    public IDFSThreaded(MinMaxTree m, int quartile){
         this.tree = m;
+        this.quartile = quartile;
         this.childActions = m.getChildActions();
-        this.Forwards = Forwards;
+        int to = childActions.size()/4;
+
+        ArrayList<Action> examine = new ArrayList<>();
+
+        switch(quartile){
+            case 1:
+                for(int i = 0; i < to; i ++){
+                    examine.add(childActions.get(i));
+                }
+                break;
+            case 2:
+                for(int i = to; i < to*2; i ++ ){
+                    examine.add(childActions.get(i));
+                }
+                break;
+            case 3:
+                for(int i = to*2; i < to*3; i ++){
+                    examine.add(childActions.get(i));
+                }
+                break;
+            case 4:
+                for(int i = to*3; i < childActions.size(); i ++){
+                    examine.add(childActions.get(i));
+                }
+                break;
+
+
+        }
+        this.childActions = examine;
+
+
+
 
 
     }
@@ -32,24 +62,11 @@ public class IDFSThreaded implements Runnable{
         Action currentMaxAction = null;
 
 
-        int to = childActions.size()/2;
 
 
-        if(Forwards){
-            for(int i = to; i < childActions.size(); i ++){
-                childActions.remove(i);
-            }
-        }
-        else{
-            for(int i = 0; i < to; i ++){
-                childActions.remove(i);
-            }
-        }
-        boolean halt = false;
 
         for(Action childAction : childActions)
         {
-
 
             long currTime = System.currentTimeMillis();
             if(currTime-startTime > 27000){
@@ -63,13 +80,11 @@ public class IDFSThreaded implements Runnable{
             Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
 
             if(currentChild != null){
-                System.out.println("Current max is "+(currentCost2+currentChild.getValue(true)));//TRUE FLAG ADDED FOR TESTING
 
                 if(currentMax<(currentCost2+currentChild.getValue(true))) //TRUE FLAG ADDED FOR TESTING
                 {
                     currentMax = currentCost2+currentChild.getValue(true); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = currentChild;
-                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getXFinal()+","+currentMaxAction.getyFinal());
                 }
             }
         }
@@ -83,7 +98,6 @@ public class IDFSThreaded implements Runnable{
                 }
             }
             global_count++;
-            System.out.println("No child actions found, best action for node " + global_count + " was destination " + currentMaxAction.getXFinal() + "," + currentMaxAction.getyFinal());
         }
         return currentMaxAction;
     }

@@ -10,6 +10,7 @@ import java.util.*;
  * Created by jakedavies on 15-03-22.
  */
 public class MinMaxTree {
+    ArrayList<Action> generated = new ArrayList<>();
     final long startTime = System.currentTimeMillis();
     AmazonSuccessorByte successorByte;
     BoardStateByte initialBoardState;
@@ -21,12 +22,16 @@ public class MinMaxTree {
         return this.actions;
     }
 
+    public ArrayList<Action> getGenerated(){
+        return this.generated;
+    }
+
 
     public MinMaxTree(int depth, BoardStateByte initialBoardState)
     {
         initialBoardState = (initialBoardState != null ? initialBoardState: new BoardStateByte());
         successorByte = new AmazonSuccessorByte();
-        actions = successorByte.generateTreeLevel(initialBoardState, true); //TRUE FLAG ADDED FOR TESTING
+        actions = successorByte.generateTreeLevelThreaded(initialBoardState, true); //TRUE FLAG ADDED FOR TESTING
 //        actions.sort(Action.ID_ASC_FRIENDLY); //Friendly sort... Only friendly queens!
         this.depth = depth;
         generateToDepth(actions,this.depth,1);
@@ -117,17 +122,34 @@ public class MinMaxTree {
     }
 
     public Action getBestThreaded(){
-        IDFSThreaded t1 = new IDFSThreaded(this, true);
-        IDFSThreaded t2 = new IDFSThreaded(this, false);
+        IDFSThreaded t1 = new IDFSThreaded(this, 1);
+        IDFSThreaded t2 = new IDFSThreaded(this, 2);
+        IDFSThreaded t3 = new IDFSThreaded(this, 3);
+        IDFSThreaded t4 = new IDFSThreaded(this, 4);
 
         Action a1 = t1.start();
         Action a2 = t2.start();
+        Action a3 = t3.start();
+        Action a4 = t4.start();
 
+        Action l1;
         if(a1.getValue(true) > a2.getValue(true)){
-            return a1;
+            l1 = a1;
         }
-        else return a2;
+        else l1 = a2;
+        Action l2;
+        if(a3.getValue(true) > a4.getValue(true)){
+            l2 = a3;
+        }
+        else{
+            l2 = a4;
+        }
 
+        if(l1.getValue(true)>l2.getValue(true)){
+            return l1;
+        }
+
+    return l2;
 
     }
 
