@@ -2,6 +2,7 @@ package ai;
 
 import game.Action;
 import game.BoardStateByte;
+import game.IDFSThreaded;
 
 import java.util.*;
 
@@ -15,6 +16,12 @@ public class MinMaxTree {
     ArrayList<Action> actions;
     int depth;
     int global_count = 0;
+
+    public ArrayList<Action> getChildActions(){
+        return this.actions;
+    }
+
+
     public MinMaxTree(int depth, BoardStateByte initialBoardState)
     {
         initialBoardState = (initialBoardState != null ? initialBoardState: new BoardStateByte());
@@ -77,7 +84,10 @@ public class MinMaxTree {
                 System.out.println(currTime-startTime);
                 break;
             }
-            int currentCost2 = currentCost+childAction.getValue(true);//TRUE FLAG ADDED FOR TESTING
+            int currentCost2 = currentCost+childAction.getValue(true); //TRUE FLAG ADDED FOR TESTING
+//            ArrayList<Action> l = childAction.getChildActions();
+//            l.sort(Action.ID_ASC_FRIENDLY);
+//            Action currentChild = l.get(0);
             Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
 
             if(currentChild != null){
@@ -105,4 +115,21 @@ public class MinMaxTree {
         }
         return currentMaxAction;
     }
+
+    public Action getBestThreaded(){
+        IDFSThreaded t1 = new IDFSThreaded(this, true);
+        IDFSThreaded t2 = new IDFSThreaded(this, false);
+
+        Action a1 = t1.start();
+        Action a2 = t2.start();
+
+        if(a1.getValue(true) > a2.getValue(true)){
+            return a1;
+        }
+        else return a2;
+
+
+    }
+
+
 }
