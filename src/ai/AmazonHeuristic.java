@@ -19,7 +19,7 @@ public class AmazonHeuristic {
      * @param state Action state to be evaluated (potential move)
      * @return integer of the value of that move.
      */
-    public int getValue(Action state){
+    public int getValue(Action state, boolean friendly){
         //Manually perform set up on state. (THIS MOVES THE ACTUAL QUEEN IN PARENT STATE)
         state.setUpForThrowEvaluation();
 
@@ -37,7 +37,18 @@ public class AmazonHeuristic {
 
 
         //Use the successor function to show the number of moves that are available to the queen.
-        ArrayList<Action> list = sf.generateTreeLevel(state.getParent(), true);
+        byte[][] Queens;
+        if(friendly){
+            Queens = state.getParent().getWhiteQueens();
+        }
+        else{
+            Queens = state.getParent().getBlackQueens();
+        }
+
+        ArrayList<byte[]> moves = new ArrayList<>();
+        for(int i = 0; i < 4; i ++){
+            moves.addAll(sf.getAllDirections(Queens[i], state.getParent()));
+        }
 
         //Undo the stones throw
         state.getParent().undoThrowStone(stoneX,stoneY);
@@ -45,7 +56,7 @@ public class AmazonHeuristic {
         //Manually perform the tear down on the state. (THIS MOVES THE ACTUAL QUEEN IN THE PARENT STATE BACK)
         state.tearDownFromThrowEvaluation();
 
-        return list.size();
+        return moves.size();
     }
 
 

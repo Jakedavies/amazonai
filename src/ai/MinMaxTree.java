@@ -14,23 +14,18 @@ public class MinMaxTree {
     ArrayList<Action> actions;
     int depth;
     int global_count = 0;
-    long timeStart;
-
     public MinMaxTree(int depth, BoardStateByte initialBoardState)
     {
-        timeStart = System.currentTimeMillis();
         initialBoardState = (initialBoardState != null ? initialBoardState: new BoardStateByte());
         successorByte = new AmazonSuccessorByte();
-        actions = successorByte.generateTreeLevel(initialBoardState, true);
+        actions = successorByte.generateTreeLevel(initialBoardState, true); //TRUE FLAG ADDED FOR TESTING
         this.depth = depth;
         generateToDepth(actions,this.depth,1);
     }
-
     public ArrayList<Action> getRootLevelActions()
     {
         return actions;
     }
-
     public ArrayList<Action> generateToDepth(ArrayList<Action> actions,int depth, int level){
         if(depth == level){
             return actions;
@@ -38,8 +33,8 @@ public class MinMaxTree {
         else{
             for(Action action : actions)
             {
-                action.generateChildren(true);
-              //  generateToDepth(action.getChildActions(), depth, level + 1);
+                action.generateChildren(true); //TRUE FLAG ADDED FOR TESTING
+                generateToDepth(action.getChildActions(), depth, level + 1);
             }
         }
         return actions;
@@ -61,12 +56,10 @@ public class MinMaxTree {
     }
     public Action getBestMove()
     {
-
         Action bestMove = IDFS(0,actions);
         System.out.println("Best move is "+bestMove.getXFinal()+","+bestMove.getyFinal());
         return  bestMove;
     }
-
     public Action IDFS(int currentCost, ArrayList<Action> childActions)
     {
         if(childActions == null) {
@@ -74,31 +67,17 @@ public class MinMaxTree {
         }
         int currentMax = Integer.MIN_VALUE;
         Action currentMaxAction = null;
+        for(Action childAction : childActions)
+        {
+            int currentCost2 = currentCost+childAction.getValue(true);//TRUE FLAG ADDED FOR TESTING
+            Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
 
-       childActions.sort(Action.ID_ASC);
-
-
-        for(Action childAction : childActions) {
-
-            long lateTime = System.currentTimeMillis();
-            System.out.println(lateTime-timeStart);
-
-            if((lateTime-timeStart) > 25000){
-                System.out.println(lateTime-timeStart);
-                break;
-            }
-
-            int childActionValue = childAction.getValue();
-            int currentCost2 = currentCost+ childActionValue;
-            ArrayList<Action> getChild = childAction.getChildActions();
-
-            Action currentChild = IDFS(currentCost2+childActionValue, getChild);
             if(currentChild != null){
-                int currentChildValue = currentChild.getValue();
-                System.out.println("Current max is "+(currentCost2+currentChildValue));
-                if(currentMax<(currentCost2+currentChildValue))
+                System.out.println("Current max is "+(currentCost2+currentChild.getValue(true)));//TRUE FLAG ADDED FOR TESTING
+
+                if(currentMax<(currentCost2+currentChild.getValue(true))) //TRUE FLAG ADDED FOR TESTING
                 {
-                    currentMax = currentCost2+currentChildValue;
+                    currentMax = currentCost2+currentChild.getValue(true); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = currentChild;
                     System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getXFinal()+","+currentMaxAction.getyFinal());
                 }
@@ -108,10 +87,8 @@ public class MinMaxTree {
             currentMax = Integer.MIN_VALUE;
             int loop_count = 0;
             for (Action childAction : childActions) {
-                int childActionValue = childAction.getValue();
-
-                if (childActionValue > currentMax) {
-                    currentMax = childActionValue;
+                if (childAction.getValue(true) > currentMax) { //TRUE FLAG ADDED FOR TESTING
+                    currentMax = childAction.getValue(true); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = childAction;
                 }
             }
@@ -120,5 +97,4 @@ public class MinMaxTree {
         }
         return currentMaxAction;
     }
-
 }
