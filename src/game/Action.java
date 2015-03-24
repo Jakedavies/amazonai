@@ -49,7 +49,7 @@ public class Action {
     {
         AmazonSuccessorByte success = new AmazonSuccessorByte();
         if(children == null) {
-            children = success.generateTreeLevelThreaded(this.makeThisMove(), friendly);
+            children = success.generateTreeLevel(this.makeThisMove(), friendly);
         }
     }
     public ArrayList<Action> getChildActions()

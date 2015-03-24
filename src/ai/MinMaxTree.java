@@ -19,6 +19,7 @@ public class MinMaxTree {
         initialBoardState = (initialBoardState != null ? initialBoardState: new BoardStateByte());
         successorByte = new AmazonSuccessorByte();
         actions = successorByte.generateTreeLevel(initialBoardState, true); //TRUE FLAG ADDED FOR TESTING
+//        actions.sort(Action.ID_ASC_FRIENDLY); //Friendly sort... Only friendly queens!
         this.depth = depth;
         generateToDepth(actions,this.depth,1);
     }
