@@ -14,9 +14,11 @@ public class MinMaxTree {
     ArrayList<Action> actions;
     int depth;
     int global_count = 0;
+    long timeStart;
 
     public MinMaxTree(int depth, BoardStateByte initialBoardState)
     {
+        timeStart = System.currentTimeMillis();
         initialBoardState = (initialBoardState != null ? initialBoardState: new BoardStateByte());
         successorByte = new AmazonSuccessorByte();
         actions = successorByte.generateTreeLevel(initialBoardState, true);
@@ -59,12 +61,12 @@ public class MinMaxTree {
     }
     public Action getBestMove()
     {
+
         Action bestMove = IDFS(0,actions);
         System.out.println("Best move is "+bestMove.getXFinal()+","+bestMove.getyFinal());
         return  bestMove;
     }
 
-    int countOfNodes = 0;
     public Action IDFS(int currentCost, ArrayList<Action> childActions)
     {
         if(childActions == null) {
@@ -73,14 +75,19 @@ public class MinMaxTree {
         int currentMax = Integer.MIN_VALUE;
         Action currentMaxAction = null;
 
-        ArrayList<Action> childActions2 = new ArrayList<>();
        childActions.sort(Action.ID_ASC);
 
-        for(int i =0; i < 40; i ++){
-            childActions2.add(childActions.get(i));
-        }
 
-        for(Action childAction : childActions2) {
+        for(Action childAction : childActions) {
+
+            long lateTime = System.currentTimeMillis();
+            System.out.println(lateTime-timeStart);
+
+            if((lateTime-timeStart) > 25000){
+                System.out.println(lateTime-timeStart);
+                break;
+            }
+
             int childActionValue = childAction.getValue();
             int currentCost2 = currentCost+ childActionValue;
             ArrayList<Action> getChild = childAction.getChildActions();

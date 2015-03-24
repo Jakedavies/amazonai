@@ -17,7 +17,6 @@ public class MinMaxTreeTest {
         BoardStateByte b = new BoardStateByte();
         BoardStateByte bcontinued = null;
 
-for(int i = 0 ; i < 5; i ++) {
 
     long timeOld = System.currentTimeMillis();
     MinMaxTree tree;
@@ -44,7 +43,7 @@ for(int i = 0 ; i < 5; i ++) {
     gb2.setNewBoard(bestMove.getParent());
     bcontinued = bestMove.getParent();
     gb2.reDraw();
-}
+
 
 
     }
