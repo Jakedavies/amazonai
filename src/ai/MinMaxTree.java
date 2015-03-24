@@ -9,6 +9,7 @@ import java.util.*;
  * Created by jakedavies on 15-03-22.
  */
 public class MinMaxTree {
+    final long startTime = System.currentTimeMillis();
     AmazonSuccessorByte successorByte;
     BoardStateByte initialBoardState;
     ArrayList<Action> actions;
@@ -61,6 +62,7 @@ public class MinMaxTree {
         System.out.println("Best move is "+bestMove.getXFinal()+","+bestMove.getyFinal());
         return  bestMove;
     }
+
     public Action IDFS(int currentCost, ArrayList<Action> childActions)
     {
         if(childActions == null) {
@@ -70,6 +72,11 @@ public class MinMaxTree {
         Action currentMaxAction = null;
         for(Action childAction : childActions)
         {
+            long currTime = System.currentTimeMillis();
+            if(currTime-startTime > 27000){
+                System.out.println(currTime-startTime);
+                break;
+            }
             int currentCost2 = currentCost+childAction.getValue(true);//TRUE FLAG ADDED FOR TESTING
             Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
 
