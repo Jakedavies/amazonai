@@ -155,24 +155,14 @@ public class MinMaxTree {
         	Action a3 = (Action) futures.get(2).get();
         	Action a4 = (Action) futures.get(3).get();
 
-    		Action l1;
-    		if(a1.getValue(true) > a2.getValue(true)){
-    			l1 = a1;
-    		}
-    		else l1 = a2;
-    		Action l2;
-    		if(a3.getValue(true) > a4.getValue(true)){
-    			l2 = a3;
-    		}
-    		else{
-    			l2 = a4;
-    		}
+            ArrayList<Action> l = new ArrayList<>();
+            l.add(a1);
+            l.add(a2);
+            l.add(a3);
+            l.add(a4);
+            l.sort(Action.ID_ASC_FRIENDLY);
 
-    		if(l1.getValue(true)>l2.getValue(true)){
-    			return l1;
-    		}
-
-    		return l2;
+    		return l.get(0);
 
     	} catch (InterruptedException |ExecutionException  e) {
     		e.printStackTrace();

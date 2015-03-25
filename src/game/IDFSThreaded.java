@@ -50,16 +50,15 @@ public class IDFSThreaded implements Callable<Action>{
         this.childActions = examine;
     }
 
-    public Action IDFS(int currentCost, ArrayList<Action> childActions){
-        if(childActions == null || childActions.size() == 0) {
+    public Action IDFS(int currentCost, ArrayList<Action> childActions)
+    {
+        if(childActions == null) {
             return null;
         }
         int currentMax = Integer.MIN_VALUE;
         Action currentMaxAction = null;
-
         for(Action childAction : childActions)
         {
-
             long currTime = System.currentTimeMillis();
             if(currTime-startTime > 27000){
                 System.out.println(currTime-startTime);
@@ -72,11 +71,13 @@ public class IDFSThreaded implements Callable<Action>{
             Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
 
             if(currentChild != null){
+//                System.out.println("Current max is "+(currentCost2+currentChild.getValue(true)));//TRUE FLAG ADDED FOR TESTING
 
                 if(currentMax<(currentCost2+currentChild.getValue(true))) //TRUE FLAG ADDED FOR TESTING
                 {
                     currentMax = currentCost2+currentChild.getValue(true); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = currentChild;
+//                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getXFinal()+","+currentMaxAction.getyFinal());
                 }
             }
         }
@@ -90,6 +91,7 @@ public class IDFSThreaded implements Callable<Action>{
                 }
             }
             global_count++;
+//            System.out.println("No child actions found, best action for node " + global_count + " was destination " + currentMaxAction.getXFinal() + "," + currentMaxAction.getyFinal());
         }
         return currentMaxAction;
     }
