@@ -5,6 +5,11 @@ import game.BoardStateByte;
 import game.IDFSThreaded;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by jakedavies on 15-03-22.
@@ -74,6 +79,13 @@ public class MinMaxTree {
         System.out.println("Best move is "+bestMove.getXFinal()+","+bestMove.getyFinal());
         return  bestMove;
     }
+    
+    public Action getBestMoveThreaded()
+    {
+        Action bestMove = getBestThreaded();
+        System.out.println("Best move Threaded is "+bestMove.getXFinal()+","+bestMove.getyFinal());
+        return  bestMove;
+    }
 
     public Action IDFS(int currentCost, ArrayList<Action> childActions)
     {
@@ -96,13 +108,13 @@ public class MinMaxTree {
             Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
 
             if(currentChild != null){
-                System.out.println("Current max is "+(currentCost2+currentChild.getValue(true)));//TRUE FLAG ADDED FOR TESTING
+//                System.out.println("Current max is "+(currentCost2+currentChild.getValue(true)));//TRUE FLAG ADDED FOR TESTING
 
                 if(currentMax<(currentCost2+currentChild.getValue(true))) //TRUE FLAG ADDED FOR TESTING
                 {
                     currentMax = currentCost2+currentChild.getValue(true); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = currentChild;
-                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getXFinal()+","+currentMaxAction.getyFinal());
+//                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getXFinal()+","+currentMaxAction.getyFinal());
                 }
             }
         }
@@ -116,41 +128,57 @@ public class MinMaxTree {
                 }
             }
             global_count++;
-            System.out.println("No child actions found, best action for node " + global_count + " was destination " + currentMaxAction.getXFinal() + "," + currentMaxAction.getyFinal());
+//            System.out.println("No child actions found, best action for node " + global_count + " was destination " + currentMaxAction.getXFinal() + "," + currentMaxAction.getyFinal());
         }
         return currentMaxAction;
     }
 
     public Action getBestThreaded(){
-        IDFSThreaded t1 = new IDFSThreaded(this, 1);
-        IDFSThreaded t2 = new IDFSThreaded(this, 2);
-        IDFSThreaded t3 = new IDFSThreaded(this, 3);
-        IDFSThreaded t4 = new IDFSThreaded(this, 4);
+    	ExecutorService executorService = Executors.newFixedThreadPool(4);
+    	
+    	List<Callable<Action>> threads = new ArrayList<>();
+    	Callable<Action> t1 = new IDFSThreaded(this, 1);
+    	Callable<Action> t2 = new IDFSThreaded(this, 2);
+    	Callable<Action> t3 = new IDFSThreaded(this, 3);
+    	Callable<Action> t4 = new IDFSThreaded(this, 4);
+    	
+    	threads.add(t1);
+    	threads.add(t2);
+    	threads.add(t3);
+    	threads.add(t4);
+        	
+    	try {
+        	List<Future<Action>> futures = executorService.invokeAll(threads);
+        	System.out.println(futures.size());
+        	Action a1 = (Action) futures.get(0).get();
+        	Action a2 = (Action) futures.get(1).get();
+        	Action a3 = (Action) futures.get(2).get();
+        	Action a4 = (Action) futures.get(3).get();
 
-        Action a1 = t1.start();
-        Action a2 = t2.start();
-        Action a3 = t3.start();
-        Action a4 = t4.start();
+    		Action l1;
+    		if(a1.getValue(true) > a2.getValue(true)){
+    			l1 = a1;
+    		}
+    		else l1 = a2;
+    		Action l2;
+    		if(a3.getValue(true) > a4.getValue(true)){
+    			l2 = a3;
+    		}
+    		else{
+    			l2 = a4;
+    		}
 
-        Action l1;
-        if(a1.getValue(true) > a2.getValue(true)){
-            l1 = a1;
-        }
-        else l1 = a2;
-        Action l2;
-        if(a3.getValue(true) > a4.getValue(true)){
-            l2 = a3;
-        }
-        else{
-            l2 = a4;
-        }
+    		if(l1.getValue(true)>l2.getValue(true)){
+    			return l1;
+    		}
 
-        if(l1.getValue(true)>l2.getValue(true)){
-            return l1;
-        }
+    		return l2;
 
-    return l2;
-
+    	} catch (InterruptedException |ExecutionException  e) {
+    		e.printStackTrace();
+    	}   
+    	
+    	return null;
     }
 
 

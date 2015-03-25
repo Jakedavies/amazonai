@@ -3,11 +3,12 @@ package game;
 import ai.MinMaxTree;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 /**
 * Created by nolan on 3/24/2015.
 */
-public class IDFSThreaded implements Runnable{
+public class IDFSThreaded implements Callable<Action>{
     final long startTime = System.currentTimeMillis();
     int global_count = 0;
     MinMaxTree tree;
@@ -47,11 +48,6 @@ public class IDFSThreaded implements Runnable{
 
         }
         this.childActions = examine;
-
-
-
-
-
     }
 
     public Action IDFS(int currentCost, ArrayList<Action> childActions){
@@ -60,10 +56,6 @@ public class IDFSThreaded implements Runnable{
         }
         int currentMax = Integer.MIN_VALUE;
         Action currentMaxAction = null;
-
-
-
-
 
         for(Action childAction : childActions)
         {
@@ -110,6 +102,11 @@ public class IDFSThreaded implements Runnable{
     public void run(){
             bestMove = this.IDFS(0,childActions);
     }
+
+	@Override
+	public Action call() throws Exception {
+		return this.IDFS(0,childActions);
+	}
 
 
 
