@@ -80,9 +80,9 @@ public class MinMaxTree {
         return  bestMove;
     }
     
-    public Action getBestMoveThreaded()
+    public Action getBestMoveThreaded(int threadCount)
     {
-        Action bestMove = getBestThreaded();
+        Action bestMove = getBestThreaded(threadCount);
         System.out.println("Best move Threaded is "+bestMove.getXFinal()+","+bestMove.getyFinal());
         return  bestMove;
     }
@@ -133,33 +133,25 @@ public class MinMaxTree {
         return currentMaxAction;
     }
 
-    public Action getBestThreaded(){
-    	ExecutorService executorService = Executors.newFixedThreadPool(4);
+    public Action getBestThreaded(int threadCount){
+    	
+    	final int MAX_THREAD = threadCount;
+    	ExecutorService executorService = Executors.newWorkStealingPool(MAX_THREAD);
     	
     	List<Callable<Action>> threads = new ArrayList<>();
-    	Callable<Action> t1 = new IDFSThreaded(this, 1);
-    	Callable<Action> t2 = new IDFSThreaded(this, 2);
-    	Callable<Action> t3 = new IDFSThreaded(this, 3);
-    	Callable<Action> t4 = new IDFSThreaded(this, 4);
-    	
-    	threads.add(t1);
-    	threads.add(t2);
-    	threads.add(t3);
-    	threads.add(t4);
+    	for(int i = 1; i <= MAX_THREAD; i++){
+    		threads.add(new IDFSThreaded(this, i, MAX_THREAD));
+    	}
         	
     	try {
         	List<Future<Action>> futures = executorService.invokeAll(threads);
         	System.out.println(futures.size());
-        	Action a1 = (Action) futures.get(0).get();
-        	Action a2 = (Action) futures.get(1).get();
-        	Action a3 = (Action) futures.get(2).get();
-        	Action a4 = (Action) futures.get(3).get();
 
             ArrayList<Action> l = new ArrayList<>();
-            l.add(a1);
-            l.add(a2);
-            l.add(a3);
-            l.add(a4);
+            for(Future<Action> f: futures){
+            	l.add(f.get());
+            }
+            
             l.sort(Action.ID_ASC_FRIENDLY);
 
     		return l.get(0);

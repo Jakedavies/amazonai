@@ -15,38 +15,44 @@ public class IDFSThreaded implements Callable<Action>{
     ArrayList<Action> childActions;
     Action bestMove;
     int quartile;
-    public IDFSThreaded(MinMaxTree m, int quartile){
+    public IDFSThreaded(MinMaxTree m, int quartile, int threadCount){
         this.tree = m;
         this.quartile = quartile;
         this.childActions = m.getChildActions();
-        int to = childActions.size()/4;
+        int to = childActions.size()/threadCount;
 
         ArrayList<Action> examine = new ArrayList<>();
-
-        switch(quartile){
-            case 1:
-                for(int i = 0; i < to; i ++){
-                    examine.add(childActions.get(i));
-                }
-                break;
-            case 2:
-                for(int i = to; i < to*2; i ++ ){
-                    examine.add(childActions.get(i));
-                }
-                break;
-            case 3:
-                for(int i = to*2; i < to*3; i ++){
-                    examine.add(childActions.get(i));
-                }
-                break;
-            case 4:
-                for(int i = to*3; i < childActions.size(); i ++){
-                    examine.add(childActions.get(i));
-                }
-                break;
-
-
+        int end = to*quartile;
+        int start = to*(quartile-1);
+        
+        for(int i = start; i < end; i ++){
+          examine.add(childActions.get(i));
         }
+
+//        switch(quartile){
+//            case 1:
+//                for(int i = 0; i < to; i ++){
+//                    examine.add(childActions.get(i));
+//                }
+//                break;
+//            case 2:
+//                for(int i = to; i < to*2; i ++ ){
+//                    examine.add(childActions.get(i));
+//                }
+//                break;
+//            case 3:
+//                for(int i = to*2; i < to*3; i ++){
+//                    examine.add(childActions.get(i));
+//                }
+//                break;
+//            case 4:
+//                for(int i = to*3; i < childActions.size(); i ++){
+//                    examine.add(childActions.get(i));
+//                }
+//                break;
+//
+//
+//        }
         this.childActions = examine;
     }
 

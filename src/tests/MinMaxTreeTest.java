@@ -19,14 +19,18 @@ public class MinMaxTreeTest {
         Action bestMove = tree.getBestMove();
         System.out.println(System.currentTimeMillis()-start);
         
-        start = System.currentTimeMillis();
-        b = new BoardStateByte();
-        tree = new MinMaxTree(2,b);
-        System.out.println("-------- Threaded --------");
-        System.out.println(tree.getRootLevelActions().size());
-        System.out.println("Total actions generatated " + tree.countTotalActions(tree.getRootLevelActions()));
-        bestMove = tree.getBestMoveThreaded();
-        System.out.println(System.currentTimeMillis()-start);
+        
+        for(int i = 2; i <= 10; i++){
+        	start = System.currentTimeMillis();
+        	b = new BoardStateByte();
+        	tree = new MinMaxTree(2,b);
+        	System.out.println("-------- Threaded --------");
+        	System.out.println("\t Thread Count = " + i);
+        	System.out.println(tree.getRootLevelActions().size());
+        	System.out.println("Total actions generatated " + tree.countTotalActions(tree.getRootLevelActions()));
+        	bestMove = tree.getBestMoveThreaded(i);
+        	System.out.println(System.currentTimeMillis()-start);
+        }
 
 
 
