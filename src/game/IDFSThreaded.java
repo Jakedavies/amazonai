@@ -14,12 +14,14 @@ public class IDFSThreaded implements Callable<Action>{
     MinMaxTree tree;
     ArrayList<Action> childActions;
     Action bestMove;
+    boolean friendly;
     int quartile;
-    public IDFSThreaded(MinMaxTree m, int quartile, int threadCount){
+    public IDFSThreaded(MinMaxTree m, int quartile, int threadCount, boolean friendly){
         this.tree = m;
         this.quartile = quartile;
         this.childActions = m.getChildActions();
         int to = childActions.size()/threadCount;
+        this.friendly = friendly;
 
         ArrayList<Action> examine = new ArrayList<>();
         int end = to*quartile;
@@ -61,6 +63,7 @@ public class IDFSThreaded implements Callable<Action>{
         if(childActions == null) {
             return null;
         }
+
         int currentMax = Integer.MIN_VALUE;
         Action currentMaxAction = null;
         for(Action childAction : childActions)

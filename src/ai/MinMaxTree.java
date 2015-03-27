@@ -133,14 +133,14 @@ public class MinMaxTree {
         return currentMaxAction;
     }
 
-    public Action getBestThreaded(int threadCount){
+    public Action getBestThreaded(int threadCount, boolean friendly){
     	
     	final int MAX_THREAD = threadCount;
     	ExecutorService executorService = Executors.newWorkStealingPool(MAX_THREAD);
     	
     	List<Callable<Action>> threads = new ArrayList<>();
     	for(int i = 1; i <= MAX_THREAD; i++){
-    		threads.add(new IDFSThreaded(this, i, MAX_THREAD));
+    		threads.add(new IDFSThreaded(this, i, MAX_THREAD, friendly));
     	}
         	
     	try {
