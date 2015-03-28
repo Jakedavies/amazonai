@@ -81,9 +81,9 @@ public class MinMaxTree {
         return  bestMove;
     }
     
-    public Action getBestMoveThreaded(int threadCount)
+    public Action getBestMoveThreaded(int threadCount, boolean friendly)
     {
-        Action bestMove = getBestThreaded(threadCount, true);
+        Action bestMove = getBestThreaded(threadCount, friendly);
         System.out.println("Best move Threaded is "+bestMove.getXFinal()+","+bestMove.getyFinal());
         return  bestMove;
     }
