@@ -17,6 +17,7 @@ public class IDFSThreaded implements Callable<Action>{
     boolean friendly;
     int quartile;
     public IDFSThreaded(MinMaxTree m, int quartile, int threadCount, boolean friendly){
+
         this.tree = m;
         this.quartile = quartile;
         this.childActions = m.getChildActions();
@@ -58,8 +59,9 @@ public class IDFSThreaded implements Callable<Action>{
         this.childActions = examine;
     }
 
-    public Action IDFS(int currentCost, ArrayList<Action> childActions)
+    public Action IDFS(int currentCost, ArrayList<Action> childActions, int depth)
     {
+        boolean ourMove = depth%2!=1;
         if(childActions == null) {
             return null;
         }
@@ -73,18 +75,18 @@ public class IDFSThreaded implements Callable<Action>{
                 System.out.println(currTime-startTime);
                 break;
             }
-            int currentCost2 = currentCost+childAction.getValue(true); //TRUE FLAG ADDED FOR TESTING
+            int currentCost2 = currentCost+childAction.getValue(ourMove); //TRUE FLAG ADDED FOR TESTING
 //            ArrayList<Action> l = childAction.getChildActions();
 //            l.sort(Action.ID_ASC_FRIENDLY);
 //            Action currentChild = l.get(0);
-            Action currentChild = IDFS(currentCost2+childAction.getValue(true),childAction.getChildActions()); //TRUE FLAG ADDED FOR TESTING
+            Action currentChild = IDFS(currentCost2+childAction.getValue(ourMove),childAction.getChildActions(),depth++); //TRUE FLAG ADDED FOR TESTING
 
             if(currentChild != null){
 //                System.out.println("Current max is "+(currentCost2+currentChild.getValue(true)));//TRUE FLAG ADDED FOR TESTING
 
-                if(currentMax<(currentCost2+currentChild.getValue(true))) //TRUE FLAG ADDED FOR TESTING
+                if(currentMax<(currentCost2+currentChild.getValue(ourMove))) //TRUE FLAG ADDED FOR TESTING
                 {
-                    currentMax = currentCost2+currentChild.getValue(true); //TRUE FLAG ADDED FOR TESTING
+                    currentMax = currentCost2+currentChild.getValue(ourMove); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = currentChild;
 //                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getXFinal()+","+currentMaxAction.getyFinal());
                 }
@@ -94,8 +96,8 @@ public class IDFSThreaded implements Callable<Action>{
             currentMax = Integer.MIN_VALUE;
             int loop_count = 0;
             for (Action childAction : childActions) {
-                if (childAction.getValue(true) > currentMax) { //TRUE FLAG ADDED FOR TESTING
-                    currentMax = childAction.getValue(true); //TRUE FLAG ADDED FOR TESTING
+                if (childAction.getValue(ourMove) > currentMax) { //TRUE FLAG ADDED FOR TESTING
+                    currentMax = childAction.getValue(ourMove); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = childAction;
                 }
             }
@@ -111,12 +113,12 @@ public class IDFSThreaded implements Callable<Action>{
     }
 
     public void run(){
-            bestMove = this.IDFS(0,childActions);
+            bestMove = this.IDFS(0,childActions,0);
     }
 
 	@Override
 	public Action call() throws Exception {
-		return this.IDFS(0,childActions);
+		return this.IDFS(0,childActions,0);
 	}
 
 
