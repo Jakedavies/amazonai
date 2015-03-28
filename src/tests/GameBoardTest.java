@@ -24,7 +24,7 @@ public class GameBoardTest {
 
 
         MinMaxTree tree = new MinMaxTree(2, frame.getBoard());
-        Action a = tree.getBestMoveThreaded(7);
+        Action a = tree.getBestMoveThreaded(7,true);
 
 
         System.out.println(a.getParent().getStones()[a.getParent().getLastStone()][0]);
@@ -37,7 +37,7 @@ public class GameBoardTest {
         try {
             for (int i = 0; i < 100; i++) {
                 tree = new MinMaxTree(2, frame.getBoard());
-                a = tree.getBestMoveThreaded(7);
+                a = tree.getBestMoveThreaded(7,i%2==0);
 
 
                 System.out.println(a.getParent().getStones()[a.getParent().getLastStone()][0]);
