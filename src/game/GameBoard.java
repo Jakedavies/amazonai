@@ -13,11 +13,11 @@ import java.util.Scanner;
 
 public class GameBoard extends JFrame {
 
-    JSplitPane Pane;
+    JDesktopPane Pane;
     JPanel Board;
 
     JTextArea console = new JTextArea();
-    final Dimension paneSize = new Dimension(800, 800);
+    final Dimension paneSize = new Dimension(900, 900);
     final Dimension boardSize = new Dimension(600,600);
     final Dimension textAreaSize = new Dimension(200,200);
     public BoardStateByte state;
@@ -62,10 +62,14 @@ public class GameBoard extends JFrame {
             Board.add(square);
 
             int row = (i / 10) % 2;
-            if (row == 0)
+            if (row == 0){
                 square.setBackground( i % 2 == 0 ? Color.white : Color.gray);
-            else
-                square.setBackground( i % 2 == 0 ? Color.gray: Color.white);
+            square.add(new JLabel(String.valueOf(i)));}
+            else {
+                square.setBackground(i % 2 == 0 ? Color.gray : Color.white);
+                square.add(new JLabel(String.valueOf(i)));
+            }
+
         }
 
         // Add Text Area
@@ -73,12 +77,24 @@ public class GameBoard extends JFrame {
 
 
         //Create split pane
-        Pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, Board, console);
+        Pane = new JDesktopPane();
+        Pane.add(Board);
+        Pane.add(console);
         Pane.setPreferredSize(paneSize);
 
+        if(isnew)
+            this.reDraw();
 
 
     }
+
+
+    public BoardStateByte getBoard(){
+        return this.state;
+    }
+
+
+
 
     ArrayList<JPanel> removal = new ArrayList<>();
     private final String iconWhitePAC = "./images/wakaQueen.png";
@@ -87,21 +103,41 @@ public class GameBoard extends JFrame {
 
 
     public void reDraw(){
+
+        Board.removeAll();
+          /*
+            Draw the squares for the chess board.
+         */
+        for (int i = 0; i < 100; i++) {
+            JPanel square = new JPanel(new BorderLayout());
+            Board.add(square);
+
+            int row = (i / 10) % 2;
+            if (row == 0){
+                square.setBackground( i % 2 == 0 ? Color.white : Color.gray);
+                square.add(new JLabel(String.valueOf(i)));}
+            else {
+                square.setBackground(i % 2 == 0 ? Color.gray : Color.white);
+                square.add(new JLabel(String.valueOf(i)));
+            }
+
+        }
+
              /*
         Test Display Pieces
          */
 
-        for(int i = 0; i < removal.size(); i ++){
-
-            JComponent j = removal.remove(i);
-            remove(j);
-            j.revalidate();
-
-            Board.updateUI();
-            Board.revalidate();
-            Board.repaint();
-
-        }
+//        for(int i = 0; i < removal.size(); i ++){
+//
+//            JComponent j = removal.remove(i);
+//            remove(j);
+//            j.revalidate();
+//
+//            Board.updateUI();
+//            Board.revalidate();
+//            Board.repaint();
+//
+//        }
 
         byte[][] WhiteQueens = state.getWhiteQueens();
         byte[][] BlackQueens = state.getBlackQueens();
@@ -115,10 +151,11 @@ public class GameBoard extends JFrame {
             int xBlack = BlackQueens[i][0];
             int yBlack = BlackQueens[i][1];
 
-            JPanel panel1 = (JPanel) Board.getComponent(xWhite + yWhite*10);
+            //xWhite + yWhite
+            JPanel panel1 = (JPanel) Board.getComponent(xWhite*10 + yWhite);
             panel1.add(new JLabel(new ImageIcon(iconWhitePAC)));
 
-            JPanel panel2 = (JPanel) Board.getComponent(xBlack + yBlack*10);
+            JPanel panel2 = (JPanel) Board.getComponent(xBlack*10 + yBlack);
             panel2.add(new JLabel(new ImageIcon(iconBlackPAC)));
 
             removal.add(panel1);
@@ -133,13 +170,17 @@ public class GameBoard extends JFrame {
             int sx = Stones[i][0];
             int sy = Stones[i][1];
 
-            JPanel panel = (JPanel) Board.getComponent(sx+sy*10);
+            JPanel panel = (JPanel) Board.getComponent(sx*10+sy);
             panel.add(new JLabel(new ImageIcon(icWB)));
+            panel.repaint();
         }
 
 
         getContentPane().add(Pane);
 
+
+        Board.repaint();
+        Board.updateUI();
         Board.repaint();
 
 
