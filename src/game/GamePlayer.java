@@ -3,6 +3,8 @@ package game;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Tree.Node;
+import Tree.Tree;
 import net.n3.nanoxml.IXMLElement;
 import ubco.ai.GameRoom;
 import ubco.ai.connection.ServerMessage;
@@ -17,49 +19,51 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     GameBoard frame = null;
     String userName;
     boolean turn;
-    String role;
-
-    public GameBoard getGameBoard(){ 
-    	return this.frame;
-    }
+    int roomId;
+    
+    //If True, role is white
+    boolean roleBoolean;
 
     public GamePlayer(String name, String passwd){
-
-    	frame = new GameBoard(true);
-    	frame.pack();
-    	frame.setResizable(true);
-    	frame.setLocationRelativeTo( null );
-    	frame.setVisible(true);
-    	userName = name;
-
-    	gameClient = new GameClient(name,passwd,this);
-    	roomlist = gameClient.getRoomLists();
-
-    	//Print out the room list to user
-    	for(GameRoom gr : roomlist){
-    		System.out.println(gr.toString());
-    		System.out.println("With: " + gr.userCount + " users");
-    	}
-
-
-    	//Scan room number and connect to room.
-        Scanner sc = new Scanner(System.in);
-    	System.out.println("Which game room would you like to join?");
-    	int chosenRoom = Integer.parseInt(sc.next());
-    	System.out.println(chosenRoom);
-    	gameClient.joinGameRoom(gameClient.getRoomLists().get(chosenRoom-2).roomName);
-
-
-    	/*
-        Most of this is useless and just for testing...
-    	 */
-    	
-    	System.out.println("You are connected to room:  " + gameClient.getRoomLists()
-    			.get(chosenRoom-2).roomName );
+	
+		frame = new GameBoard(true);
+		frame.pack();
+		frame.setResizable(true);
+		frame.setLocationRelativeTo( null );
+		frame.setVisible(true);
+		userName = name;
+	
+		gameClient = new GameClient(name,passwd,this);
+		roomlist = gameClient.getRoomLists();
+	
+		//Print out the room list to user
+		for(GameRoom gr : roomlist){
+			System.out.println(gr.toString());
+			System.out.println("With: " + gr.userCount + " users");
+		}
+	
+	
+		//Scan room number and connect to room.
+	    Scanner sc = new Scanner(System.in);
+		System.out.println("Which game room would you like to join?");
+		int chosenRoom = Integer.parseInt(sc.next());
+		System.out.println(chosenRoom);
+		gameClient.joinGameRoom(gameClient.getRoomLists().get(chosenRoom-2).roomName);
+		roomId = chosenRoom;
+	
+		/*
+	    Most of this is useless and just for testing...
+		 */
+		
+		System.out.println("You are connected to room:  " + gameClient.getRoomLists()
+				.get(chosenRoom-2).roomName );
 		System.out.println("There are: " + gameClient.getRoomLists()
 				.get(chosenRoom-2).userCount + " users in the room currently.");
-    }
+	}
 
+	public GameBoard getGameBoard(){ 
+    	return this.frame;
+    }
 
     /*
         Wraps chat message in xml
@@ -91,8 +95,9 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     				IXMLElement user = (IXMLElement) o;
     				String name = user.getAttribute("name", null);
     				if (name.equals(userName)){
-    					role = user.getAttribute("role", null);
+    					String role = user.getAttribute("role", null);
     					turn = role.equals("W");
+    					roleBoolean = turn;
     					break;
     				}
     			}
@@ -142,8 +147,16 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     
     private void makeMove(){
     	turn = false;
-    	
-//    	String move = MoveHandler.createMove(roomID, action);
-//    	gameClient.sendToServer(move, true);
+    	Tree t = new Tree(frame.getBoard());
+        t.generateDepthsOurMoveIsWhite(true);
+        Node n =t.getBestMove();
+        System.out.println(n);
+        
+        Action a = n.getAction();
+
+        frame.setNewBoard(a.makeThisMove());
+        frame.reDraw();
+    	String move = MoveHandler.createMove(roomId, a);
+    	gameClient.sendToServer(move, true);
     }
 }
