@@ -75,13 +75,27 @@ public class Node {
         public int compare(Node a1, Node a2) {
 
             if(a1.getValue()>a2.getValue()){
-                return -1;
+                return -1;            // I use explicit -1 to be clear that the order is reversed
+
             }
             if(a1.getValue() == a2.getValue()){
                 return 0;
             }
             else return 1;
-            // I use explicit -1 to be clear that the order is reversed
+        }
+    };
+
+    public static final Comparator<Node> ID_ASC_BLACK= new Comparator<Node>() {
+        public int compare(Node a1, Node a2) {
+
+            if(a1.getValue()<a2.getValue()){
+                return -1;
+
+            }
+            if(a1.getValue() == a2.getValue()){
+                return 0;
+            }
+            else return 1;
         }
     };
 

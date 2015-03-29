@@ -193,8 +193,8 @@ public class BoardStateByte {
                 }
                 if (matchXBlack && matchYBlack) {
                     whiteOrBlack = BLACK_QUEEN;
-                    whiteQueens[i][0] = xNew;
-                    whiteQueens[i][1] = yNew;
+                    blackQueens[i][0] = xNew;
+                    blackQueens[i][1] = yNew;
                 }
             }
         }

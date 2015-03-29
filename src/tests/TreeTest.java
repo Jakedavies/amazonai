@@ -22,7 +22,7 @@ public class TreeTest {
 
         Tree t = new Tree(frame.getBoard());
         t.generateDepthsOurMoveIsWhite(true);
-        Node n =t.getBestMove();
+        Node n =t.getBestMoveAsWhite();
         System.out.println(n);
 
         frame.setNewBoard(n.getAction().makeThisMove());
@@ -31,14 +31,22 @@ public class TreeTest {
 
         int count = 1;
         try {
-            for (int i = 0; i < 100; i++) {
+            for (int i = 1; i < 100; i++) {
                 long startTime = System.nanoTime();
 
                 t = new Tree(frame.getBoard());
-                t.generateDepthsOurMoveIsWhite(true);
-                n = t.getBestMove();
-                System.out.println(n);
-                count++;
+                if(i%2==0) {
+                    t.generateDepthsOurMoveIsWhite(true);
+                    n = t.getBestMoveAsWhite();
+                    System.out.println(n);
+                    count++;
+                }
+                else{
+                    t.generateDepthsOurMoveIsBlack(false);
+                    n = t.getBestMoveAsBlack();
+                    System.out.println(n);
+                    count++;
+                }
 
                 frame.setNewBoard(n.getAction().makeThisMove());
                 frame.reDraw();
