@@ -148,8 +148,14 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     private void makeMove(){
     	turn = false;
     	Tree t = new Tree(frame.getBoard());
-        t.generateDepthsOurMoveIsWhite(true);
-        Node n =t.getBestMove();
+    	 Node n;
+    	if(roleBoolean){
+    		t.generateDepthsOurMoveIsWhite(true);
+    		n = t.getBestMoveAsWhite();
+    	}else{
+    		t.generateDepthsOurMoveIsBlack(false);
+    		n = t.getBestMoveAsBlack();
+    	}
         System.out.println(n);
         
         Action a = n.getAction();
