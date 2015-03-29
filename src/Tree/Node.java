@@ -3,6 +3,7 @@ package Tree;
 import game.Action;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by nolan on 28/03/15.
@@ -29,6 +30,16 @@ public class Node {
         this.isRoot = false;
         this.children = new ArrayList<>();
     }
+
+    public String toString(){
+        String s ="MOVE FROM: " + action.getOriginal()[0] +"," + action.getOriginal()[1] + "\n MOVE TO: " + action.getXFinal() + "," + action.getyFinal() + "\n VALUE: " + this.getValue();
+        return s;
+    }
+    public boolean isRoot(){
+        return this.isRoot;
+    }
+
+
 
     public Action getAction(){
         return this.action;
@@ -60,6 +71,19 @@ public class Node {
 
 
 
+    public static final Comparator<Node> ID_ASC_FRIENDLY = new Comparator<Node>() {
+        public int compare(Node a1, Node a2) {
+
+            if(a1.getValue()>a2.getValue()){
+                return -1;
+            }
+            if(a1.getValue() == a2.getValue()){
+                return 0;
+            }
+            else return 1;
+            // I use explicit -1 to be clear that the order is reversed
+        }
+    };
 
 
 

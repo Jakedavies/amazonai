@@ -104,21 +104,21 @@ public class BoardStateByte {
         board[0][6] = WHITE_QUEEN;
         whiteQueens[1][0] = 0;
         whiteQueens[1][1] = 6;
-        board[2][0] = WHITE_QUEEN;
-        whiteQueens[2][0] = 2;
+        board[3][0] = WHITE_QUEEN;
+        whiteQueens[2][0] = 3;
         whiteQueens[2][1] = 0;
-        board[2][9] = WHITE_QUEEN;
-        whiteQueens[3][0] = 2;
+        board[3][9] = WHITE_QUEEN;
+        whiteQueens[3][0] = 3;
         whiteQueens[3][1] = 9;
 
         /*
         Add all black queens.
          */
-        board[7][0] = BLACK_QUEEN;
-        blackQueens[0][0] = 7;
+        board[6][0] = BLACK_QUEEN;
+        blackQueens[0][0] = 6;
         blackQueens[0][1] = 0;
-        board[7][9] = BLACK_QUEEN;
-        blackQueens[1][0] = 7;
+        board[6][9] = BLACK_QUEEN;
+        blackQueens[1][0] = 6;
         blackQueens[1][1] = 9;
         board[9][3] = BLACK_QUEEN;
         blackQueens[2][0] = 9;
@@ -174,6 +174,9 @@ public class BoardStateByte {
                 whiteOrBlack = WHITE_QUEEN;
                 whiteQueens[i][0] = xNew;
                 whiteQueens[i][1] = yNew;
+
+
+
                 quickSkip = true;
             }
         }

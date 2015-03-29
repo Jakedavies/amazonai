@@ -22,6 +22,11 @@ public class Action {
     private byte[] stoneThrow;
     private int value = -Integer.MAX_VALUE;
 
+    public byte[] getOriginal(){
+        return new byte[]{xOriginal,yOriginal};
+    }
+
+
 
 
     /**
