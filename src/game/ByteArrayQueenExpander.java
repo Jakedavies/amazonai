@@ -26,7 +26,7 @@ public class ByteArrayQueenExpander {
      */
     private void run(){
         AmazonSuccessorByte sf = new AmazonSuccessorByte();
-
+//
             //For every position available to the one queen.
             ArrayList<byte[]> moves = sf.getAllDirections(queen, board);
             for(byte[] moveForQueen: moves){

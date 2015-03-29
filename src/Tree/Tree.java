@@ -69,12 +69,39 @@ public class Tree {
             ArrayList<Node> levelNodes = new ArrayList<>();
             int count = 0;
 
+            if(toLoopThrough.size() == 0){
+                run = false;
+                break;
+            }
+
+
+//            if(toLoopThrough.size() > 100000){
+//                List<Node> l;
+//                toLoopThrough.sort(Node.ID_ASC_FRIENDLY);
+//                l = toLoopThrough.subList(0, toLoopThrough.size()/1000);
+//                toLoopThrough = new ArrayList<>();
+//                toLoopThrough.addAll(l);
+//            }
+//            else{
+//                List<Node> l;
+//                toLoopThrough.sort(Node.ID_ASC_FRIENDLY);
+//                l = toLoopThrough.subList(0, toLoopThrough.size()/100);
+//                toLoopThrough = new ArrayList<>();
+//                toLoopThrough.addAll(l);
+//            }
+
+
+
 
             for(Node n : toLoopThrough){
                 ArrayList<Action> level = new ArrayList<>();
 
                 count++;
-                if(System.currentTimeMillis()-createTime <= 15000) {
+                if(System.currentTimeMillis()-createTime <= 6000) {
+
+                    //IF WE SORT AND TRIM, DO IT HERE..
+
+
                     level.addAll(sf.generateTreeLevelThreaded(n.getAction().makeThisMove(), white));
                     for (Action a : level) {
                         Node adder = new Node(a, white);
@@ -109,16 +136,183 @@ public class Tree {
 
     }
 
-    public Node getBestMove(){
+
+    public void generateDepthsOurMoveIsBlack(boolean us){
+        ArrayList<Action> lastGenerated = new ArrayList<>();
+        ArrayList<Node> toLoopThrough = new ArrayList<>();
+
+
+        lastGenerated.addAll(sf.generateTreeLevelThreaded(this.initialState, us));
+
+
+
+        for(Action a : lastGenerated){
+            Node n = new Node(a, us);
+            n.setParent(root);
+            root.addChild(n);
+            toLoopThrough.add(n);
+            a.getValue(us); //Moves calculation time to here.
+        }
+
+
+        boolean white = us;
+        boolean run =  true;
+        boolean broken = false;
+        maxDepth++;
+
+        while(run){
+
+            if(toLoopThrough.size() == 0){
+                run = false;
+                continue;
+            }
+
+
+
+
+            maxDepth++;
+            System.out.println("NEW LEVEL");
+            System.out.println(toLoopThrough.size());
+
+            white = !white;
+            ArrayList<Node> levelNodes = new ArrayList<>();
+            int count = 0;
+
+            if(toLoopThrough.size() == 0){
+                run = false;
+                break;
+            }
+
+
+            if(toLoopThrough.size() > 100000){
+                List<Node> l;
+                toLoopThrough.sort(Node.ID_ASC_BLACK);
+                l = toLoopThrough.subList(0, toLoopThrough.size()/1000);
+                toLoopThrough = new ArrayList<>();
+                toLoopThrough.addAll(l);
+            }
+            else{
+                List<Node> l;
+                toLoopThrough.sort(Node.ID_ASC_BLACK);
+                l = toLoopThrough.subList(0, toLoopThrough.size()/100);
+                toLoopThrough = new ArrayList<>();
+                toLoopThrough.addAll(l);
+            }
+
+
+
+
+            for(Node n : toLoopThrough){
+                ArrayList<Action> level = new ArrayList<>();
+
+                count++;
+                if(System.currentTimeMillis()-createTime <= 6000) {
+
+                    //IF WE SORT AND TRIM, DO IT HERE..
+
+
+                    level.addAll(sf.generateTreeLevelThreaded(n.getAction().makeThisMove(), white));
+                    for (Action a : level) {
+                        Node adder = new Node(a, white);
+                        levelNodes.add(adder);
+                        adder.setParent(n); //Links up but not back down so that tree wont see non full gen levels
+                    }
+
+                }
+                else{
+                    run = false;
+                    broken = true;
+                    maxDepth--;
+                }
+            }
+            System.out.println("LEVEL FINISHED");
+
+
+
+            if(!broken){
+                toLoopThrough = levelNodes;
+                System.out.println(levelNodes.size());
+                for(Node n : levelNodes){
+                    n.getparent().addChild(n);
+                }
+            }
+
+
+
+
+        }
+
+
+    }
+
+    public Node getBestMoveAsWhite(){
        Node best =  IDFS(0, root.getChildren());
         Node ret = best;
-        System.out.println(root.getChildren().get(0));
         while(!ret.getparent().isRoot()){
             ret = ret.getparent();
+            System.out.println("ROOTSWAP");
         }
         return ret;
     }
 
+    public Node getBestMoveAsBlack(){
+        Node best =  IDFSAsBlack(0, root.getChildren());
+        Node ret = best;
+        while(!ret.getparent().isRoot()){
+            ret = ret.getparent();
+            System.out.println("ROOTSWAP");
+        }
+        return ret;
+    }
+
+
+
+
+
+    public Node IDFSAsBlack(int currentCost, ArrayList<Node> childActions) {
+        if (childActions == null) {
+            return null;
+        }
+
+        int currentMin = Integer.MAX_VALUE;
+        Node currentminAction = null;
+        for (Node childAction : childActions) {
+            long currTime = System.currentTimeMillis();
+
+            if (currTime - createTime > 27000) {
+                System.out.println(currTime - createTime);
+                break;
+            }
+            int currentCost2 = currentCost + childAction.getValue();
+//            ArrayList<Action> l = childAction.getChildActions();
+//            l.sort(Action.ID_ASC_FRIENDLY);
+//            Action currentChild = l.get(0);
+            Node currentChild = IDFS(currentCost2 + childAction.getValue(), childAction.getChildren());
+
+            if (currentChild != null) {
+                System.out.println("Current max is "+(currentCost2+currentChild.getValue()));//TRUE FLAG ADDED FOR TESTING
+
+                if (currentMin > (currentCost2 + currentChild.getValue())) //TRUE FLAG ADDED FOR TESTING
+                {
+                    currentMin = currentCost2 + currentChild.getValue(); //TRUE FLAG ADDED FOR TESTING
+                    currentminAction = currentChild;
+                    System.out.println("New max is "+ currentMin + " for destination "+currentminAction.getAction().getXFinal()+","+currentminAction.getAction().getyFinal());
+                }
+            }
+        }
+        if (currentminAction == null) {
+            currentMin = Integer.MIN_VALUE;
+            int loop_count = 0;
+            for (Node childAction : childActions) {
+                if (childAction.getValue() > currentMin) { //TRUE FLAG ADDED FOR TESTING
+                    currentMin = childAction.getValue(); //TRUE FLAG ADDED FOR TESTING
+                    currentminAction = childAction;
+                }
+            }
+            global_count++;
+        }
+        return currentminAction;
+    }
 
     public Node IDFS(int currentCost, ArrayList<Node> childActions) {
         if (childActions == null) {

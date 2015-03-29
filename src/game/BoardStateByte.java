@@ -7,6 +7,8 @@ package game;
  */
 public class BoardStateByte {
 
+
+
     private final byte[][] board = new byte[10][10];
     private final byte FREE_SPACE = 0;
     private final byte WHITE_QUEEN = 1;
@@ -21,6 +23,8 @@ public class BoardStateByte {
     public byte[][] getStones(){
         return this.stones;
     }
+
+
 
     /**
      * Overloaded constructor to be used to generate a new state.
@@ -61,6 +65,8 @@ public class BoardStateByte {
             byte yS = stone[i][1];
             this.throwStone(xS, yS);
         }
+
+
     }
 
     /**
@@ -82,6 +88,8 @@ public class BoardStateByte {
     public int getLastStone(){
         return this.lastStone;
     }
+
+
 
     /**
      * Constructor for the initial board.
@@ -132,6 +140,7 @@ public class BoardStateByte {
         return this.blackQueens;
     }
 
+
     /**
      * Move queen method.
      * Given an x and y position for queen and final x and y updates and moves queen.
@@ -165,7 +174,9 @@ public class BoardStateByte {
                 whiteOrBlack = WHITE_QUEEN;
                 whiteQueens[i][0] = xNew;
                 whiteQueens[i][1] = yNew;
-                
+
+
+
                 quickSkip = true;
             }
         }
@@ -182,8 +193,8 @@ public class BoardStateByte {
                 }
                 if (matchXBlack && matchYBlack) {
                     whiteOrBlack = BLACK_QUEEN;
-                    whiteQueens[i][0] = xNew;
-                    whiteQueens[i][1] = yNew;
+                    blackQueens[i][0] = xNew;
+                    blackQueens[i][1] = yNew;
                 }
             }
         }
@@ -203,6 +214,7 @@ public class BoardStateByte {
         }
         else return false;
     }
+
 
     /*
         BELOW:
