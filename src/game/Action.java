@@ -49,6 +49,30 @@ public class Action {
         //Set the parent state.
         this.parent = parent;
     }
+    
+    /**
+     * Constructor: Given a pieces position, potential move for that piece, and state of the board.
+     * @param original Piece (position) that will be moved.
+     * @param finalMove Final position of the piece
+     * @param parent Current state of the board.
+     */
+    public Action(byte[] original, byte[] finalMove, byte[] stoneThrow,
+    		BoardStateByte parent) {
+
+       //Grab the original pieces x,y
+        this.xOriginal = original[0];
+        this.yOriginal = original[1];
+        children = null;
+
+        //Final pieces x,y
+        this.xFinal = finalMove[0];
+        this.yFinal = finalMove[1];
+        
+        this.stoneThrow = stoneThrow;
+
+        //Set the parent state.
+        this.parent = parent;
+    }
 
     public void generateChildren(boolean friendly)
     {
@@ -78,10 +102,20 @@ public class Action {
             return -this.value;
         }
     }
+    
+    /**
+     * @return The starting x-position of this moves state.
+     */
+    public byte getXStart(){
+        return this.xOriginal;
+    }
 
-
-
-
+    /**
+     * @return The starting y-position of this moves state.
+     */
+    public byte getYStart(){
+        return this.yOriginal;
+    }
 
     /**
      * @return The final x-position of this moves state.
