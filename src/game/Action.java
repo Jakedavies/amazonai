@@ -66,12 +66,7 @@ public class Action {
             AmazonHeuristic amazonHeuristic = new AmazonHeuristic();
             this.value = amazonHeuristic.getValue(this, friendly);
         }
-        if(friendly) {
             return this.value;
-        }
-        else{
-            return -this.value;
-        }
     }
 
 

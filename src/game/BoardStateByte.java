@@ -98,34 +98,34 @@ public class BoardStateByte {
         /*
         Add all white Queens
          */
+        board[3][0] = WHITE_QUEEN;
+        whiteQueens[0][0] = 3;
+        whiteQueens[0][1] = 0;
+        board[6][0] = WHITE_QUEEN;
+        whiteQueens[1][0] = 6;
+        whiteQueens[1][1] = 0;
+        board[9][3] = WHITE_QUEEN;
+        whiteQueens[2][0] = 9;
+        whiteQueens[2][1] = 3;
         board[0][3] = WHITE_QUEEN;
-        whiteQueens[0][0] = 0;
-        whiteQueens[0][1] = 3;
-        board[0][6] = WHITE_QUEEN;
-        whiteQueens[1][0] = 0;
-        whiteQueens[1][1] = 6;
-        board[2][0] = WHITE_QUEEN;
-        whiteQueens[2][0] = 2;
-        whiteQueens[2][1] = 0;
-        board[2][9] = WHITE_QUEEN;
-        whiteQueens[3][0] = 2;
-        whiteQueens[3][1] = 9;
+        whiteQueens[3][0] = 0;
+        whiteQueens[3][1] = 3;
 
         /*
         Add all black queens.
          */
-        board[7][0] = BLACK_QUEEN;
-        blackQueens[0][0] = 7;
-        blackQueens[0][1] = 0;
-        board[7][9] = BLACK_QUEEN;
-        blackQueens[1][0] = 7;
-        blackQueens[1][1] = 9;
-        board[9][3] = BLACK_QUEEN;
-        blackQueens[2][0] = 9;
-        blackQueens[2][1] = 3;
+        board[0][6] = BLACK_QUEEN;
+        blackQueens[0][0] = 0;
+        blackQueens[0][1] = 6;
         board[9][6] = BLACK_QUEEN;
-        blackQueens[3][0] = 9;
-        blackQueens[3][1] = 6;
+        blackQueens[1][0] = 9;
+        blackQueens[1][1] = 6;
+        board[3][9] = BLACK_QUEEN;
+        blackQueens[2][0] = 3;
+        blackQueens[2][1] = 9;
+        board[6][9] = BLACK_QUEEN;
+        blackQueens[3][0] = 6;
+        blackQueens[3][1] = 9;
 
         //No stones for the original board.
     }

@@ -20,7 +20,7 @@ public class AmazonSuccessorByte {
      * @param b boardstate that the position to be evaluated exists in.
      * @return ArrayList<byte[]> all available moves.
      */
-    public ArrayList<byte[]> getAllDirections(byte[] v, BoardStateByte b) {
+    public ArrayList<byte[]> getAllDirections(byte[] v, BoardStateByte b )  {
         ArrayList<byte[]> possiblePositions = new ArrayList<>();
 
       /*
@@ -37,36 +37,37 @@ public class AmazonSuccessorByte {
          */
         byte x = -1;
         byte y = 0;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
-        x = -1;
-        y = -1;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
+         x = -1;
+         y = -1;
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
         x = 0;
         y = -1;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
         x = 1;
         y = -1;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
         x = 1;
         y = 0;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
         x = 1;
         y = 1;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
         x = 0;
         y = 1;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
         x = -1;
         y = 1;
-        possiblePositions.addAll(this.getDirectionMoves(v, x, y, b));
+        possiblePositions.addAll(this.getDirectionMoves(v,x, y, b));
 
         return possiblePositions;
     }
 
     /**
+     *
      * @param position The position of the queen that you would like to generate moves for.
-     * @param x        integer x modifier.
-     * @param y        integer y modifier.
+     * @param x integer x modifier.
+     * @param y integer y modifier.
      * @return
      */
     private ArrayList<byte[]> getDirectionMoves(byte[] position, byte x, byte y, BoardStateByte b) {
@@ -74,12 +75,12 @@ public class AmazonSuccessorByte {
 
         int i = 1;
         boolean run = true;
-        while (run) {
+        while(run) {
             byte xMod = 0;
             byte yMod = 0;
 
             //Manually do the multiplication. For the X and Y shift.
-            for (int j = 0; j < i; j++) {
+            for(int j = 0; j < i; j ++){
                 xMod += x;
                 yMod += y;
             }
@@ -95,7 +96,7 @@ public class AmazonSuccessorByte {
 
             //Check if the new position is actually valid.
             run = b.isValidPosition(xVal, yVal);
-            if (run) {
+            if(run) {
                 byte[] move = new byte[2];
                 move[0] = xVal;
                 move[1] = yVal;
@@ -103,7 +104,7 @@ public class AmazonSuccessorByte {
                 i++;
             }
         }
-        return moves;
+        return  moves;
 
     }
 
@@ -111,7 +112,6 @@ public class AmazonSuccessorByte {
     /**
      * Method that generates a full expansion of a state.
      * For every queen returns every possible board state.
-     *
      * @param board
      * @return
      */
@@ -120,18 +120,19 @@ public class AmazonSuccessorByte {
 
         byte[][] queens;
 
-        if (friendly) {
+        if(friendly) {
             queens = board.getWhiteQueens();
-        } else {
+        }
+        else{
             queens = board.getBlackQueens();
         }
 
         //For each friendly queen.
         for (int i = 0; i < 4; i++) {
             byte[] queen = queens[i];
-            //For the queen being evaluated; for each position available to it.
+           //For the queen being evaluated; for each position available to it.
             ArrayList<byte[]> moves = this.getAllDirections(queen, board);
-            for (byte[] moveForQueen : moves) {
+            for(byte[] moveForQueen: moves){
 
                 //Clone the board
                 Action movedQueen = new Action(queen, moveForQueen, board);
@@ -139,22 +140,21 @@ public class AmazonSuccessorByte {
 
                 //For every possible stone throw from that position.
                 ArrayList<byte[]> possibleStoneThrows = this.getAllDirections(moveForQueen, board);
-                for (byte[] throwPos : possibleStoneThrows) {
-                    //clone the board.
-                    Action thrownStone = new Action(movedQueen);
-                    thrownStone.addThrow(throwPos);
-                    level.add(thrownStone); //add the permutation.
-                }
+                    for(byte[] throwPos: possibleStoneThrows) {
+                        //clone the board.
+                        Action thrownStone = new Action(movedQueen);
+                        thrownStone.addThrow(throwPos);
+                        level.add(thrownStone); //add the permutation.
+                    }
                 movedQueen.tearDownFromThrowEvaluation();
 
+                }
             }
-        }
         return level;
-    }
+        }
 
     /**
      * Multithreaded node expansion.
-     *
      * @param board state that is to be expanded.
      * @return arraylist of every possible state reachable from that state.
      */
@@ -163,19 +163,20 @@ public class AmazonSuccessorByte {
         ArrayList<Action> level = new ArrayList<>();
         byte[][] queens;
 
-        if (friendly) {
-            queens = board.getWhiteQueens();
-        } else {
+        if(friendly) {
+           queens = board.getWhiteQueens();
+        }
+        else{
             queens = board.getBlackQueens();
         }
 
             /*
                 For every queen that is in the state, create a new thread.
              */
-        ByteArrayQueenExpander t1 = new ByteArrayQueenExpander(board, queens[0]);
-        ByteArrayQueenExpander t2 = new ByteArrayQueenExpander(board, queens[1]);
-        ByteArrayQueenExpander t3 = new ByteArrayQueenExpander(board, queens[2]);
-        ByteArrayQueenExpander t4 = new ByteArrayQueenExpander(board, queens[3]);
+            ByteArrayQueenExpander t1 = new ByteArrayQueenExpander(board, queens[0]);
+            ByteArrayQueenExpander t2 = new ByteArrayQueenExpander(board, queens[1]);
+            ByteArrayQueenExpander t3 = new ByteArrayQueenExpander(board, queens[2]);
+            ByteArrayQueenExpander t4 = new ByteArrayQueenExpander(board, queens[3]);
 
 
         /*
@@ -191,7 +192,7 @@ public class AmazonSuccessorByte {
 
     }
 
-    //end of class
+ //end of class
 }
 
 

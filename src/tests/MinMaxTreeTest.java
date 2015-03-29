@@ -28,7 +28,7 @@ public class MinMaxTreeTest {
         	System.out.println("\t Thread Count = " + i);
         	System.out.println(tree.getRootLevelActions().size());
         	System.out.println("Total actions generatated " + tree.countTotalActions(tree.getRootLevelActions()));
-        	bestMove = tree.getBestMoveThreaded(i,i%2==0);
+        	bestMove = tree.getBestMoveThreaded(i);
         	System.out.println(System.currentTimeMillis()-start);
         }
 
