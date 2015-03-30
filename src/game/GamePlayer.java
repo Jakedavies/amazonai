@@ -32,7 +32,7 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 		frame.setVisible(true);
 		userName = name;
 	
-		gameClient = new GameClient(name,passwd,this);
+		gameClient = new GameClient(name, passwd, this);
 		roomlist = gameClient.getRoomLists();
 	
 		//Print out the room list to user
@@ -58,7 +58,7 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     /*
         Wraps chat message in xml
      */
-    public String wrapChatMessage(String msg){
+    public String wrapChatMessage(String msg)throws Exception{
         msg = "<action type='"+GameMessage.MSG_CHAT+"'>"+msg+"</action>";
         return msg;
     }
@@ -70,10 +70,10 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     	return true;
     }
 
-    public boolean handleMessage(GameMessage msg){
+    public boolean handleMessage(GameMessage msg)throws Exception{
     	IXMLElement xml = ServerMessage.parseMessage(msg.msg);
     	String type = xml.getAttribute("type", null);
-    	System.out.println(msg);
+    	System.out.println(msg.msg);
 
     	switch(type){
     		case GameMessage.MSG_CHAT:
@@ -93,7 +93,6 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     			if(turn){
     				makeMove();
     			}
-    			
     			// suggest garbage collection during "down time"
     			System.runFinalization();
     			System.gc();
