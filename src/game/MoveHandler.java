@@ -33,11 +33,11 @@ public class MoveHandler {
 				 .getAttribute("move", null);
 		 
 		 byte[] original = new byte[]{getByte(queen.charAt(0)),(byte) queen.charAt(1)};
-		 System.out.println("Original by Enemy = " + original);
+		 System.out.println("Original by Enemy = X:" + original[0] + ",Y:" + original[1]);
 		 byte[] finish = new byte[]{getByte(queen.charAt(3)),(byte) queen.charAt(4)};
-		 System.out.println("Final by Enemy = " + finish);
+		 System.out.println("Final by Enemy = X:" + finish[0] + ",Y:" + finish[1]);
 		 byte[] stone = new byte[]{getByte(arrow.charAt(0)), (byte) arrow.charAt(1)};
-		 System.out.println("Stone by Enemy = " + stone);
+		 System.out.println("Stone by Enemy = X:" + stone[0] + ", Y:" + stone[1]);
 		 	 
 		 return new Action(original, finish, stone, board);
 	}
