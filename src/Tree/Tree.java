@@ -84,7 +84,7 @@ public class Tree {
             for(Node n : toLoopThrough){
                 ArrayList<Action> level = new ArrayList<>();
 
-                if(System.currentTimeMillis()-createTime <= 6000) {
+                if((System.currentTimeMillis()-createTime) <= Constants.CUT_OUT_TIME) {
 
                     level.addAll(sf.generateTreeLevelThreaded(n.getAction().makeThisMove(), white));
                     for (Action a : level) {
@@ -93,7 +93,8 @@ public class Tree {
                         adder.setParent(n); //Links up but not back down so that tree wont see non full gen levels
                     }
                     
-                    if(!levelNodes.isEmpty()){
+                    if(levelNodes.size() > Constants.SIZE_TO_TRIM
+                    		&& Constants.TRIMMING){
 	                    //IF WE SORT AND TRIM, DO IT HERE..
 	                    Node[] trim = new Node[levelNodes.size()];
 	                    trim = levelNodes.toArray(trim);
@@ -153,24 +154,24 @@ public class Tree {
     			run = false;
     			break;
     		}
-    		if(toLoopThrough.size() > 100000){
-    			List<Node> l;
-    			toLoopThrough.sort(Node.ID_ASC_BLACK);
-    			l = toLoopThrough.subList(0, toLoopThrough.size()/1000);
-    			toLoopThrough = new ArrayList<>();
-    			toLoopThrough.addAll(l);
-    		}
-    		else{
-    			List<Node> l;
-    			toLoopThrough.sort(Node.ID_ASC_BLACK);
-    			l = toLoopThrough.subList(0, toLoopThrough.size()/100);
-    			toLoopThrough = new ArrayList<>();
-    			toLoopThrough.addAll(l);
-    		}
+//    		if(toLoopThrough.size() > 100000){
+//    			List<Node> l;
+//    			toLoopThrough.sort(Node.ID_ASC_BLACK);
+//    			l = toLoopThrough.subList(0, toLoopThrough.size()/1000);
+//    			toLoopThrough = new ArrayList<>();
+//    			toLoopThrough.addAll(l);
+//    		}
+//    		else{
+//    			List<Node> l;
+//    			toLoopThrough.sort(Node.ID_ASC_BLACK);
+//    			l = toLoopThrough.subList(0, toLoopThrough.size()/100);
+//    			toLoopThrough = new ArrayList<>();
+//    			toLoopThrough.addAll(l);
+//    		}
     		for(Node n : toLoopThrough){
     			ArrayList<Action> level = new ArrayList<>();
     			count++;
-    			if(System.currentTimeMillis()-createTime <= Constants.CUT_OUT_TIME) {
+    			if((System.currentTimeMillis()-createTime) <= Constants.CUT_OUT_TIME) {
     				//IF WE SORT AND TRIM, DO IT HERE..
     				level.addAll(sf.generateTreeLevelThreaded(n.getAction().makeThisMove(), white));
     				for (Action a : level) {
@@ -178,7 +179,8 @@ public class Tree {
     					levelNodes.add(adder);
     					adder.setParent(n); //Links up but not back down so that tree wont see non full gen levels
     				}
-    				 if(!levelNodes.isEmpty()){
+    				 if(levelNodes.size() > Constants.SIZE_TO_TRIM
+    						 && Constants.TRIMMING){
  	                    //IF WE SORT AND TRIM, DO IT HERE..
  	                    Node[] trim = new Node[levelNodes.size()];
  	                    trim = levelNodes.toArray(trim);
