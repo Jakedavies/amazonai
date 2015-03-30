@@ -1,6 +1,7 @@
 package Tree;
 
 import game.Action;
+import game.Constants;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
@@ -37,12 +38,12 @@ public class LevelCallable implements Callable<ArrayList<Node>> {
 
 		for (Node n : list) {
 			ArrayList<Action> level = new ArrayList<>();
-			if (System.currentTimeMillis() - startTime <= 15000) {
+			if (System.currentTimeMillis() - startTime <= Constants.TIME_OUT_GEN) {
 				boolean broken = false;
 				level.addAll(sf.generateTreeLevelThreaded(n.getAction()
 						.makeThisMove(), white));
 				for (Action a : level) {
-					if (System.currentTimeMillis() - startTime <= 15000) {
+					if (System.currentTimeMillis() - startTime <= Constants.TIME_OUT_GEN) {
 					Node adder = new Node(a, white);
 					levelNodes.add(adder);
 					adder.setParent(n);

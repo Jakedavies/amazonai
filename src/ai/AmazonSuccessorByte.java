@@ -169,8 +169,6 @@ public class AmazonSuccessorByte {
             queens = board.getBlackQueens();
         }
 
-
-
             /*
                 For every queen that is in the state, create a new thread.
              */
