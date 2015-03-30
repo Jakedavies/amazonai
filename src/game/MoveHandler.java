@@ -16,7 +16,7 @@ public class MoveHandler {
 	public static String createMove(int roomID, Action action){
 		byte[]  arrow = action.getStoneThrow();
 		String actionMsg = "<action type='" + GameMessage.ACTION_MOVE + "'><queen move='"
-				+ getLetter(action.getYStart()) + action.getYStart() + "-" + 
+				+ getLetter(action.getYStart()) + action.getXStart() + "-" +
 				getLetter(action.getyFinal()) + action.getXFinal() +
 				"'></queen><arrow move='"+ getLetter(arrow[1]) + arrow[0] + "'></arrow></action>";
 		String msg = ServerMessage.compileGameMessage(GameMessage.MSG_GAME, roomID, actionMsg);
