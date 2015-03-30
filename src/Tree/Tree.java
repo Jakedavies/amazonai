@@ -6,6 +6,11 @@ import game.BoardStateByte;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by nolan on 28/03/15.
@@ -32,10 +37,7 @@ public class Tree {
         ArrayList<Action> lastGenerated = new ArrayList<>();
         ArrayList<Node> toLoopThrough = new ArrayList<>();
 
-
         lastGenerated.addAll(sf.generateTreeLevelThreaded(this.initialState, us));
-
-
 
         for(Action a : lastGenerated){
             Node n = new Node(a, us);
@@ -45,21 +47,18 @@ public class Tree {
             a.getValue(us); //Moves calculation time to here.
         }
 
-
         boolean white = us;
         boolean run =  true;
         boolean broken = false;
         maxDepth++;
+        
+        ExecutorService executorService = Executors.newWorkStealingPool(4);
 
         while(run){
-
             if(toLoopThrough.size() == 0){
                 run = false;
                 continue;
             }
-
-
-
 
             maxDepth++;
             System.out.println("NEW LEVEL");
@@ -73,35 +72,27 @@ public class Tree {
                 run = false;
                 break;
             }
+            
+            List<Callable<ArrayList<Node>>> threads = new ArrayList<>();
+        	for(int i = 1; i <= 4; i++){
+        		threads.add(new LevelCallable(white, sf, createTime, i, 4, toLoopThrough));
+        	}
+        	
+        	try {
+            	List<Future<ArrayList<Node>>> futures = executorService.invokeAll(threads);
+            	System.out.println(futures.size());
 
-
-
-            for(Node n : toLoopThrough){
-                ArrayList<Action> level = new ArrayList<>();
-
-                count++;
-                if(System.currentTimeMillis()-createTime <= 6000) {
-
-                    //IF WE SORT AND TRIM, DO IT HERE..
-
-
-                    level.addAll(sf.generateTreeLevelThreaded(n.getAction().makeThisMove(), white));
-                    for (Action a : level) {
-                        Node adder = new Node(a, white);
-                        levelNodes.add(adder);
-                        adder.setParent(n); //Links up but not back down so that tree wont see non full gen levels
-                    }
-
+                ArrayList<Action> l = new ArrayList<>();
+                for(Future<ArrayList<Node>> f: futures){
+                	levelNodes.addAll(f.get());
                 }
-                else{
-                    run = false;
-                    broken = true;
-                    maxDepth--;
-                }
-            }
+
+        	} catch (InterruptedException |ExecutionException  e) {
+        		e.printStackTrace();
+        		broken = true;
+        		run = false;
+        	}   
             System.out.println("LEVEL FINISHED");
-
-
 
             if(!broken){
                 toLoopThrough = levelNodes;
@@ -110,13 +101,7 @@ public class Tree {
                     n.getparent().addChild(n);
                 }
             }
-
-
-
-
         }
-
-
     }
 
 
@@ -124,10 +109,9 @@ public class Tree {
         ArrayList<Action> lastGenerated = new ArrayList<>();
         ArrayList<Node> toLoopThrough = new ArrayList<>();
 
-
+        ExecutorService executorService = Executors.newWorkStealingPool(4);
+        
         lastGenerated.addAll(sf.generateTreeLevelThreaded(this.initialState, us));
-
-
 
         for(Action a : lastGenerated){
             Node n = new Node(a, us);
@@ -167,47 +151,24 @@ public class Tree {
             }
 
 
-            if(toLoopThrough.size() > 100000){
-                List<Node> l;
-                toLoopThrough.sort(Node.ID_ASC_BLACK);
-                l = toLoopThrough.subList(0, toLoopThrough.size()/1000);
-                toLoopThrough = new ArrayList<>();
-                toLoopThrough.addAll(l);
-            }
-            else{
-                List<Node> l;
-                toLoopThrough.sort(Node.ID_ASC_BLACK);
-                l = toLoopThrough.subList(0, toLoopThrough.size()/100);
-                toLoopThrough = new ArrayList<>();
-                toLoopThrough.addAll(l);
-            }
-
-
-
-
-            for(Node n : toLoopThrough){
-                ArrayList<Action> level = new ArrayList<>();
-
-                count++;
-                if(System.currentTimeMillis()-createTime <= 6000) {
-
-                    //IF WE SORT AND TRIM, DO IT HERE..
-
-
-                    level.addAll(sf.generateTreeLevelThreaded(n.getAction().makeThisMove(), white));
-                    for (Action a : level) {
-                        Node adder = new Node(a, white);
-                        levelNodes.add(adder);
-                        adder.setParent(n); //Links up but not back down so that tree wont see non full gen levels
-                    }
-
+            List<Callable<ArrayList<Node>>> threads = new ArrayList<>();
+        	for(int i = 1; i <= 4; i++){
+        		threads.add(new LevelCallable(white, sf, createTime, i, 4, toLoopThrough));
+        	}
+        	
+        	try {
+            	List<Future<ArrayList<Node>>> futures = executorService.invokeAll(threads);
+            	System.out.println(futures.size());
+            	
+                for(Future<ArrayList<Node>> f: futures){
+                	levelNodes.addAll(f.get());
                 }
-                else{
-                    run = false;
-                    broken = true;
-                    maxDepth--;
-                }
-            }
+
+        	} catch (InterruptedException |ExecutionException  e) {
+        		e.printStackTrace();
+        		broken = true;
+        		run = false;
+        	}   
             System.out.println("LEVEL FINISHED");
 
 
