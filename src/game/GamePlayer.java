@@ -20,7 +20,6 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     String userName;
     boolean turn;
     int roomId;
-    
     //If True, role is white
     boolean roleBoolean;
 
@@ -43,22 +42,13 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 		}
 	
 	
-		//Scan room number and connect to room.
-	    Scanner sc = new Scanner(System.in);
-		System.out.println("Which game room would you like to join?");
-		int chosenRoom = Integer.parseInt(sc.next());
-		System.out.println(chosenRoom);
-		gameClient.joinGameRoom(gameClient.getRoomLists().get(chosenRoom-2).roomName);
-		roomId = chosenRoom;
-	
+		this.joinRoom();
+		
 		/*
 	    Most of this is useless and just for testing...
 		 */
 		
-		System.out.println("You are connected to room:  " + gameClient.getRoomLists()
-				.get(chosenRoom-2).roomName );
-		System.out.println("There are: " + gameClient.getRoomLists()
-				.get(chosenRoom-2).userCount + " users in the room currently.");
+	
 	}
 
 	public GameBoard getGameBoard(){ 
@@ -67,7 +57,6 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
     /*
         Wraps chat message in xml
-
      */
     public String wrapChatMessage(String msg){
         msg = "<action type='"+GameMessage.MSG_CHAT+"'>"+msg+"</action>";
@@ -81,7 +70,7 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
     	return true;
     }
 
-    public boolean handleMessage(GameMessage msg)throws Exception{
+    public boolean handleMessage(GameMessage msg){
     	IXMLElement xml = ServerMessage.parseMessage(msg.msg);
     	String type = xml.getAttribute("type", null);
     	System.out.println(msg);
@@ -161,8 +150,26 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
         Action a = n.getAction();
 
         frame.setNewBoard(a.makeThisMove());
-        frame.reDraw();
     	String move = MoveHandler.createMove(roomId, a);
     	gameClient.sendToServer(move, true);
+        frame.reDraw();
+    }
+    
+    // Join a room
+    public void joinRoom() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("\nWhich room would you like to join?");
+
+        String room = in.nextLine();            // stores the name of the room we will be joining
+        gameClient.joinGameRoom(room);
+
+        // now we will check through the list of game rooms and see which one has this name and determine the room number
+        for (GameRoom r : gameClient.getRoomLists()) {
+            if (r.roomName.equals(room)) {
+                roomId = r.roomID;
+                System.out.println("The room ID of the room we are in (" + room + ") is " + roomId);
+                break;
+            }
+        }
     }
 }
