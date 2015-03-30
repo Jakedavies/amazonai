@@ -31,12 +31,12 @@ public class MoveHandler {
 		 String arrow = ((IXMLElement) e.getChildrenNamed("arrow")
 				 .firstElement())
 				 .getAttribute("move", null);
-		 
-		 byte[] original = new byte[]{getByte(queen.charAt(0)),(byte) queen.charAt(1)};
+		 		 
+		 byte[] original = new byte[]{getByte(queen.charAt(0)), Byte.valueOf(queen.substring(1, 2))};
 		 System.out.println("Original by Enemy = X:" + original[0] + ",Y:" + original[1]);
-		 byte[] finish = new byte[]{getByte(queen.charAt(3)),(byte) queen.charAt(4)};
+		 byte[] finish = new byte[]{getByte(queen.charAt(3)),Byte.valueOf(queen.substring(4, 5))};
 		 System.out.println("Final by Enemy = X:" + finish[0] + ",Y:" + finish[1]);
-		 byte[] stone = new byte[]{getByte(arrow.charAt(0)), (byte) arrow.charAt(1)};
+		 byte[] stone = new byte[]{getByte(arrow.charAt(0)), Byte.valueOf(arrow.substring(1, 2))};
 		 System.out.println("Stone by Enemy = X:" + stone[0] + ", Y:" + stone[1]);
 		 	 
 		 return new Action(original, finish, stone, board);
@@ -83,6 +83,32 @@ public class MoveHandler {
 		case 'f':
 			return 5;
 		case 'g':
+			return 6;
+		case 'h':
+			return 7;
+		case 'i':
+			return 8;
+		case 'j':
+			return 9;
+		}
+		return -1;
+	}
+	
+	private static byte getByteChar(char c){
+		switch(c){
+		case '0':
+			return 0;
+		case '1':
+			return 1;
+		case '2':
+			return 2;
+		case '3':
+			return 3;
+		case '4':
+			return 4;
+		case '5':
+			return 5;
+		case '6':
 			return 6;
 		case 'h':
 			return 7;
