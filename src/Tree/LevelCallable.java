@@ -16,20 +16,12 @@ public class LevelCallable implements Callable<ArrayList<Node>> {
 	private long startTime;
 
 	public LevelCallable(boolean white, AmazonSuccessorByte sf,
-			long startTime, int quartile, int threadCount, ArrayList<Node> actions) {
+			long startTime,ArrayList<Node> actions) {
 		this.white = white;
 		this.sf = sf;
 		this.startTime = startTime;
-
-		int to = actions.size() / threadCount;
-
-		list = new ArrayList<Node>();
-		int end = to * quartile;
-		int start = to * (quartile - 1);
-
-		for (int i = start; i < end; i++) {
-			list.add(actions.get(i));
-		}
+		
+		list = actions;
 	}
 
 	@Override

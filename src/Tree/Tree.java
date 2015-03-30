@@ -3,7 +3,9 @@ package Tree;
 import ai.AmazonSuccessorByte;
 import game.Action;
 import game.BoardStateByte;
+import game.Constants;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -35,7 +37,7 @@ public class Tree {
 
     public void generateDepthsOurMoveIsWhite(boolean us){
         ArrayList<Action> lastGenerated = new ArrayList<>();
-        ArrayList<Node> toLoopThrough = new ArrayList<>();
+        ArrayDeque<Node> toLoopThrough = new ArrayDeque<>();
 
         lastGenerated.addAll(sf.generateTreeLevelThreaded(this.initialState, us));
 
@@ -52,7 +54,7 @@ public class Tree {
         boolean broken = false;
         maxDepth++;
         
-        ExecutorService executorService = Executors.newWorkStealingPool(4);
+        ExecutorService executorService = Executors.newWorkStealingPool(Constants.MAX_THREADS);
 
         while(run){
             if(toLoopThrough.size() == 0){
@@ -65,24 +67,32 @@ public class Tree {
             System.out.println(toLoopThrough.size());
 
             white = !white;
-            ArrayList<Node> levelNodes = new ArrayList<>();
+            ArrayDeque<Node> levelNodes = new ArrayDeque<>();
             int count = 0;
 
             if(toLoopThrough.size() == 0){
                 run = false;
                 break;
             }
-            
             List<Callable<ArrayList<Node>>> threads = new ArrayList<>();
-        	for(int i = 1; i <= 4; i++){
-        		threads.add(new LevelCallable(white, sf, createTime, i, 4, toLoopThrough));
+        	for(int i = 1; i <= Constants.MAX_THREADS; i++){
+        		int to = toLoopThrough.size() / Constants.MAX_THREADS;
+        		ArrayList<Node>list = new ArrayList<Node>();
+        		int end = to * i;
+        		int start = to * (i - 1);
+
+        		for (int g = start; g < end; g++) {
+        			if(!toLoopThrough.isEmpty()){
+        				list.add(toLoopThrough.removeFirst());
+        			}
+        		}
+        		threads.add(new LevelCallable(white, sf, createTime, list));
         	}
         	
         	try {
             	List<Future<ArrayList<Node>>> futures = executorService.invokeAll(threads);
             	System.out.println(futures.size());
 
-                ArrayList<Action> l = new ArrayList<>();
                 for(Future<ArrayList<Node>> f: futures){
                 	levelNodes.addAll(f.get());
                 }
@@ -108,9 +118,9 @@ public class Tree {
 
     public void generateDepthsOurMoveIsBlack(boolean us){
         ArrayList<Action> lastGenerated = new ArrayList<>();
-        ArrayList<Node> toLoopThrough = new ArrayList<>();
+        ArrayDeque<Node> toLoopThrough = new ArrayDeque<>();
 
-        ExecutorService executorService = Executors.newWorkStealingPool(4);
+        ExecutorService executorService = Executors.newWorkStealingPool(Constants.MAX_THREADS);
         
         lastGenerated.addAll(sf.generateTreeLevelThreaded(this.initialState, us));
 
@@ -121,8 +131,6 @@ public class Tree {
             toLoopThrough.add(n);
             a.getValue(us); //Moves calculation time to here.
         }
-
-
         boolean white = us;
         boolean run =  true;
         boolean broken = false;
@@ -134,16 +142,12 @@ public class Tree {
                 run = false;
                 continue;
             }
-
-
-
-
             maxDepth++;
             System.out.println("NEW LEVEL");
             System.out.println(toLoopThrough.size());
 
             white = !white;
-            ArrayList<Node> levelNodes = new ArrayList<>();
+            ArrayDeque<Node> levelNodes = new ArrayDeque<>();
             int count = 0;
 
             if(toLoopThrough.size() == 0){
@@ -151,10 +155,19 @@ public class Tree {
                 break;
             }
 
-
             List<Callable<ArrayList<Node>>> threads = new ArrayList<>();
-        	for(int i = 1; i <= 4; i++){
-        		threads.add(new LevelCallable(white, sf, createTime, i, 4, toLoopThrough));
+        	for(int i = 1; i <= Constants.MAX_THREADS; i++){
+        		int to = toLoopThrough.size() / Constants.MAX_THREADS;
+        		ArrayList<Node>list = new ArrayList<Node>();
+        		int end = to * i;
+        		int start = to * (i - 1);
+
+        		for (int g = start; g < end; g++) {
+        			if(!toLoopThrough.isEmpty()){
+        				list.add(toLoopThrough.removeFirst());
+        			}
+        		}
+        		threads.add(new LevelCallable(white, sf, createTime, list));
         	}
         	
         	try {
@@ -173,8 +186,6 @@ public class Tree {
         	}   
             System.out.println("LEVEL FINISHED");
 
-
-
             if(!broken){
                 toLoopThrough = levelNodes;
                 System.out.println(levelNodes.size());
@@ -182,13 +193,7 @@ public class Tree {
                     n.getparent().addChild(n);
                 }
             }
-
-
-
-
         }
-
-
     }
 
     public Node getBestMoveAsWhite(){
@@ -225,7 +230,7 @@ public class Tree {
         for (Node childAction : childActions) {
             long currTime = System.currentTimeMillis();
 
-            if (currTime - createTime > 27000) {
+            if (currTime - createTime > Constants.TIME_OUT_SEARCH) {
                 System.out.println(currTime - createTime);
                 break;
             }
@@ -270,7 +275,7 @@ public class Tree {
         for (Node childAction : childActions) {
             long currTime = System.currentTimeMillis();
 
-            if (currTime - createTime > 27000) {
+            if (currTime - createTime > Constants.TIME_OUT_SEARCH) {
                 System.out.println(currTime - createTime);
                 break;
             }
