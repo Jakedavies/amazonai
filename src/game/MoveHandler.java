@@ -15,10 +15,14 @@ public class MoveHandler {
 	*/
 	public static String createMove(int roomID, Action action){
 		byte[]  arrow = action.getStoneThrow();
+		System.out.println("TRANSLATED FROM: " +action.getXStart() + "," + action.getYStart());
+
+		System.out.println("TRANSLATED TO: " +action.getXFinal() + "," + action.getyFinal());
+		System.out.println("STONE: "+arrow[0] + "," + arrow[1]);
 		String actionMsg = "<action type='" + GameMessage.ACTION_MOVE + "'><queen move='"
-				+ getLetter(action.getXStart()) + action.getYStart() + "-" +
-				getLetter(action.getXFinal()) + action.getyFinal() +
-				"'></queen><arrow move='"+ getLetter(arrow[0]) + arrow[1] + "'></arrow></action>";
+				+ getLetter(action.getYStart()) + action.getXStart() + "-" +
+				getLetter(action.getyFinal()) + action.getXFinal() +
+				"'></queen><arrow move='"+ getLetter(arrow[1]) + arrow[0] + "'></arrow></action>";
 		String msg = ServerMessage.compileGameMessage(GameMessage.MSG_GAME, roomID, actionMsg);
 		System.out.println(msg);
 		return msg;
@@ -32,11 +36,19 @@ public class MoveHandler {
 				 .firstElement())
 				 .getAttribute("move", null);
 		 		 
-		 byte[] original = new byte[]{getByte(queen.charAt(0)), Byte.valueOf(queen.substring(1, 2))};
+		 byte[] original = new byte[2];
+				 original[0] = Byte.valueOf(queen.substring(1, 2));
+				 original[1] = getByte(queen.charAt(0));
 		 System.out.println("Original by Enemy = X:" + original[0] + ",Y:" + original[1]);
-		 byte[] finish = new byte[]{getByte(queen.charAt(3)),Byte.valueOf(queen.substring(4, 5))};
+		 
+		 byte[] finish = new byte[2];
+				 finish[0] = Byte.valueOf(queen.substring(4, 5));
+				 finish[1] = getByte(queen.charAt(3));
 		 System.out.println("Final by Enemy = X:" + finish[0] + ",Y:" + finish[1]);
-		 byte[] stone = new byte[]{getByte(arrow.charAt(0)), Byte.valueOf(arrow.substring(1, 2))};
+		 
+		 byte[] stone = new byte[2];
+		 stone[0] = Byte.valueOf(arrow.substring(1, 2));
+		 stone[1] = getByte(arrow.charAt(0));
 		 System.out.println("Stone by Enemy = X:" + stone[0] + ", Y:" + stone[1]);
 		 	 
 		 return new Action(original, finish, stone, board);

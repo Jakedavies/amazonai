@@ -91,6 +91,7 @@ public class Tree {
         		e.printStackTrace();
         		broken = true;
         		run = false;
+        		maxDepth--;
         	}   
             System.out.println("LEVEL FINISHED");
 
@@ -168,6 +169,7 @@ public class Tree {
         		e.printStackTrace();
         		broken = true;
         		run = false;
+        		maxDepth--;
         	}   
             System.out.println("LEVEL FINISHED");
 
@@ -234,13 +236,13 @@ public class Tree {
             Node currentChild = IDFS(currentCost2 + childAction.getValue(), childAction.getChildren());
 
             if (currentChild != null) {
-                System.out.println("Current max is "+(currentCost2+currentChild.getValue()));//TRUE FLAG ADDED FOR TESTING
+//                System.out.println("Current max is "+(currentCost2+currentChild.getValue()));//TRUE FLAG ADDED FOR TESTING
 
                 if (currentMin > (currentCost2 + currentChild.getValue())) //TRUE FLAG ADDED FOR TESTING
                 {
                     currentMin = currentCost2 + currentChild.getValue(); //TRUE FLAG ADDED FOR TESTING
                     currentminAction = currentChild;
-                    System.out.println("New max is "+ currentMin + " for destination "+currentminAction.getAction().getXFinal()+","+currentminAction.getAction().getyFinal());
+//                    System.out.println("New max is "+ currentMin + " for destination "+currentminAction.getAction().getXFinal()+","+currentminAction.getAction().getyFinal());
                 }
             }
         }
@@ -279,13 +281,13 @@ public class Tree {
             Node currentChild = IDFS(currentCost2 + childAction.getValue(), childAction.getChildren());
 
             if (currentChild != null) {
-                System.out.println("Current max is "+(currentCost2+currentChild.getValue()));//TRUE FLAG ADDED FOR TESTING
+//                System.out.println("Current max is "+(currentCost2+currentChild.getValue()));//TRUE FLAG ADDED FOR TESTING
 
                 if (currentMax < (currentCost2 + currentChild.getValue())) //TRUE FLAG ADDED FOR TESTING
                 {
                     currentMax = currentCost2 + currentChild.getValue(); //TRUE FLAG ADDED FOR TESTING
                     currentMaxAction = currentChild;
-                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getAction().getXFinal()+","+currentMaxAction.getAction().getyFinal());
+//                    System.out.println("New max is "+ currentMax + " for destination "+currentMaxAction.getAction().getXFinal()+","+currentMaxAction.getAction().getyFinal());
                 }
             }
         }
