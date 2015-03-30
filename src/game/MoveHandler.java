@@ -16,9 +16,9 @@ public class MoveHandler {
 	public static String createMove(int roomID, Action action){
 		byte[]  arrow = action.getStoneThrow();
 		String actionMsg = "<action type='" + GameMessage.ACTION_MOVE + "'><queen move='"
-				+ getLetter(action.getYStart()) + action.getXStart() + "-" +
-				getLetter(action.getyFinal()) + action.getXFinal() +
-				"'></queen><arrow move='"+ getLetter(arrow[1]) + arrow[0] + "'></arrow></action>";
+				+ getLetter(action.getXStart()) + action.getYStart() + "-" +
+				getLetter(action.getXFinal()) + action.getyFinal() +
+				"'></queen><arrow move='"+ getLetter(arrow[0]) + arrow[1] + "'></arrow></action>";
 		String msg = ServerMessage.compileGameMessage(GameMessage.MSG_GAME, roomID, actionMsg);
 		System.out.println(msg);
 		return msg;
@@ -33,8 +33,11 @@ public class MoveHandler {
 				 .getAttribute("move", null);
 		 
 		 byte[] original = new byte[]{getByte(queen.charAt(0)),(byte) queen.charAt(1)};
+		 System.out.println("Original by Enemy = " + original);
 		 byte[] finish = new byte[]{getByte(queen.charAt(3)),(byte) queen.charAt(4)};
+		 System.out.println("Final by Enemy = " + finish);
 		 byte[] stone = new byte[]{getByte(arrow.charAt(0)), (byte) arrow.charAt(1)};
+		 System.out.println("Stone by Enemy = " + stone);
 		 	 
 		 return new Action(original, finish, stone, board);
 	}
