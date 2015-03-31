@@ -24,6 +24,9 @@ public class BoardStateByte {
         return this.stones;
     }
 
+    public byte[][] getGameBoard(){
+        return this.board;
+    }
 
 
     /**

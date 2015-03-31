@@ -1,6 +1,7 @@
 package ai;
 
 import game.Action;
+import game.BoardStateByte;
 
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class AmazonHeuristic {
      * @return integer of the value of that move.
      */
     public int getValue(Action state, boolean friendly){
+        int territory = 0;
         //Manually perform set up on state. (THIS MOVES THE ACTUAL QUEEN IN PARENT STATE)
         state.setUpForThrowEvaluation();
 
@@ -44,6 +46,7 @@ public class AmazonHeuristic {
         else{
             Queens = state.getParent().getBlackQueens();
         }
+        territory = getTerritoryValue(state.getParent(), friendly) * 4;
 
         ArrayList<byte[]> moves = new ArrayList<>();
         for(int i = 0; i < 4; i ++){
@@ -56,8 +59,84 @@ public class AmazonHeuristic {
         //Manually perform the tear down on the state. (THIS MOVES THE ACTUAL QUEEN IN THE PARENT STATE BACK)
         state.tearDownFromThrowEvaluation();
 
-        return moves.size();
+        return moves.size() + territory;
     }
+
+    public int getTerritoryValue(BoardStateByte gameBoard, boolean friendly){
+
+        BoardStateByte valueBoard = new BoardStateByte(gameBoard); //Clone the game board
+        byte[][] gboard = valueBoard.getGameBoard();
+
+        byte[][] whiteQueens = gameBoard.getWhiteQueens();
+        byte[][] blackQueens = gameBoard.getBlackQueens();
+
+        byte[][] maxValOwner = new byte[10][10];
+
+
+        int whiteCount = 0;
+        int blackCount = 0;
+
+        final byte OWNED_BY_WHITE = 4;
+        final byte OWNED_BY_BLACK = 5;
+        final byte CONTESTED_SPACE = 6;
+
+        for(int i = 0; i < 4; i ++ ) {
+            byte[] queen = whiteQueens[i];
+
+            ArrayList<byte[]> oneHop = sf.getAllDirections(queen, valueBoard);
+            ArrayList<byte[]> twoHop = new ArrayList<>();
+
+            for (byte[] b : oneHop) {
+                if (maxValOwner[b[0]][b[1]] > 1) {
+                    gboard[b[0]][b[1]] = OWNED_BY_WHITE;
+                    whiteCount++;
+                }
+                twoHop.addAll(sf.getAllDirections(b, valueBoard));
+            }
+            for (byte[] b : twoHop) {
+                if (maxValOwner[b[0]][b[1]] > 2) {
+                    gboard[b[0]][b[1]] = OWNED_BY_WHITE;
+                    whiteCount++;
+                }
+            }
+        }
+
+            for(int i = 0; i < 4; i ++ ) {
+                byte[] queen = blackQueens[i];
+                ArrayList<byte[]> twoHop = new ArrayList<>();
+
+                ArrayList<byte[]> oneHop = sf.getAllDirections(queen, valueBoard);
+                for (byte[] b : oneHop) {
+                    if (maxValOwner[b[0]][b[1]] > 1) {
+                        gboard[b[0]][b[1]] = OWNED_BY_BLACK;
+                        blackCount++;
+
+                    } else if (maxValOwner[b[0]][b[1]] == 1) {
+                        gboard[b[0]][b[1]] = CONTESTED_SPACE;
+                        whiteCount--;
+                    }
+                    twoHop.addAll(sf.getAllDirections(b, valueBoard));
+                }
+
+                for (byte[] b : twoHop) {
+                    if (maxValOwner[b[0]][b[1]] > 2) {
+                        gboard[b[0]][b[1]] = OWNED_BY_BLACK;
+
+                    } else if (maxValOwner[b[0]][b[1]] == 2) {
+                        gboard[b[0]][b[1]] = CONTESTED_SPACE;
+                    }
+                }
+            }
+
+        if(friendly){
+            return whiteCount-blackCount;
+        }
+        else
+            return blackCount-whiteCount;
+
+
+    }
+
 
 
 
