@@ -17,4 +17,8 @@ public class Constants {
 	 * Maxmium thread count for the AI
 	 */
 	public static final int MAX_THREADS = 4;
+
+    public static  int moveCount = 4;
+    public static  int startThirdHop = 9;
+
 }

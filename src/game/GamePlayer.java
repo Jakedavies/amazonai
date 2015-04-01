@@ -132,7 +132,8 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
 
     	//For message types and message format, see the GameMessage API and the project notes
     }
-    
+
+    int moveCount = 0;
     private void makeMove(){
     	turn = false;
     	Tree t = new Tree(frame.getBoard());
@@ -151,6 +152,8 @@ public class GamePlayer implements ubco.ai.games.GamePlayer{
         frame.setNewBoard(a.makeThisMove());
     	String move = MoveHandler.createMove(roomId, a);
     	gameClient.sendToServer(move, true);
+        moveCount++;
+        System.out.println("MAKING" + moveCount + move);
         frame.reDraw();
     }
     
